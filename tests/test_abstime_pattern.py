@@ -50,3 +50,43 @@ def test_place_weekday(place):
     assert place.is_valid("weekday", "日")
 
     assert not place.is_valid("weekday", "月火")
+
+
+def test_place_weekday_with_suffix(place):
+    assert not place.is_valid("weekday", "月曜日")
+
+    assert place.is_valid("weekday_with_suffix", "月曜日")
+    assert place.is_valid("weekday_with_suffix", "月曜")
+    assert place.is_valid("weekday_with_suffix", "月")
+    assert place.is_valid("weekday_with_suffix", "日")
+
+
+def test_place_weekday_with_symbol(place):
+    assert not place.is_valid("weekday", "(月曜日)")
+    assert not place.is_valid("weekday_with_suffix", "(月曜日)")
+
+    assert place.is_valid("weekday_with_symbol", "(月曜日)")
+    assert place.is_valid("weekday_with_symbol", "(月曜)")
+    assert place.is_valid("weekday_with_symbol", "(月)")
+    assert place.is_valid("weekday_with_symbol", "(日)")
+
+
+def test_place_season(place):
+    assert place.is_valid("season", "春")
+    assert place.is_valid("season", "夏")
+    assert place.is_valid("season", "秋")
+    assert place.is_valid("season", "冬")
+
+    assert not place.is_valid("season", "春夏秋冬")
+    assert not place.is_valid("season", "季節")
+
+
+def test_place_quarter(place):
+    assert place.is_valid("quarter", "1")
+    assert place.is_valid("quarter", "2")
+    assert place.is_valid("quarter", "3")
+    assert place.is_valid("quarter", "4")
+
+    assert not place.is_valid("quarter", "5")
+    assert not place.is_valid("quarter", "11")
+
