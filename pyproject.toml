@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "ja-timex"
+version = "0.1.0"
+description = ""
+authors = ["Yuki Okuda <y.okuda@dr-ubie.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+ipython = "^7.25.0"
+ipdb = "^0.13.9"
+flake8 = "^3.9.2"
+mypy = "^0.910"
+black = "^21.7b0"
+isort = "^5.9.2"
+pytest = "^6.2.4"
+
+[tool.black]
+line-length = 120
+target-version = ['py38']
+include = '\.pyi?$'
+exclude = '''
+
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+)
+'''
+
+[tool.isort]
+profile = "hug"
+line_length = 120
+src_paths = ["ja_timex", "tests", "tools"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
