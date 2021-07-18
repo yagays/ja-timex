@@ -4,9 +4,85 @@ from ja_timex.tag import TIMEX
 from ja_timex.tagger.duration_pattern import patterns
 
 
+def detect_format(args):
+    if "year" in args:
+        return "year"
+    elif "month" in args:
+        return "month"
+    elif "day" in args:
+        return "day"
+    elif "century" in args:
+        return "century"
+    elif "week" in args:
+        return "week"
+    elif "hour" in args:
+        return "hour"
+    elif "minutes" in args:
+        return "minutes"
+    elif "second" in args:
+        return "second"
+    elif "second_with_decimal_point" in args:
+        return "second_with_decimal_point"
+    else:
+        raise ValueError
+
+
 def construct_duration_timex(re_match, pattern):
     args = re_match.groupdict()
-    return TIMEX(type="DURATION", value="1時間", value_from_surface=re_match.group(), value_format="season", parsed=args)
+    value_format = detect_format(args)
+
+    if value_format == "year":
+        value = args["year"]
+        return TIMEX(
+            type="DURATION", value=f"P{value}Y", value_from_surface=re_match.group(), value_format="year", parsed=args
+        )
+    if value_format == "month":
+        value = args["month"]
+        return TIMEX(
+            type="DURATION", value=f"P{value}M", value_from_surface=re_match.group(), value_format="month", parsed=args
+        )
+    if value_format == "day":
+        value = args["day"]
+        return TIMEX(
+            type="DURATION", value=f"P{value}D", value_from_surface=re_match.group(), value_format="day", parsed=args
+        )
+    if value_format == "hour":
+        value = args["hour"]
+        return TIMEX(
+            type="DURATION", value=f"PT{value}H", value_from_surface=re_match.group(), value_format="hour", parsed=args
+        )
+    if value_format == "minutes":
+        value = args["minutes"]
+        return TIMEX(
+            type="DURATION",
+            value=f"PT{value}M",
+            value_from_surface=re_match.group(),
+            value_format="minutes",
+            parsed=args,
+        )
+    if value_format == "second":
+        value = args["second"]
+        return TIMEX(
+            type="DURATION",
+            value=f"PT{value}S",
+            value_from_surface=re_match.group(),
+            value_format="second",
+            parsed=args,
+        )
+    if value_format == "second_with_decimal_point":
+        value = args["second_with_decimal_point"].replace("秒", ".")
+        return TIMEX(
+            type="DURATION",
+            value=f"PT{value}S",
+            value_from_surface=re_match.group(),
+            value_format="second_with_decimal_point",
+            parsed=args,
+        )
+    if value_format == "week":
+        value = args["week"]
+        return TIMEX(
+            week="DURATION", value=f"P{value}W", value_from_surface=re_match.group(), value_format="week", parsed=args
+        )
 
 
 class DurationTagger:

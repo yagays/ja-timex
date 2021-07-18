@@ -9,7 +9,7 @@ def place():
 
 
 # ここでは値の正しさのみを検証する
-# 日付表現としてのバリエーションや正しさはtaggerの方で行う
+# 期間表現としてのバリエーションや正しさはtaggerの方で行う
 
 
 def test_place_year(place):
@@ -35,10 +35,7 @@ def test_place_day(place):
     assert place.is_valid("day", "1")
     assert place.is_valid("day", "01")
     assert place.is_valid("day", "31")
-
-    assert not place.is_valid("day", "32")
-    assert not place.is_valid("day", "001")
-    assert not place.is_valid("day", "100")
+    assert place.is_valid("day", "100")
 
 
 def test_place_century(place):
