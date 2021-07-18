@@ -21,8 +21,8 @@ def detect_format(args):
         return "minutes"
     elif "second" in args:
         return "second"
-    elif "second_with_decimal_point" in args:
-        return "second_with_decimal_point"
+    elif "second_with_ms" in args:
+        return "second_with_ms"
     else:
         raise ValueError
 
@@ -69,13 +69,13 @@ def construct_duration_timex(re_match, pattern):
             value_format="second",
             parsed=args,
         )
-    if value_format == "second_with_decimal_point":
-        value = args["second_with_decimal_point"].replace("秒", ".")
+    if value_format == "second_with_ms":
+        value = args["second_with_ms"].replace("秒", ".")
         return TIMEX(
             type="DURATION",
             value=f"PT{value}S",
             value_from_surface=re_match.group(),
-            value_format="second_with_decimal_point",
+            value_format="second_with_ms",
             parsed=args,
         )
     if value_format == "week":

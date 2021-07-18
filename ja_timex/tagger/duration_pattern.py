@@ -13,7 +13,7 @@ class DurationPlace:
     hour: str = "(?P<hour>[0-9]+\.?[0-9]*)"
     minutes: str = "(?P<minutes>[0-9]+\.?[0-9]*)"
     second: str = "(?P<second>[0-9]+\.?[0-9]*)"
-    second_with_decimal_point: str = "(?P<second_with_decimal_point>[0-9]+[秒][0-9]+)"
+    second_with_ms: str = "(?P<second_with_ms>[0-9]+[秒][0-9]+)"
 
     def is_valid(self, target, text):
         re_pattern = getattr(self, target)
@@ -51,7 +51,7 @@ patterns.append({"pattern": f"{p.minutes}分(間)?", "value": ""})
 
 # 秒
 patterns.append({"pattern": f"{p.second}秒(間)?", "value": ""})
-patterns.append({"pattern": f"{p.second_with_decimal_point}", "value": ""})
+patterns.append({"pattern": f"{p.second_with_ms}", "value": ""})
 
 # 組み合わせ
 # patterns.append({"pattern": f"{p.year}年{p.month}[ヶ|か|ケ|箇]月", "value": ""})

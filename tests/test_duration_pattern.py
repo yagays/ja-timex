@@ -76,3 +76,9 @@ def test_place_second(place):
     assert place.is_valid("second", "120")
     assert place.is_valid("second", "0.5")
     assert place.is_valid("second", "1.5")
+
+
+def test_place_second_with_ms(place):
+    assert place.is_valid("second_with_ms", "1秒05")
+    assert place.is_valid("second_with_ms", "100秒5")
+    assert place.is_valid("second_with_ms", "1秒0")

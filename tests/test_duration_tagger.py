@@ -46,7 +46,7 @@ def test_second(t):
     assert t.parse("1秒").value == "PT1S"
 
 
-def test_second_with_decimal_point(t):
+def test_second_with_ms(t):
     assert t.parse("1秒05").value == "PT1.05S"
     assert t.parse("100秒5").value == "PT100.5S"
     assert t.parse("1秒0").value == "PT1.0S"
