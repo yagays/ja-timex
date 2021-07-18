@@ -1,5 +1,3 @@
-import re
-
 import pytest
 
 from ja_timex.tagger.abstime_pattern import Place
@@ -18,6 +16,7 @@ def test_place_year(place):
     assert place.is_valid("year", "2021")
     assert place.is_valid("year", "1")
 
+    # 日付表現としての10000年は、現時点で現実世界を表現する際に使うことはない
     assert not place.is_valid("year", "10000")
 
 
@@ -89,4 +88,3 @@ def test_place_quarter(place):
 
     assert not place.is_valid("quarter", "5")
     assert not place.is_valid("quarter", "11")
-

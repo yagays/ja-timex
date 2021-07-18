@@ -11,7 +11,10 @@ def t():
 def test_year(t):
     assert t.parse("1年間").value == "P1Y"
     assert t.parse("100年間").value == "P100Y"
+    
+    # abstimeともdurationとも取れる表現
     assert t.parse("1年").value == "P1Y"
+    assert t.parse("2021年").value == "P2021Y"
 
 
 def test_month(t):
