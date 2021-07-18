@@ -32,7 +32,7 @@ patterns = []
 patterns.append({"pattern": f"{p.year}年(間)?", "value": ""})
 
 # 月
-patterns.append({"pattern": f"{p.month}[ヶ|か|ケ|箇]月(間)?", "value": ""})
+patterns.append({"pattern": f"{p.month}[ヶ|か|ケ|箇]?月(間)?", "value": ""})
 
 # 日
 patterns.append({"pattern": f"{p.day}日(間)?", "value": ""})

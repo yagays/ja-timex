@@ -22,6 +22,9 @@ def test_month(t):
     assert t.parse("100ヶ月間").value == "P100M"
     assert t.parse("1ヶ月").value == "P1M"
 
+    # abstimeともdurationとも取れる表現
+    assert t.parse("1月").value == "P1M" # e.g. 1月もの間
+
 
 def test_day(t):
     assert t.parse("1日間").value == "P1D"
