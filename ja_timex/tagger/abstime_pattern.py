@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 from ja_timex.tagger.base_pattern import BasePlace
 
+
 # 時間表現の正規表現に用いる部分パターン
 @dataclass
 class Place(BasePlace):
