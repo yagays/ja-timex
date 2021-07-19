@@ -18,7 +18,7 @@ def detect_format(args):
         return "season"
     elif "quarter" in args:
         return "quarter"
-    elif "year" in args or "month" in args or "day" in args:
+    elif "calendar_year" in args or "calendar_month" in args or "calendar_day" in args:
         return "absdate"
     elif "weekday" in args:
         # 曜日のみの場合
@@ -42,16 +42,16 @@ def construct_timex(re_match, pattern):
     if value_format == "absdate":
         # fill unknown position by "X"
 
-        if "year" not in args:
-            args["year"] = "XXXX"
-        if "month" not in args:
-            args["month"] = "XX"
-        if "day" not in args:
-            args["day"] = "XX"
+        if "calendar_year" not in args:
+            args["calendar_year"] = "XXXX"
+        if "calendar_month" not in args:
+            args["calendar_month"] = "XX"
+        if "calendar_day" not in args:
+            args["calendar_day"] = "XX"
         # zero padding
-        args["year"] = args["year"].zfill(4)
-        args["month"] = args["month"].zfill(2)
-        args["day"] = args["day"].zfill(2)
+        args["calendar_year"] = args["calendar_year"].zfill(4)
+        args["calendar_month"] = args["calendar_month"].zfill(2)
+        args["calendar_day"] = args["calendar_day"].zfill(2)
 
         additional_info = None
         if "weekday" in args:
@@ -59,7 +59,7 @@ def construct_timex(re_match, pattern):
 
         return TIMEX(
             type="DATE",
-            value=f"{args['year']}-{args['month']}-{args['day']}",
+            value=f'{args["calendar_year"]}-{args["calendar_month"]}-{args["calendar_day"]}',
             value_from_surface=re_match.group(),
             value_format="absdate",
             parsed=args,
@@ -72,8 +72,8 @@ def construct_timex(re_match, pattern):
         return TIMEX(type="DATE", value=value, value_from_surface=re_match.group(), value_format="weekday", parsed=args)
     elif value_format == "season":
         season_id = get_season_id(args["season"])
-        if "year" in args and args["year"]:
-            year = args["year"].zfill(4)
+        if "calendar_year" in args and args["calendar_year"]:
+            year = args["calendar_year"].zfill(4)
         else:
             year = "XXXX"
         value = f"{year}-{season_id}"

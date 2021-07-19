@@ -1,24 +1,6 @@
-import re
-from dataclasses import dataclass
+from ja_timex.tagger.place import Place
 
-from ja_timex.tagger.base_pattern import BasePlace
-
-
-# 期間表現の正規表現に用いる部分パターン
-@dataclass
-class DurationPlace(BasePlace):
-    year: str = "(?P<year>[0-9]{,4})"
-    month: str = "(?P<month>[0-9]+)"  # 日付における月とは異なり、18ヶ月など任意の数字を取れる
-    day: str = "(?P<day>[0-9]+\.?[0-9]*)"
-    century: str = "(?P<century>[1-9]?[0-9]{,2})"
-    week: str = "(?P<week>[0-9]+\.?[0-9]*)"
-    hour: str = "(?P<hour>[0-9]+\.?[0-9]*)"
-    minutes: str = "(?P<minutes>[0-9]+\.?[0-9]*)"
-    second: str = "(?P<second>[0-9]+\.?[0-9]*)"
-    second_with_ms: str = "(?P<second_with_ms>[0-9]+[秒][0-9]+)"
-
-
-p = DurationPlace()
+p = Place()
 
 patterns = []
 
