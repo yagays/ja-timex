@@ -163,3 +163,54 @@ def test_place_second_with_ms(place):
     assert place.is_valid("second_with_ms", "1秒05")
     assert place.is_valid("second_with_ms", "100秒5")
     assert place.is_valid("second_with_ms", "1秒0")
+
+
+# reltime
+
+
+def test_place_around_prefix(place):
+    assert place.is_valid("around_prefix", "くらい")
+    assert place.is_valid("around_prefix", "ぐらい")
+    assert place.is_valid("around_prefix", "より")
+    assert place.is_valid("around_prefix", "よりも")
+
+    assert not place.is_valid("around_prefix", "くぐらい")
+    assert not place.is_valid("around_prefix", "ほど程度")
+
+
+# duration
+
+
+def test_place_count(place):
+    assert place.is_valid("count", "1")  # 1回
+    assert place.is_valid("count", "1.5")
+    assert place.is_valid("count", "0.05")
+
+
+def test_place_year_range(place):
+    assert place.is_valid("year_range", "1")  # 1年
+    assert place.is_valid("year_range", "1.5")
+    assert place.is_valid("year_range", "0.05")
+
+    # 暦とは異なり表現可能
+    assert place.is_valid("year_range", "10000")
+
+
+def test_place_month_range(place):
+    assert place.is_valid("month_range", "1")  # 1ヶ月
+    assert place.is_valid("month_range", "1.5")
+    assert place.is_valid("month_range", "0.05")
+
+    # 暦とは異なり表現可能
+    assert place.is_valid("month_range", "13")
+    assert place.is_valid("month_range", "100")
+
+
+def test_place_day_range(place):
+    assert place.is_valid("day_range", "1")  # 1日
+    assert place.is_valid("day_range", "1.5")
+    assert place.is_valid("day_range", "0.05")
+
+    # 暦とは異なり表現可能
+    assert place.is_valid("day_range", "32")
+    assert place.is_valid("day_range", "100")
