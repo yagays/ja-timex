@@ -1,10 +1,11 @@
 import re
 from dataclasses import dataclass
 
+from ja_timex.tagger.base_pattern import BasePlace
 
 # 時間表現の正規表現に用いる部分パターン
 @dataclass
-class Place:
+class Place(BasePlace):
     year: str = "(?P<year>[0-9]{,4})"
     month: str = "(?P<month>0?[1-9]|1[0-2])"  # 日付における月
     day: str = "(?P<day>0?[1-9]|[12][0-9]|3[01])"
@@ -21,13 +22,6 @@ class Place:
     def weekday_with_symbol(self):
         # (日曜日)などの記号付きの表記
         return "\s{,1}\(?\s{,1}" + self.weekday_with_suffix + "\s{,1}\)?"
-
-    def is_valid(self, target, text):
-        re_pattern = getattr(self, target)
-        if re.fullmatch(re_pattern, text):
-            return True
-        else:
-            return False
 
 
 p = Place()
