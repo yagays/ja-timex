@@ -42,9 +42,10 @@ class Place:
     year_range: str = "(?P<year_range>[0-9]+\.?[0-9]*)"  # 期間としての月
     month_range: str = "(?P<month_range>[0-9]+\.?[0-9]*)"
     day_range: str = "(?P<day_range>[0-9]+\.?[0-9]*)"
-    range: str = "(?P<range>[0-9]+\.?[0-9]*)"
+    range: str = "(?P<range>[0-9]+\.?[0-9]*)" # 頻度における数値としての表現
 
     def is_valid(self, target, text):
+        # for tests
         re_pattern = getattr(self, target)
         if re.fullmatch(re_pattern, text):
             return True
