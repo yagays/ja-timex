@@ -109,6 +109,16 @@ def test_count_has_ni_as_same_unit(t):
     assert t.parse("3秒1秒") is None
 
 
+def test_count_frequency(t):
+    assert t.parse("3日に1回").freq == "1X"
+    assert t.parse("3日に1度").freq == "1X"
+
+    # 度の表現は1,2にはよく使うが、3以上にはあまり使わない印象がある
+    # 違和感があるものの意味が通じなくはないので、回と同様に扱う
+    assert t.parse("3日に10回").freq == "10X"
+    assert t.parse("3日に10度").freq == "10X"
+
+
 def test_count_range(t):
     assert t.parse("3年に1回").value == "P3Y"
     assert t.parse("3年に1回").freq == "1X"
