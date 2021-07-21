@@ -13,9 +13,7 @@ patterns = []
 #   e.g. 「3日に5日」とは言えないが、「3日に5時間」「3日に5回」は言える
 
 # 年
-patterns.append(
-    {"pattern": f"{p.range}?年(に)?{p.count}[ヶ|か|ケ|箇]?月(に)?", "value_template": "P{}Y", "freq_template": "P{}M"}
-)
+patterns.append({"pattern": f"{p.range}?年(に)?{p.count}[ヶ|か|ケ|箇]?月", "value_template": "P{}Y", "freq_template": "P{}M"})
 patterns.append({"pattern": f"{p.range}?年(に)?{p.count}週", "value_template": "P{}Y", "freq_template": "P{}W"})
 patterns.append({"pattern": f"{p.range}?年(に)?{p.count}日", "value_template": "P{}Y", "freq_template": "P{}D"})
 patterns.append({"pattern": f"{p.range}?年(に)?{p.count}時間", "value_template": "P{}Y", "freq_template": "PT{}H"})
@@ -31,7 +29,9 @@ patterns.append(
 )
 patterns.append({"pattern": f"{p.range}?[ヶ|か|ケ|箇]?月(に)?{p.count}分", "value_template": "P{}M", "freq_template": "PT{}M"})
 patterns.append({"pattern": f"{p.range}?[ヶ|か|ケ|箇]?月(に)?{p.count}秒", "value_template": "P{}M", "freq_template": "PT{}S"})
-patterns.append({"pattern": f"{p.range}?[ヶ|か|ケ|箇]?月(に)?{p.count}[回|度]", "value_template": "P{}M", "freq_template": "{}X"})
+patterns.append(
+    {"pattern": f"{p.range}?[ヶ|か|ケ|箇]?月(に)?{p.count}[回|度]", "value_template": "P{}M", "freq_template": "{}X"}
+)
 
 # 週
 patterns.append({"pattern": f"{p.range}?週に{p.count}週", "value_template": "P{}W", "freq_template": "P{}W"})
