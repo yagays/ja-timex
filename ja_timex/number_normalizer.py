@@ -23,7 +23,10 @@ def kansuji2number(text: str) -> str:
     current_num_sub = 0
     for char in list(text):
         if char in char2int:
-            current_num_sub = char2int[char]
+            if char != "〇":
+                current_num_sub = char2int[char]
+            else:
+                current_num_sub = current_num_sub * 10
         elif char in char2power_allow_head:
             if current_num_sub == 0:
                 current_num_sub = 1

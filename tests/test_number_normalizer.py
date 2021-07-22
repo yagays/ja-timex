@@ -84,13 +84,14 @@ def test_kansuji2number():
     assert kansuji2number("二百一") == "201"
 
     # 千
+    assert kansuji2number("九千二百三十四") == "9234"
     assert kansuji2number("千二百三十四") == "1234"
     assert kansuji2number("千二百三十") == "1230"
     assert kansuji2number("千二百十") == "1210"
     assert kansuji2number("千二百四") == "1204"
     assert kansuji2number("千三十四") == "1034"
     assert kansuji2number("千四") == "1004"
-    assert kansuji2number("九千二百三十四") == "9234"
+    assert kansuji2number("千百") == "1100"
 
     # 万
     assert kansuji2number("一万二千三百四十五") == "12345"
@@ -100,23 +101,56 @@ def test_kansuji2number():
     assert kansuji2number("一万五") == "10005"
 
     assert kansuji2number("十万二千三百四十五") == "102345"
+    assert kansuji2number("一千一百万") == "11000000"
 
+
+def test_kansuji2number_positional_notation():
     # 位取り記数法
     assert kansuji2number("一五") == "15"
     assert kansuji2number("一〇") == "10"
     assert kansuji2number("三〇") == "30"
     assert kansuji2number("一八二〇") == "1820"
 
+    # ゼロのみ
     assert kansuji2number("〇") == "0"
     assert kansuji2number("〇〇") == "00"
 
+    # コンマ、小数点を含む
+    # 青空文庫「五ヵ年計画とソヴェト同盟の文化的飛躍」宮本百合子
+    assert kansuji2number("一、〇〇〇・〇〇〇") == "1、000・000"
+
+    # 日付表現
+    # 青空文庫 「獄中への手紙 07 一九四〇年（昭和十五年）」宮本百合子
+    assert kansuji2number("一九四〇・一・四") == "1940・1・4"
+
     # 時間表現
-    # 青空文庫 単独行 加藤文太郎 より
+    # 青空文庫「単独行」加藤文太郎
     assert kansuji2number("六・〇〇") == "6・00"
     assert kansuji2number("一〇・三〇") == "10・30"
 
     # 以下の表記は存在するが、ここでは数字のみが入ってくる前提のため、考慮しない
     # assert kansuji2number("一〇万年") == "10万年"
+
+
+1940
+
+
+def test_test_kansuji2number_mixed():
+    # その桁が0であることを示すような、記法が混ざるパターン
+
+    # 青空文庫「吉田松陰」徳富蘇峰
+    assert kansuji2number("一千七百〇八") == "1708"
+    # 青空文庫「みみずのたはこと」徳冨健次郎 徳冨蘆花
+    assert kansuji2number("百〇七") == "107"
+    # 青空文庫「特殊部落の人口増殖」喜田貞吉
+    assert kansuji2number("二千〇〇一") == "2001"
+    # 青空文庫「利根川水源地の山々」木暮理太郎
+    assert kansuji2number("千七百六〇") == "1760"
+    # 〇が2つ以上の場合
+    assert kansuji2number("千六〇〇") == "1600"
+
+    # 「五ヵ年計画とソヴェト同盟の文化的飛躍」宮本百合子
+    # assert kansuji2number("三二〇千〇〇〇") == "320000"
 
 
 def test_normalize_phrase_contains_number(nn):
