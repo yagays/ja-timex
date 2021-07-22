@@ -6,6 +6,7 @@ authors = ["Yuki Okuda <y.okuda@dr-ubie.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
+mojimoji = "^0.0.11"
 
 [tool.poetry.dev-dependencies]
 ipython = "^7.25.0"
