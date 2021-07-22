@@ -56,54 +56,67 @@ def test_remove_comma_inside_digits_only_str(nn):
 
 
 def test_kansuji2number():
-    assert kansuji2number("零") == 0
-    assert kansuji2number("一") == 1
-    assert kansuji2number("二") == 2
-    assert kansuji2number("三") == 3
+    assert kansuji2number("零") == "0"
+    assert kansuji2number("一") == "1"
+    assert kansuji2number("二") == "2"
+    assert kansuji2number("三") == "3"
 
     # 十/百/千は単体で使用したり先頭に付けることができる
-    assert kansuji2number("十") == 10
-    assert kansuji2number("百") == 100
-    assert kansuji2number("千") == 1000
+    assert kansuji2number("十") == "10"
+    assert kansuji2number("百") == "100"
+    assert kansuji2number("千") == "1000"
     # 万以上は必ず数字を伴う
-    assert kansuji2number("一万") == 10000
-    assert kansuji2number("一億") == 100000000
-    assert kansuji2number("一兆") == 1000000000000
-    assert kansuji2number("一京") == 10000000000000000
-    assert kansuji2number("一垓") == 100000000000000000000
-
+    assert kansuji2number("一万") == "10000"
+    assert kansuji2number("一億") == "100000000"
+    assert kansuji2number("一兆") == "1000000000000"
+    assert kansuji2number("一京") == "10000000000000000"
+    assert kansuji2number("一垓") == "100000000000000000000"
 
     # 十
-    assert kansuji2number("十一") == 11
-    assert kansuji2number("二十") == 20
-    assert kansuji2number("二十一") == 21
+    assert kansuji2number("十一") == "11"
+    assert kansuji2number("二十") == "20"
+    assert kansuji2number("二十一") == "21"
 
     # 百
-    assert kansuji2number("百二十一") == 121
-    assert kansuji2number("百二十") == 120
-    assert kansuji2number("百一") == 101
-    assert kansuji2number("二百一") == 201
+    assert kansuji2number("百二十一") == "121"
+    assert kansuji2number("百二十") == "120"
+    assert kansuji2number("百一") == "101"
+    assert kansuji2number("二百一") == "201"
 
     # 千
-    assert kansuji2number("千二百三十四") == 1234
-    assert kansuji2number("千二百三十") == 1230
-    assert kansuji2number("千二百十") == 1210
-    assert kansuji2number("千二百四") == 1204
-    assert kansuji2number("千三十四") == 1034
-    assert kansuji2number("千四") == 1004
-    assert kansuji2number("九千二百三十四") == 9234
+    assert kansuji2number("千二百三十四") == "1234"
+    assert kansuji2number("千二百三十") == "1230"
+    assert kansuji2number("千二百十") == "1210"
+    assert kansuji2number("千二百四") == "1204"
+    assert kansuji2number("千三十四") == "1034"
+    assert kansuji2number("千四") == "1004"
+    assert kansuji2number("九千二百三十四") == "9234"
 
     # 万
-    assert kansuji2number("一万二千三百四十五") == 12345
-    assert kansuji2number("一万二千三百四十") == 12340
-    assert kansuji2number("一万三百四十五") == 10345
-    assert kansuji2number("一万四十五") == 10045
-    assert kansuji2number("一万五") == 10005
+    assert kansuji2number("一万二千三百四十五") == "12345"
+    assert kansuji2number("一万二千三百四十") == "12340"
+    assert kansuji2number("一万三百四十五") == "10345"
+    assert kansuji2number("一万四十五") == "10045"
+    assert kansuji2number("一万五") == "10005"
 
-    
+    assert kansuji2number("十万二千三百四十五") == "102345"
 
+    # 位取り記数法
+    assert kansuji2number("一五") == "15"
+    assert kansuji2number("一〇") == "10"
+    assert kansuji2number("三〇") == "30"
+    assert kansuji2number("一八二〇") == "1820"
 
+    assert kansuji2number("〇") == "0"
+    assert kansuji2number("〇〇") == "00"
 
+    # 時間表現
+    # 青空文庫 単独行 加藤文太郎 より
+    assert kansuji2number("六・〇〇") == "6・00"
+    assert kansuji2number("一〇・三〇") == "10・30"
+
+    # 以下の表記は存在するが、ここでは数字のみが入ってくる前提のため、考慮しない
+    # assert kansuji2number("一〇万年") == "10万年"
 
 
 def test_normalize_phrase_contains_number(nn):
@@ -117,5 +130,3 @@ def test_normalize_phrase_contains_number(nn):
 
     # 獄中への手紙 06 一九三九年（昭和十四年） 宮本百合子
     assert nn.normalize("歩くのがまだ十分ゆかず。")
-
-

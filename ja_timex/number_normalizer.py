@@ -2,16 +2,23 @@ import re
 
 import mojimoji
 
-
-zero = {"零": 0, "〇": 0}
-char2int = {"一": 1, "二": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8, "九": 9}
+zero = {"零": 0}
+char2int = {"〇": 0, "一": 1, "二": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8, "九": 9}
 char2power_allow_head = {"十": 1, "百": 2, "千": 3}
 char2power = {"万": 4, "億": 8, "兆": 12, "京": 16, "垓": 20}
+char_int_table = str.maketrans({k: str(v) for k, v in char2int.items()})
 
 
-def kansuji2number(text: str) -> int:
+def kansuji2number(text: str) -> str:
+
+    if text == "零":
+        return "0"
+
+    # 位取り記数法 positional notaion
+    if re.fullmatch("([〇一二三四五六七八九,.，．、・])+", text):
+        return text.translate(char_int_table)
+
     cumulative_value = 0
-
     current_num = 0
     current_num_sub = 0
     for char in list(text):
@@ -28,7 +35,8 @@ def kansuji2number(text: str) -> int:
             current_num = 0
             current_num_sub = 0
 
-    return cumulative_value + current_num + current_num_sub
+    result_int = cumulative_value + current_num + current_num_sub
+    return str(result_int)
 
 
 class NumberNormalizer:
