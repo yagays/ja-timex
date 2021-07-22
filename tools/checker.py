@@ -1,12 +1,10 @@
-import streamlit as st
 import pandas as pd
-
+import streamlit as st
 
 from ja_timex.tagger.abstime_tagger import AbstimeTagger
-from ja_timex.tagger.reltime_tagger import ReltimeTagger
 from ja_timex.tagger.duration_tagger import DurationTagger
+from ja_timex.tagger.reltime_tagger import ReltimeTagger
 from ja_timex.tagger.set_tagger import SetTagger
-
 
 selected_tagger_name = st.sidebar.selectbox("Select Tagger", ("abstime", "reltime", "duration", "set"))
 text = st.text_area("Text to analyze", "")
