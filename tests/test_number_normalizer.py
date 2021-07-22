@@ -1,6 +1,6 @@
 import pytest
 
-from ja_timex.number_normalizer import NumberNormalizer
+from ja_timex.number_normalizer import NumberNormalizer, kansuji2number
 
 
 @pytest.fixture(scope="module")
@@ -55,6 +55,57 @@ def test_remove_comma_inside_digits_only_str(nn):
     assert nn._remove_comma_inside_digits("千時間") == "千時間"
 
 
+def test_kansuji2number():
+    assert kansuji2number("零") == 0
+    assert kansuji2number("一") == 1
+    assert kansuji2number("二") == 2
+    assert kansuji2number("三") == 3
+
+    # 十/百/千は単体で使用したり先頭に付けることができる
+    assert kansuji2number("十") == 10
+    assert kansuji2number("百") == 100
+    assert kansuji2number("千") == 1000
+    # 万以上は必ず数字を伴う
+    assert kansuji2number("一万") == 10000
+    assert kansuji2number("一億") == 100000000
+    assert kansuji2number("一兆") == 1000000000000
+    assert kansuji2number("一京") == 10000000000000000
+    assert kansuji2number("一垓") == 100000000000000000000
+
+
+    # 十
+    assert kansuji2number("十一") == 11
+    assert kansuji2number("二十") == 20
+    assert kansuji2number("二十一") == 21
+
+    # 百
+    assert kansuji2number("百二十一") == 121
+    assert kansuji2number("百二十") == 120
+    assert kansuji2number("百一") == 101
+    assert kansuji2number("二百一") == 201
+
+    # 千
+    assert kansuji2number("千二百三十四") == 1234
+    assert kansuji2number("千二百三十") == 1230
+    assert kansuji2number("千二百十") == 1210
+    assert kansuji2number("千二百四") == 1204
+    assert kansuji2number("千三十四") == 1034
+    assert kansuji2number("千四") == 1004
+    assert kansuji2number("九千二百三十四") == 9234
+
+    # 万
+    assert kansuji2number("一万二千三百四十五") == 12345
+    assert kansuji2number("一万二千三百四十") == 12340
+    assert kansuji2number("一万三百四十五") == 10345
+    assert kansuji2number("一万四十五") == 10045
+    assert kansuji2number("一万五") == 10005
+
+    
+
+
+
+
+
 def test_normalize_phrase_contains_number(nn):
     # 下記は青空文庫より用例を収集
 
@@ -66,3 +117,5 @@ def test_normalize_phrase_contains_number(nn):
 
     # 獄中への手紙 06 一九三九年（昭和十四年） 宮本百合子
     assert nn.normalize("歩くのがまだ十分ゆかず。")
+
+

@@ -3,6 +3,34 @@ import re
 import mojimoji
 
 
+zero = {"零": 0, "〇": 0}
+char2int = {"一": 1, "二": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8, "九": 9}
+char2power_allow_head = {"十": 1, "百": 2, "千": 3}
+char2power = {"万": 4, "億": 8, "兆": 12, "京": 16, "垓": 20}
+
+
+def kansuji2number(text: str) -> int:
+    cumulative_value = 0
+
+    current_num = 0
+    current_num_sub = 0
+    for char in list(text):
+        if char in char2int:
+            current_num_sub = char2int[char]
+        elif char in char2power_allow_head:
+            if current_num_sub == 0:
+                current_num_sub = 1
+
+            current_num += current_num_sub * (10 ** char2power_allow_head[char])
+            current_num_sub = 0
+        elif char in char2power:
+            cumulative_value += (current_num + current_num_sub) * 10 ** char2power[char]
+            current_num = 0
+            current_num_sub = 0
+
+    return cumulative_value + current_num + current_num_sub
+
+
 class NumberNormalizer:
     def __init__(self) -> None:
         pass
