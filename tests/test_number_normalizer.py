@@ -132,9 +132,6 @@ def test_kansuji2number_positional_notation():
     # assert kansuji2number("一〇万年") == "10万年"
 
 
-1940
-
-
 def test_test_kansuji2number_mixed():
     # その桁が0であることを示すような、記法が混ざるパターン
 
