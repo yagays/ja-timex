@@ -87,7 +87,7 @@ def construct_duration_timex(re_match, pattern):
 
 class DurationTagger:
     def __init__(self) -> None:
-        pass
+        self.patterns = patterns
 
     def parse(self, text: str) -> TIMEX:
         result = None
@@ -95,11 +95,14 @@ class DurationTagger:
         # preprocess text
         text = text.strip()
 
-        for pattern in patterns:
+        for pattern in self.patterns:
             re_match = re.fullmatch(pattern["pattern"], text)
             if re_match:
                 result = construct_duration_timex(re_match, pattern)
         return result
+
+    def parse_with_pattern(self, re_match, pattern):
+        return construct_duration_timex(re_match, pattern)
 
 
 if __name__ == "__main__":

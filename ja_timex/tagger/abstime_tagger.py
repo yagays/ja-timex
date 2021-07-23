@@ -108,7 +108,7 @@ def construct_timex(re_match, pattern):
 
 class AbstimeTagger:
     def __init__(self) -> None:
-        pass
+        self.patterns = patterns
 
     def parse(self, text: str) -> TIMEX:
         result = None
@@ -116,11 +116,14 @@ class AbstimeTagger:
         # preprocess text
         text = text.strip()
 
-        for pattern in patterns:
+        for pattern in self.patterns:
             re_match = re.fullmatch(pattern["pattern"], text)
             if re_match:
                 result = construct_timex(re_match, pattern)
         return result
+
+    def parse_with_pattern(self, re_match, pattern):
+        return construct_timex(re_match, pattern)
 
 
 if __name__ == "__main__":

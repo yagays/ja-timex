@@ -60,7 +60,7 @@ def construct_set_timex(re_match, pattern):
 
 class SetTagger:
     def __init__(self) -> None:
-        pass
+        self.patterns = patterns
 
     def parse(self, text: str) -> TIMEX:
         result = None
@@ -68,11 +68,14 @@ class SetTagger:
         # preprocess text
         text = text.strip()
 
-        for pattern in patterns:
+        for pattern in self.patterns:
             re_match = re.fullmatch(pattern["pattern"], text)
             if re_match:
                 result = construct_set_timex(re_match, pattern)
         return result
+
+    def parse_with_pattern(self, re_match, pattern):
+        return construct_set_timex(re_match, pattern)
 
 
 if __name__ == "__main__":
