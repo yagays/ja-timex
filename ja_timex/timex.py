@@ -75,23 +75,16 @@ class TimexParser:
 
     def _parse(self, type2extracts) -> List[TIMEX]:
         results = []
-        for type_name, extract_pattern in type2extracts.items():
-            if type_name == "abstime":
-                results.append(
-                    self.abstime_tagger.parse_with_pattern(extract_pattern["re_match"], extract_pattern["pattern"])
-                )
-            elif type_name == "duration":
-                results.append(
-                    self.duration_tagger.parse_with_pattern(extract_pattern["re_match"], extract_pattern["pattern"])
-                )
-            elif type_name == "reltime":
-                results.append(
-                    self.reltime_tagger.parse_with_pattern(extract_pattern["re_match"], extract_pattern["pattern"])
-                )
-            elif type_name == "set":
-                results.append(
-                    self.set_tagger.parse_with_pattern(extract_pattern["re_match"], extract_pattern["pattern"])
-                )
+        for type_name, extracts in type2extracts.items():
+            for extract in extracts:
+                if type_name == "abstime":
+                    results.append(self.abstime_tagger.parse_with_pattern(extract["re_match"], extract["pattern"]))
+                elif type_name == "duration":
+                    results.append(self.duration_tagger.parse_with_pattern(extract["re_match"], extract["pattern"]))
+                elif type_name == "reltime":
+                    results.append(self.reltime_tagger.parse_with_pattern(extract["re_match"], extract["pattern"]))
+                elif type_name == "set":
+                    results.append(self.set_tagger.parse_with_pattern(extract["re_match"], extract["pattern"]))
 
         return results
 
