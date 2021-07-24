@@ -114,6 +114,13 @@ def test_season(t):
 def test_fiscal_year(t):
     assert t.parse("2021年度").value == "FY2021"
 
+    # 西暦で2,3桁年度は表現しない
+    assert t.parse("132年度") is None
+    assert t.parse("32年度") is None
+
+# def test_fiscal_year_wareki(t):
+#     assert t.parse("令和3年度").value == "FYR03"
+
 
 def test_century(t):
     assert t.parse("11世紀").value == "10XX"

@@ -8,11 +8,11 @@ patterns = [
     # {"pattern": f"(?P<weekday>水曜日)", "corresponding_time_position": [], "value": "3",},
     # {"pattern": "(?P<season>冬)", "corresponding_time_position": [], "value": "WI",},
     # {"pattern": "(?P<quarter>Q1)", "corresponding_time_position": [], "value": "Q1",},
-    {
-        "pattern": "(?P<fiscal_year>[0-9]{,4})年度",
-        "corresponding_time_position": [],
-        "value": "",
-    },
+    # {
+    #     "pattern": "(?P<fiscal_year>[0-9]{,4})年度",
+    #     "corresponding_time_position": [],
+    #     "value": "",
+    # },
     {
         "pattern": "(?P<century>[0-9]{,4})世紀",
         "corresponding_time_position": [],
@@ -78,3 +78,6 @@ patterns.append({"pattern": f"({p.calendar_year}[年|/]?)?{p.season}", "value": 
 patterns.append({"pattern": f"(第{p.quarter}四半期)", "value": ""})
 patterns.append({"pattern": f"(Q{p.quarter})", "value": ""})
 patterns.append({"pattern": f"({p.quarter}Q)", "value": ""})
+
+# 年度
+patterns.append({"pattern": p.fiscal_year, "value": ""})

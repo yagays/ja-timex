@@ -12,6 +12,7 @@ class Place:
     weekday: str = "(?P<weekday>[月火水木金土日])"
     season: str = "(?P<season>(春|夏|秋|冬))"
     quarter: str = "(?P<quarter>[1-4])"
+    fiscal_year: str = "(?P<fiscal_year>[0-9]{4})年度"
 
     @property
     def weekday_with_suffix(self):
