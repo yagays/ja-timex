@@ -149,6 +149,7 @@ def test_test_kansuji2number_mixed():
     # 「五ヵ年計画とソヴェト同盟の文化的飛躍」宮本百合子
     # assert kansuji2number("三二〇千〇〇〇") == "320000"
 
+
 # def test_kansuji2number_duration():
 #     # 青空文庫「伊沢蘭軒」 森鴎外
 #     assert kansuji2number("二十六七") == "267"
