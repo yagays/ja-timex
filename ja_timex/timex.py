@@ -74,8 +74,12 @@ class TimexParser:
         timex_tags = self._parse(type2extracts)
 
         # 修飾語によるタグの情報付与
-        modified_timex_tags = self._modify_additional_information(timex_tags, processed_text)
-        return modified_timex_tags
+        timex_tags = self._modify_additional_information(timex_tags, processed_text)
+
+        # 複数のタグの関係性推定
+        timex_tags = self._relation_detection(timex_tags, processed_text)
+
+        return timex_tags
 
     def _normalize_number(self, raw_text: str) -> str:
         return self.number_normalizer.normalize(raw_text)
@@ -135,6 +139,9 @@ class TimexParser:
 
             modified_tags.append(timex)
 
+        return timex_tags
+
+    def _relation_detection(self, timex_tags, processed_text):
         return timex_tags
 
 
