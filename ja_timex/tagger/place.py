@@ -7,8 +7,8 @@ from dataclasses import dataclass
 class Place:
     # abstime: 時間表現
     calendar_year: str = "(?P<calendar_year>[0-9]{,4})"  # 暦の年
-    calendar_month: str = "(?P<calendar_month>0?[1-9]|1[0-2])"  # 暦の月
-    calendar_day: str = "(?P<calendar_day>0?[1-9]|[12][0-9]|3[01])"  # 暦の日
+    calendar_month: str = "(?P<calendar_month>1[0-2]|0?[1-9])"  # 暦の月
+    calendar_day: str = "(?P<calendar_day>[12][0-9]|3[01]|0?[1-9])"  # 暦の日
     weekday: str = "(?P<weekday>[月火水木金土日])"
     season: str = "(?P<season>(春|夏|秋|冬))"
     quarter: str = "(?P<quarter>[1-4])"

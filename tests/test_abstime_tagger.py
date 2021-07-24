@@ -30,6 +30,24 @@ def test_normal_date(t):
     assert t.parse("2021年/7").value == "2021-07-XX"
 
 
+def test_normal_date_multiple_detected(t):
+    # 年/月か月/日かが判定できなく、複数取得されるパターン
+
+    # 基本的には月/日を優先する
+    assert t.parse("7/8").value == "XXXX-07-08"
+    assert t.parse("12/10").value == "XXXX-12-10"  # 2012年10月とも取れる
+    assert t.parse("09/12").value == "XXXX-09-12"  # 2009年12月とも取れる
+
+    # 月が取る値の範囲外の場合は年になる
+    assert t.parse("2021/07").value == "2021-07-XX"
+    assert t.parse("13/8").value == "0013-08-XX"  # :TODO どこかで2013に変換したい
+
+
+def test_normal_date_invalid(t):
+    # 2013年13月とも13月13日とも言えない場合
+    assert t.parse("13/13") == None
+
+
 def test_normal_date_with_weekday(t):
     # 日付はoptionに入る???
     assert t.parse("2021年7月18日日曜日").value == "2021-07-18"

@@ -34,16 +34,16 @@ patterns = [
 # 日付
 date_templates = [
     f"{p.calendar_year}年{p.calendar_month}月{p.calendar_day}日",
+    f"{p.calendar_month}月{p.calendar_day}日",  # 年は表現できる範囲が広いため、年/月より月/日を優先する
     f"{p.calendar_year}年{p.calendar_month}月",
-    f"{p.calendar_month}月{p.calendar_day}日",
     f"{p.calendar_year}年",
     f"{p.calendar_month}月",
     f"{p.calendar_day}日",
 ]
 for delimiter in ["/", "\-", "\.", "・", ","]:
     date_templates.append(f"{p.calendar_year}年?{delimiter}{p.calendar_month}月?{delimiter}{p.calendar_day}日?")
-    date_templates.append(f"{p.calendar_year}年?{delimiter}{p.calendar_month}月?")
     date_templates.append(f"{p.calendar_month}月?{delimiter}{p.calendar_day}日?")
+    date_templates.append(f"{p.calendar_year}年?{delimiter}{p.calendar_month}月?")
 
 # 日付がある表記には曜日が記載される場合がある
 date_templates += [
