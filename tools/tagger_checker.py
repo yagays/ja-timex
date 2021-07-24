@@ -42,6 +42,7 @@ if text:
                 timex.parsed,
                 timex.value_format,
                 timex.additional_info,
+                timex.span,
             ],
             index=[
                 "@type",
@@ -57,6 +58,7 @@ if text:
                 "@parsed",
                 "@value_format",
                 "@additional_info",
+                "@span",
             ],
             columns=["value"],
         )

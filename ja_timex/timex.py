@@ -129,7 +129,6 @@ class TimexParser:
         # update mod
         modified_tags = []
         for timex in timex_tags:
-            print(timex.type)
             parsed_mod = self.modifier.parse(processed_text, timex.span, timex.type)
             if parsed_mod:
                 timex.mod = parsed_mod
