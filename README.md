@@ -9,5 +9,5 @@
 本パッケージは、以下の論文で提案されている`TIMEX3`の仕様を参考に実装しています。
 
 - [成澤克麻 (2014)「自然言語処理における数量表現の取り扱い」東北大学大学院 修士論文](http://www.cl.ecei.tohoku.ac.jp/publications/2015/mthesis2013_narisawa_submitted.pdf)
-- [保田祥, 小西光, 浅原正幸, 今田水穂, & 前川喜久雄. (2013). 『現代日本語書き言葉均衡コーパス』 に対する時間情報表現・事象表現間の時間的順序関係アノテーション. 自然言語処理, 20(5), 657-681.](https://www.jstage.jst.go.jp/article/jnlp/20/5/20_657/_article/-char/ja/)
+- [小西光, 浅原正幸, & 前川喜久雄. (2013). 『現代日本語書き言葉均衡コーパス』 に対する時間情報アノテーション. 自然言語処理, 20(2), 201-221.](https://www.jstage.jst.go.jp/article/jnlp/20/2/20_201/_article/-char/ja/)
 
