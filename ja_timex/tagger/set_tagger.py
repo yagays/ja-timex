@@ -32,6 +32,7 @@ def detect_format(args):
 
 def construct_set_timex(re_match, pattern):
     args = re_match.groupdict()
+    span = re_match.span()
     value_format = detect_format(args)
 
     if value_format == "count_range":
@@ -44,6 +45,7 @@ def construct_set_timex(re_match, pattern):
             freq=freq,
             value_format="count",
             parsed=args,
+            span=span,
         )
     if value_format == "count":
         value = pattern["value_template"].format("1")
@@ -55,6 +57,7 @@ def construct_set_timex(re_match, pattern):
             freq=freq,
             value_format="count",
             parsed=args,
+            span=span,
         )
 
 

@@ -38,6 +38,7 @@ def detect_format(args):
 
 def construct_timex(re_match, pattern):
     args = re_match.groupdict()
+    span = re_match.span()
     value_format = detect_format(args)
 
     if value_format == "absdate":
@@ -65,12 +66,20 @@ def construct_timex(re_match, pattern):
             value_format="absdate",
             parsed=args,
             additional_info=additional_info,
+            span=span,
         )
     elif value_format == "weekday":
         weekday_id = get_weekday_id(args["weekday"])
         calendar_week = "XX"
         value = f"XXXX-W{calendar_week}-{weekday_id}"
-        return TIMEX(type="DATE", value=value, value_from_surface=re_match.group(), value_format="weekday", parsed=args)
+        return TIMEX(
+            type="DATE",
+            value=value,
+            value_from_surface=re_match.group(),
+            value_format="weekday",
+            parsed=args,
+            span=span,
+        )
     elif value_format == "season":
         season_id = get_season_id(args["season"])
         if "calendar_year" in args and args["calendar_year"]:
@@ -78,32 +87,70 @@ def construct_timex(re_match, pattern):
         else:
             year = "XXXX"
         value = f"{year}-{season_id}"
-        return TIMEX(type="DATE", value=value, value_from_surface=re_match.group(), value_format="season", parsed=args)
+        return TIMEX(
+            type="DATE",
+            value=value,
+            value_from_surface=re_match.group(),
+            value_format="season",
+            parsed=args,
+            span=span,
+        )
     elif value_format == "quarter":
         quarter_id = args["quarter"]
         value = f"XXXX-Q{quarter_id}"
-        return TIMEX(type="DATE", value=value, value_from_surface=re_match.group(), value_format="quarter", parsed=args)
+        return TIMEX(
+            type="DATE",
+            value=value,
+            value_from_surface=re_match.group(),
+            value_format="quarter",
+            parsed=args,
+            span=span,
+        )
     elif value_format == "fiscal_year":
         fiscal_year = args["fiscal_year"]
         value = f"FY{fiscal_year}"
         return TIMEX(
-            type="DATE", value=value, value_from_surface=re_match.group(), value_format="fiscal_year", parsed=args
+            type="DATE",
+            value=value,
+            value_from_surface=re_match.group(),
+            value_format="fiscal_year",
+            parsed=args,
+            span=span,
         )
     elif value_format == "century":
         century_num = int(args["century"])
         century_range = f"{century_num - 1}" + "XX"
         value = century_range.zfill(4)
-        return TIMEX(type="DATE", value=value, value_from_surface=re_match.group(), value_format="century", parsed=args)
+        return TIMEX(
+            type="DATE",
+            value=value,
+            value_from_surface=re_match.group(),
+            value_format="century",
+            parsed=args,
+            span=span,
+        )
     elif value_format == "bc_year":
         bc_year = args["bc_year"]
         value = f"BC{bc_year.zfill(4)}"
-        return TIMEX(type="DATE", value=value, value_from_surface=re_match.group(), value_format="bc_year", parsed=args)
+        return TIMEX(
+            type="DATE",
+            value=value,
+            value_from_surface=re_match.group(),
+            value_format="bc_year",
+            parsed=args,
+            span=span,
+        )
     elif value_format == "bc_century":
         century_num = int(args["bc_century"])
         century_range = f"{century_num - 1}" + "XX"
         value = "BC" + century_range.zfill(4)
         return TIMEX(
-            type="DATE", value=value, value_from_surface=re_match.group(), value_format="bc_century", parsed=args
+            type="DATE",
+            value=value,
+            value_from_surface=re_match.group(),
+            value_format="bc_century",
+            parsed=args,
+            span=span,
         )
 
 

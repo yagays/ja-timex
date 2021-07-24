@@ -29,6 +29,7 @@ def detect_format(args):
 
 def construct_reltime_timex(re_match, pattern):
     args = re_match.groupdict()
+    span = re_match.span()
     value_format = detect_format(args)
 
     if value_format == "year":
@@ -40,6 +41,7 @@ def construct_reltime_timex(re_match, pattern):
             mod=pattern["mod"],
             value_format="year",
             parsed=args,
+            span=span,
         )
     if value_format == "month":
         value = args["month"]
@@ -50,6 +52,7 @@ def construct_reltime_timex(re_match, pattern):
             mod=pattern["mod"],
             value_format="month",
             parsed=args,
+            span=span,
         )
     if value_format == "day":
         value = args["day"]
@@ -60,6 +63,7 @@ def construct_reltime_timex(re_match, pattern):
             mod=pattern["mod"],
             value_format="day",
             parsed=args,
+            span=span,
         )
     if value_format == "hour":
         value = args["hour"]
@@ -70,6 +74,7 @@ def construct_reltime_timex(re_match, pattern):
             mod=pattern["mod"],
             value_format="hour",
             parsed=args,
+            span=span,
         )
     if value_format == "minutes":
         value = args["minutes"]
@@ -80,6 +85,7 @@ def construct_reltime_timex(re_match, pattern):
             mod=pattern["mod"],
             value_format="minutes",
             parsed=args,
+            span=span,
         )
     if value_format == "second":
         value = args["second"]
@@ -90,6 +96,7 @@ def construct_reltime_timex(re_match, pattern):
             mod=pattern["mod"],
             value_format="second",
             parsed=args,
+            span=span,
         )
     if value_format == "second_with_ms":
         value = args["second_with_ms"].replace("秒", ".")
@@ -100,6 +107,7 @@ def construct_reltime_timex(re_match, pattern):
             mod=pattern["mod"],
             value_format="second_with_ms",
             parsed=args,
+            span=span,
         )
     if value_format == "week":
         value = args["week"]
@@ -110,6 +118,7 @@ def construct_reltime_timex(re_match, pattern):
             mod=pattern["mod"],
             value_format="week",
             parsed=args,
+            span=span,
         )
 
 

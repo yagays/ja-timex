@@ -2,6 +2,7 @@ import re
 from collections import defaultdict
 from typing import Dict, List, Optional
 
+from ja_timex.modifier import Modifier
 from ja_timex.number_normalizer import NumberNormalizer
 from ja_timex.tag import TIMEX
 from ja_timex.tagger.abstime_tagger import AbstimeTagger
@@ -45,12 +46,14 @@ class TimexParser:
         duration_tagger=DurationTagger(),
         reltime_tagger=ReltimeTagger(),
         set_tagger=SetTagger(),
+        modifier=Modifier(),
     ) -> None:
         self.number_normalizer = number_normalizer
         self.abstime_tagger = abstime_tagger
         self.duration_tagger = duration_tagger
         self.reltime_tagger = reltime_tagger
         self.set_tagger = set_tagger
+        self.modifier = modifier
 
         self.all_patterns = {}
         self.all_patterns["abstime"] = self.abstime_tagger.patterns
@@ -71,8 +74,8 @@ class TimexParser:
         timex_tags = self._parse(type2extracts)
 
         # 修飾語によるタグの情報付与
-        # modified_tags = self._modify_additional_information(normalized_tags)
-        return timex_tags
+        modified_timex_tags = self._modify_additional_information(timex_tags, processed_text)
+        return modified_timex_tags
 
     def _normalize_number(self, raw_text: str) -> str:
         return self.number_normalizer.normalize(raw_text)
@@ -120,8 +123,20 @@ class TimexParser:
 
         return results
 
-    # def _modify_additional_information(self, normalized_tags: List[TIMEX]) -> List[TIMEX]:
-    #     return [TIMEX(type="DATE", value="2020年7月7日", value_from_surface="2020年7月7日")]
+    def _modify_additional_information(self, timex_tags: List[TIMEX], processed_text: str) -> List[TIMEX]:
+        # add tid
+
+        # update mod
+        modified_tags = []
+        for timex in timex_tags:
+            print(timex.type)
+            parsed_mod = self.modifier.parse(processed_text, timex.span, timex.type)
+            if parsed_mod:
+                timex.mod = parsed_mod
+
+            modified_tags.append(timex)
+
+        return timex_tags
 
 
 if __name__ == "__main__":

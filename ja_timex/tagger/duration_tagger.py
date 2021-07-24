@@ -29,27 +29,48 @@ def detect_format(args):
 
 def construct_duration_timex(re_match, pattern):
     args = re_match.groupdict()
+    span = re_match.span()
     value_format = detect_format(args)
 
     if value_format == "year":
         value = args["year"]
         return TIMEX(
-            type="DURATION", value=f"P{value}Y", value_from_surface=re_match.group(), value_format="year", parsed=args
+            type="DURATION",
+            value=f"P{value}Y",
+            value_from_surface=re_match.group(),
+            value_format="year",
+            parsed=args,
+            span=span,
         )
     if value_format == "month":
         value = args["month"]
         return TIMEX(
-            type="DURATION", value=f"P{value}M", value_from_surface=re_match.group(), value_format="month", parsed=args
+            type="DURATION",
+            value=f"P{value}M",
+            value_from_surface=re_match.group(),
+            value_format="month",
+            parsed=args,
+            span=span,
         )
     if value_format == "day":
         value = args["day"]
         return TIMEX(
-            type="DURATION", value=f"P{value}D", value_from_surface=re_match.group(), value_format="day", parsed=args
+            type="DURATION",
+            value=f"P{value}D",
+            value_from_surface=re_match.group(),
+            value_format="day",
+            parsed=args,
+            span=span,
         )
     if value_format == "hour":
         value = args["hour"]
         return TIMEX(
-            type="DURATION", value=f"PT{value}H", value_from_surface=re_match.group(), value_format="hour", parsed=args
+            type="DURATION",
+            value=f"PT{value}H",
+            value_from_surface=re_match.group(),
+            value_format="hour",
+            parsed=args,
+            span=span,
         )
     if value_format == "minutes":
         value = args["minutes"]
@@ -59,6 +80,7 @@ def construct_duration_timex(re_match, pattern):
             value_from_surface=re_match.group(),
             value_format="minutes",
             parsed=args,
+            span=span,
         )
     if value_format == "second":
         value = args["second"]
@@ -68,6 +90,7 @@ def construct_duration_timex(re_match, pattern):
             value_from_surface=re_match.group(),
             value_format="second",
             parsed=args,
+            span=span,
         )
     if value_format == "second_with_ms":
         value = args["second_with_ms"].replace("秒", ".")
@@ -77,11 +100,17 @@ def construct_duration_timex(re_match, pattern):
             value_from_surface=re_match.group(),
             value_format="second_with_ms",
             parsed=args,
+            span=span,
         )
     if value_format == "week":
         value = args["week"]
         return TIMEX(
-            week="DURATION", value=f"P{value}W", value_from_surface=re_match.group(), value_format="week", parsed=args
+            week="DURATION",
+            value=f"P{value}W",
+            value_from_surface=re_match.group(),
+            value_format="week",
+            parsed=args,
+            span=span,
         )
 
 
