@@ -50,7 +50,7 @@ class NumberNormalizer:
     def normalize(self, text: str) -> str:
         text = self._normalize_zen_to_han(text)
 
-        text = kansuji2number(text)
+        text = self._normalize_kansuji(text)
 
         return text
 
