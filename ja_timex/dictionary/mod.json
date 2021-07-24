@@ -34,16 +34,19 @@
             {
                 "pattern": "ごろ",
                 "mod": "APPROX"
-            }            
+            }
         ]
     },
-    "DURATION": [
-        {}
-    ],
-    "TIME": [
-        {}
-    ],
-    "SET": [
-        {}
-    ]
+    "DURATION": {
+        "prefix": [],
+        "suffix": []
+    },
+    "TIME": {
+        "prefix": [],
+        "suffix": []
+    },
+    "SET": {
+        "prefix": [],
+        "suffix": []
+    }
 }
