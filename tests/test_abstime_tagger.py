@@ -118,20 +118,28 @@ def test_fiscal_year(t):
     assert t.parse("132年度") is None
     assert t.parse("32年度") is None
 
+
 # def test_fiscal_year_wareki(t):
 #     assert t.parse("令和3年度").value == "FYR03"
 
 
-def test_century(t):
-    assert t.parse("11世紀").value == "10XX"
+def test_ac_century(t):
+    assert t.parse("1世紀").value == "00XX"  # 西暦1年から西暦100年
+    assert t.parse("9世紀").value == "08XX"  # 西暦801年から西暦900年
+    assert t.parse("11世紀").value == "10XX"  # 西暦1001年から西暦1100年
+    assert t.parse("21世紀").value == "20XX"  # 西暦2001年から西暦2100年
 
 
 def test_bc_year(t):
+    assert t.parse("紀元前1年").value == "BC0001"
     assert t.parse("紀元前202年").value == "BC0202"
+    assert t.parse("紀元前2000年").value == "BC2000"
 
 
 def test_bc_century(t):
+    assert t.parse("紀元前1世紀").value == "BC00XX"
     assert t.parse("紀元前2世紀").value == "BC01XX"
+    assert t.parse("紀元前21世紀").value == "BC20XX"
 
 
 # def test_(t):

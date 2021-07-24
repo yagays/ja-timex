@@ -26,8 +26,8 @@ def detect_format(args):
         return "weekday"
     elif "fiscal_year" in args:
         return "fiscal_year"
-    elif "century" in args:
-        return "century"
+    elif "ac_century" in args:
+        return "ac_century"
     elif "bc_year" in args:
         return "bc_year"
     elif "bc_century" in args:
@@ -117,8 +117,8 @@ def construct_timex(re_match, pattern):
             parsed=args,
             span=span,
         )
-    elif value_format == "century":
-        century_num = int(args["century"])
+    elif value_format == "ac_century":
+        century_num = int(args["ac_century"])
         century_range = f"{century_num - 1}" + "XX"
         value = century_range.zfill(4)
         return TIMEX(
@@ -168,7 +168,8 @@ class AbstimeTagger:
             re_match = re.fullmatch(pattern["pattern"], text)
             if re_match:
                 results.append(construct_timex(re_match, pattern))
-
+        
+        print(results)
         if len(results) > 0:
             # 2件以上該当した場合には、先に判定したものを優先する
             # testの `test_normal_date_multiple_detected()` を参考

@@ -4,25 +4,6 @@ p = Place()
 
 # corresponding_time_position不要かも
 patterns = [
-    # {"pattern": f"{p.calendar_year}年{p.calendar_month}月{p.calendar_day}日", "corresponding_time_position": ["year", "momth", "day"], "value": "",},
-    # {"pattern": f"(?P<weekday>水曜日)", "corresponding_time_position": [], "value": "3",},
-    # {"pattern": "(?P<season>冬)", "corresponding_time_position": [], "value": "WI",},
-    # {"pattern": "(?P<quarter>Q1)", "corresponding_time_position": [], "value": "Q1",},
-    # {
-    #     "pattern": "(?P<fiscal_year>[0-9]{,4})年度",
-    #     "corresponding_time_position": [],
-    #     "value": "",
-    # },
-    {
-        "pattern": "(?P<century>[0-9]{,4})世紀",
-        "corresponding_time_position": [],
-        "value": "",
-    },
-    {
-        "pattern": "紀元前(?P<bc_year>[0-9]{,4})年",
-        "corresponding_time_position": [],
-        "value": "",
-    },
     {
         "pattern": "紀元前(?P<bc_century>[0-9]{,4})世紀",
         "corresponding_time_position": [],
@@ -81,3 +62,12 @@ patterns.append({"pattern": f"({p.quarter}Q)", "value": ""})
 
 # 年度
 patterns.append({"pattern": p.fiscal_year, "value": ""})
+
+# 世紀
+patterns.append({"pattern": p.ac_century, "value": ""})
+
+# 年 (紀元前)
+patterns.append({"pattern": p.bc_year, "value": ""})
+
+# 世紀 (紀元前)
+patterns.append({"pattern": p.bc_century, "value": ""})
