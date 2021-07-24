@@ -1,15 +1,7 @@
 from ja_timex.tagger.place import Place
 
 p = Place()
-
-# corresponding_time_position不要かも
-patterns = [
-    {
-        "pattern": "紀元前(?P<bc_century>[0-9]{,4})世紀",
-        "corresponding_time_position": [],
-        "value": "",
-    },
-]
+patterns = []
 
 
 # 日付
