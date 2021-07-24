@@ -149,6 +149,28 @@ def test_test_kansuji2number_mixed():
     # 「五ヵ年計画とソヴェト同盟の文化的飛躍」宮本百合子
     # assert kansuji2number("三二〇千〇〇〇") == "320000"
 
+# def test_kansuji2number_duration():
+#     # 青空文庫「伊沢蘭軒」 森鴎外
+#     assert kansuji2number("二十六七") == "267"
+
+
+def test_normalize_kansuji(nn):
+    assert nn._normalize_kansuji("九時五分") == "9時5分"
+    assert nn._normalize_kansuji("明治二十六年") == "明治26年"
+
+    # 青空文庫「パソコン創世記」富田倫生
+    assert nn._normalize_kansuji("一九六〇年代に出合った歌と一九七〇年代に生まれた") == "1960年代に出合った歌と1970年代に生まれた"
+
+    # assert nn._normalize_kansuji("一時をお知らせします")
+    # assert nn._normalize_kansuji("一時はどうなることかと")
+    # assert nn._normalize_kansuji("一時的な断水")
+
+    # assert nn._normalize_kansuji("十分な量")
+    # assert nn._normalize_kansuji("十分間のインターバル")
+    # assert nn._normalize_kansuji("準備が不十分")
+
+    # assert nn.normalize_kansuji("二分五厘")
+
 
 def test_normalize_phrase_contains_number(nn):
     # 下記は青空文庫より用例を収集

@@ -45,9 +45,12 @@ def kansuji2number(text: str) -> str:
 class NumberNormalizer:
     def __init__(self) -> None:
         pass
+        self.ignore_kansuji_phrase = {"一": "一時的", "十": "十分"}
 
     def normalize(self, text: str) -> str:
         text = self._normalize_zen_to_han(text)
+
+        text = kansuji2number(text)
 
         return text
 
@@ -60,6 +63,20 @@ class NumberNormalizer:
             replaced_text = re_match.group().replace("，", ",").replace("．", ".")
             text = text[:number_start_i] + replaced_text + text[number_end_i:]
 
+        return text
+
+    def _normalize_kansuji(self, text):
+        for re_iter in re.finditer("[〇一二三四五六七八九十百千万億兆京垓]+", text):
+            start_i, end_i = re_iter.span()
+            replace_text = kansuji2number(re_iter.group())
+
+            # 慣用句などの無視すべき表現をチェックする
+            # if re_iter.group() in self.ignore_kansuji_phrase:
+            #     for ignore_phrase in self.ignore_kansuji_phrase[re_iter.group()]:
+            #         if text[start_i:start_i+len(ignore_phrase)] == ignore_phrase:
+            #             continue
+
+            text = text[:start_i] + replace_text + text[end_i:]
         return text
 
     def _remove_comma_inside_digits(self, text: str) -> str:
