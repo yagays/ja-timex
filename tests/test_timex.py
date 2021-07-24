@@ -19,3 +19,8 @@ def test_abstime(p):
     assert len(timexes) == 1
     assert type(timexes[0]) == TIMEX
     assert timexes[0].value == "XXXX-07-18"
+
+
+def test_abstime_partial_pattern_of_number_expression(p):
+    # 部分的な表現である3/13を取得しない
+    assert p.parse("13/13は1です") == []

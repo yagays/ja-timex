@@ -1,6 +1,6 @@
 import re
 from collections import defaultdict
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from ja_timex.number_normalizer import NumberNormalizer
 from ja_timex.tag import TIMEX
@@ -8,6 +8,33 @@ from ja_timex.tagger.abstime_tagger import AbstimeTagger
 from ja_timex.tagger.duration_tagger import DurationTagger
 from ja_timex.tagger.reltime_tagger import ReltimeTagger
 from ja_timex.tagger.set_tagger import SetTagger
+
+
+def is_parial_pattern_of_number_expression(re_match: re.Match, processed_text: str) -> bool:
+    """対象パターンが数字表現の一部かを判定する
+
+    正規表現の記法によっては、数字表現の一部を取得してしまう例がある。
+    与えられたパターンが数字表現の一部を間違って取得していないかをチェックする
+
+    e.g. "これは13/13です" に対して "3/13" というパターンを取得している場合 -> True
+    e.g. "これは3/13です" に対して "3/13" というパターンを取得している場合 -> False
+
+    Args:
+        re_match (re.Match): 対象となる正規表現のパターン
+        processed_text (str): 入力文字列
+
+    Returns:
+        bool: 数字表現の一部かを表す真偽値
+    """
+    start_i, end_i = re_match.span()
+    has_number_list = []
+
+    if start_i != 0:
+        has_number_list.append(re.match("[0-9]", processed_text[start_i - 1]))
+    if len(processed_text) != end_i:
+        has_number_list.append(re.match("[0-9]", processed_text[end_i]))
+
+    return any(has_number_list)
 
 
 class TimexParser:
@@ -38,7 +65,8 @@ class TimexParser:
         processed_text = self._normalize_number(raw_text)
 
         # 時間表現の抽出
-        type2extracts = self._extract(processed_text)
+        all_extracts = self._extract(processed_text)
+        type2extracts = self._drop_duplicates(processed_text, all_extracts)
         # 規格化
         timex_tags = self._parse(type2extracts)
 
@@ -57,8 +85,12 @@ class TimexParser:
                 # 文字列中からのパターン検知
                 re_iter = re.finditer(pattern["pattern"], processed_text)
                 for re_match in re_iter:
+                    if is_parial_pattern_of_number_expression(re_match, processed_text):
+                        continue
                     all_extracts.append({"type_name": type_name, "re_match": re_match, "pattern": pattern})
+        return all_extracts
 
+    def _drop_duplicates(self, processed_text, all_extracts):
         type2extracts = defaultdict(list)
         text_coverage_flag = [False] * len(processed_text)
 
