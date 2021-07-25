@@ -15,6 +15,7 @@ class TIMEX:
     type: str
     value: str
     value_from_surface: str
+    text: str
 
     temporal_function: Optional[bool] = None
     # 頻度集合表現
@@ -29,3 +30,9 @@ class TIMEX:
     value_format: Optional[str] = None
     additional_info: Optional[str] = None
     span: Optional[Tuple[int, int]] = None  # 入力文字列中での正規表現が取得したspan
+
+    def to_tag(self) -> str:
+        attributes = [f'type="{self.type}"', f'value="{self.value}"', f'valueFromSurface="{self.value_from_surface}"']
+        attributes_text = " ".join(attributes)
+        tag = f"<TIMEX3 {attributes_text}>{self.text}</TIMEX3>"
+        return tag

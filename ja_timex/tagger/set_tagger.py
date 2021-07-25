@@ -41,7 +41,8 @@ def construct_set_timex(re_match, pattern):
         return TIMEX(
             type="SET",
             value=value,
-            value_from_surface=re_match.group(),
+            value_from_surface=value,
+            text=re_match.group(),
             freq=freq,
             value_format="count",
             parsed=args,
@@ -53,7 +54,8 @@ def construct_set_timex(re_match, pattern):
         return TIMEX(
             type="SET",
             value=value,
-            value_from_surface=re_match.group(),
+            value_from_surface=value,
+            text=re_match.group(),
             freq=freq,
             value_format="count",
             parsed=args,

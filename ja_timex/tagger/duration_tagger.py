@@ -37,7 +37,8 @@ def construct_duration_timex(re_match, pattern):
         return TIMEX(
             type="DURATION",
             value=f"P{value}Y",
-            value_from_surface=re_match.group(),
+            value_from_surface=f"P{value}Y",
+            text=re_match.group(),
             value_format="year",
             parsed=args,
             span=span,
@@ -47,7 +48,8 @@ def construct_duration_timex(re_match, pattern):
         return TIMEX(
             type="DURATION",
             value=f"P{value}M",
-            value_from_surface=re_match.group(),
+            value_from_surface=f"P{value}M",
+            text=re_match.group(),
             value_format="month",
             parsed=args,
             span=span,
@@ -57,7 +59,8 @@ def construct_duration_timex(re_match, pattern):
         return TIMEX(
             type="DURATION",
             value=f"P{value}D",
-            value_from_surface=re_match.group(),
+            value_from_surface=f"P{value}D",
+            text=re_match.group(),
             value_format="day",
             parsed=args,
             span=span,
@@ -67,7 +70,8 @@ def construct_duration_timex(re_match, pattern):
         return TIMEX(
             type="DURATION",
             value=f"PT{value}H",
-            value_from_surface=re_match.group(),
+            value_from_surface=f"PT{value}H",
+            text=re_match.group(),
             value_format="hour",
             parsed=args,
             span=span,
@@ -77,7 +81,8 @@ def construct_duration_timex(re_match, pattern):
         return TIMEX(
             type="DURATION",
             value=f"PT{value}M",
-            value_from_surface=re_match.group(),
+            value_from_surface=f"PT{value}M",
+            text=re_match.group(),
             value_format="minutes",
             parsed=args,
             span=span,
@@ -87,7 +92,8 @@ def construct_duration_timex(re_match, pattern):
         return TIMEX(
             type="DURATION",
             value=f"PT{value}S",
-            value_from_surface=re_match.group(),
+            value_from_surface=f"PT{value}S",
+            text=re_match.group(),
             value_format="second",
             parsed=args,
             span=span,
@@ -97,7 +103,8 @@ def construct_duration_timex(re_match, pattern):
         return TIMEX(
             type="DURATION",
             value=f"PT{value}S",
-            value_from_surface=re_match.group(),
+            value_from_surface=f"PT{value}S",
+            text=re_match.group(),
             value_format="second_with_ms",
             parsed=args,
             span=span,
@@ -107,7 +114,8 @@ def construct_duration_timex(re_match, pattern):
         return TIMEX(
             week="DURATION",
             value=f"P{value}W",
-            value_from_surface=re_match.group(),
+            value_from_surface=f"P{value}W",
+            text=re_match.group(),
             value_format="week",
             parsed=args,
             span=span,

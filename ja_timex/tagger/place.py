@@ -17,7 +17,6 @@ class Place:
     bc_year: str = "紀元前(?P<bc_year>[0-9]{,4})年"
     bc_century: str = "紀元前(?P<bc_century>[1-9]?[0-9]{,2})世紀"
 
-
     @property
     def weekday_with_suffix(self):
         # (日曜日)などの記号付きの表記

@@ -62,7 +62,8 @@ def construct_timex(re_match, pattern):
         return TIMEX(
             type="DATE",
             value=f'{args["calendar_year"]}-{args["calendar_month"]}-{args["calendar_day"]}',
-            value_from_surface=re_match.group(),
+            value_from_surface=f'{args["calendar_year"]}-{args["calendar_month"]}-{args["calendar_day"]}',
+            text=re_match.group(),
             value_format="absdate",
             parsed=args,
             additional_info=additional_info,
@@ -75,7 +76,8 @@ def construct_timex(re_match, pattern):
         return TIMEX(
             type="DATE",
             value=value,
-            value_from_surface=re_match.group(),
+            value_from_surface=value,
+            text=re_match.group(),
             value_format="weekday",
             parsed=args,
             span=span,
@@ -90,7 +92,8 @@ def construct_timex(re_match, pattern):
         return TIMEX(
             type="DATE",
             value=value,
-            value_from_surface=re_match.group(),
+            value_from_surface=value,
+            text=re_match.group(),
             value_format="season",
             parsed=args,
             span=span,
@@ -101,7 +104,8 @@ def construct_timex(re_match, pattern):
         return TIMEX(
             type="DATE",
             value=value,
-            value_from_surface=re_match.group(),
+            value_from_surface=value,
+            text=re_match.group(),
             value_format="quarter",
             parsed=args,
             span=span,
@@ -112,7 +116,8 @@ def construct_timex(re_match, pattern):
         return TIMEX(
             type="DATE",
             value=value,
-            value_from_surface=re_match.group(),
+            value_from_surface=value,
+            text=re_match.group(),
             value_format="fiscal_year",
             parsed=args,
             span=span,
@@ -124,7 +129,8 @@ def construct_timex(re_match, pattern):
         return TIMEX(
             type="DATE",
             value=value,
-            value_from_surface=re_match.group(),
+            value_from_surface=value,
+            text=re_match.group(),
             value_format="century",
             parsed=args,
             span=span,
@@ -135,7 +141,8 @@ def construct_timex(re_match, pattern):
         return TIMEX(
             type="DATE",
             value=value,
-            value_from_surface=re_match.group(),
+            value_from_surface=value,
+            text=re_match.group(),
             value_format="bc_year",
             parsed=args,
             span=span,
@@ -147,7 +154,8 @@ def construct_timex(re_match, pattern):
         return TIMEX(
             type="DATE",
             value=value,
-            value_from_surface=re_match.group(),
+            value_from_surface=value,
+            text=re_match.group(),
             value_format="bc_century",
             parsed=args,
             span=span,
@@ -168,7 +176,7 @@ class AbstimeTagger:
             re_match = re.fullmatch(pattern["pattern"], text)
             if re_match:
                 results.append(construct_timex(re_match, pattern))
-        
+
         print(results)
         if len(results) > 0:
             # 2件以上該当した場合には、先に判定したものを優先する

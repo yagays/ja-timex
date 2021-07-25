@@ -37,7 +37,8 @@ def construct_reltime_timex(re_match, pattern):
         return TIMEX(
             type="TIME",
             value=f"P{value}Y",
-            value_from_surface=re_match.group(),
+            value_from_surface=f"P{value}Y",
+            text=re_match.group(),
             mod=pattern["mod"],
             value_format="year",
             parsed=args,
@@ -48,7 +49,8 @@ def construct_reltime_timex(re_match, pattern):
         return TIMEX(
             type="TIME",
             value=f"P{value}M",
-            value_from_surface=re_match.group(),
+            value_from_surface=f"P{value}M",
+            text=re_match.group(),
             mod=pattern["mod"],
             value_format="month",
             parsed=args,
@@ -59,7 +61,8 @@ def construct_reltime_timex(re_match, pattern):
         return TIMEX(
             type="TIME",
             value=f"P{value}D",
-            value_from_surface=re_match.group(),
+            value_from_surface=f"P{value}D",
+            text=re_match.group(),
             mod=pattern["mod"],
             value_format="day",
             parsed=args,
@@ -70,7 +73,8 @@ def construct_reltime_timex(re_match, pattern):
         return TIMEX(
             type="TIME",
             value=f"PT{value}H",
-            value_from_surface=re_match.group(),
+            value_from_surface=f"PT{value}H",
+            text=re_match.group(),
             mod=pattern["mod"],
             value_format="hour",
             parsed=args,
@@ -81,7 +85,8 @@ def construct_reltime_timex(re_match, pattern):
         return TIMEX(
             type="TIME",
             value=f"PT{value}M",
-            value_from_surface=re_match.group(),
+            value_from_surface=f"PT{value}M",
+            text=re_match.group(),
             mod=pattern["mod"],
             value_format="minutes",
             parsed=args,
@@ -92,7 +97,8 @@ def construct_reltime_timex(re_match, pattern):
         return TIMEX(
             type="TIME",
             value=f"PT{value}S",
-            value_from_surface=re_match.group(),
+            value_from_surface=f"PT{value}S",
+            text=re_match.group(),
             mod=pattern["mod"],
             value_format="second",
             parsed=args,
@@ -103,7 +109,8 @@ def construct_reltime_timex(re_match, pattern):
         return TIMEX(
             type="TIME",
             value=f"PT{value}S",
-            value_from_surface=re_match.group(),
+            value_from_surface=f"PT{value}S",
+            text=re_match.group(),
             mod=pattern["mod"],
             value_format="second_with_ms",
             parsed=args,
@@ -114,7 +121,8 @@ def construct_reltime_timex(re_match, pattern):
         return TIMEX(
             week="TIME",
             value=f"P{value}W",
-            value_from_surface=re_match.group(),
+            value_from_surface=f"P{value}W",
+            text=re_match.group(),
             mod=pattern["mod"],
             value_format="week",
             parsed=args,
