@@ -13,12 +13,13 @@ TBW
 
 ## `TIMEX3`について
 
-`TIMEX3`は「現代日本語書き言葉均衡コーパス」(BCCWJ)における時間情報をアノテーションする際に定義されたタグ付け基準です[1]。この仕様をベースに、数量および時間表現を抽出する`normalizeNumexp`にて実装されています[2]。
+`TIMEX3`は「現代日本語書き言葉均衡コーパス」(BCCWJ)における時間情報をアノテーションする際に定義されたタグ付け基準です[1]。この仕様をベースに、数量および時間表現を抽出する[`normalizeNumexp`](https://www.cl.ecei.tohoku.ac.jp/Open_Resources-normalizeNumexp.html)にて実装されています[2]。
 
 `TIMEX3`タグ付けは、以下のように行われます。
 
 ```html
- <TIMEX3 tid="t1" type="DATE" value="2003-10-20" valueFromSurface="2003-10-20">2003年10月20日</TIMEX3> <TIMEX3 tid="t2" type="DATE"value="2003-W43-1" valueFromSurface="XXXX-WXXX1">月曜日</TIMEX3>
+ <TIMEX3 tid="t1" type="DATE" value="2021-07-18" valueFromSurface="2021-07-18">2021年07月18日</TIMEX3>
+ <TIMEX3 tid="t2" type="DATE"value="2021-W28-7" valueFromSurface="XXXX-WXX-7">日曜日</TIMEX3>
 ```
 
 `TIMEX3`タグは以下の属性を持ちます。
@@ -41,4 +42,10 @@ TBW
 - [1] [小西光, 浅原正幸, & 前川喜久雄. (2013). 『現代日本語書き言葉均衡コーパス』 に対する時間情報アノテーション. 自然言語処理, 20(2), 201-221.](https://www.jstage.jst.go.jp/article/jnlp/20/2/20_201/_article/-char/ja/)
 - [2] [成澤克麻 (2014)「自然言語処理における数量表現の取り扱い」東北大学大学院 修士論文](http://www.cl.ecei.tohoku.ac.jp/publications/2015/mthesis2013_narisawa_submitted.pdf)
 
+### 実装方針
+`ja-timex`は以下の実装方針を採用しています。
 
+- 言語表現の網羅性ではなく、実用的な表現抽出を
+  - 人間が発話/認識する時間情報の表現は豊富で、すべての事象を正確に規格化することは不可能です。あくまでルールで規定できる時間情報表現に限定し、実用的な表現を抽出し利用することを重視しています。
+- 曖昧さを許容する抽象化より、利用できる形での規格化を
+  - 人間が記述する時間情報表現の多くは、文脈を考慮しなければ日付や時刻を一意に特定することが不可能です。そうした曖昧性を残したまま規格化するのではなく、統一した作法で規格化し利用しやすくすることを重視します。
