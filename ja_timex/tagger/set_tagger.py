@@ -6,10 +6,10 @@ from ja_timex.tagger.set_pattern import patterns
 
 def detect_format(args):
     if "count" in args:
-        if args["range"] is None:
-            return "count"
-        else:
+        if "range" in args and args["range"]:
             return "count_range"
+        else:
+            return "count"
     # elif "month" in args:
     #     return "month"
     # elif "day" in args:
