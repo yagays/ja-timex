@@ -112,7 +112,7 @@ def construct_duration_timex(re_match, pattern):
     if value_format == "week":
         value = args["week"]
         return TIMEX(
-            week="DURATION",
+            type="DURATION",
             value=f"P{value}W",
             value_from_surface=f"P{value}W",
             text=re_match.group(),
