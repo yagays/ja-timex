@@ -19,4 +19,3 @@ def test_to_tag_duration():
 def test_to_tag_set():
     date = TIMEX(type="SET", value="P1W", value_from_surface="P1W", text="週に1回", freq="1X")
     assert date.to_tag() == '<TIMEX3 type="SET" value="P1W" valueFromSurface="P1W" freq="1X">週に1回</TIMEX3>'
-
