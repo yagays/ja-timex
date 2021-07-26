@@ -46,6 +46,7 @@ class TimexParser:
         duration_tagger=DurationTagger(),
         reltime_tagger=ReltimeTagger(),
         set_tagger=SetTagger(),
+        custom_tagger=None,
         modifier=Modifier(),
     ) -> None:
         self.number_normalizer = number_normalizer
@@ -53,6 +54,7 @@ class TimexParser:
         self.duration_tagger = duration_tagger
         self.reltime_tagger = reltime_tagger
         self.set_tagger = set_tagger
+        self.custom_tagger = custom_tagger
         self.modifier = modifier
 
         self.all_patterns = {}
@@ -60,6 +62,8 @@ class TimexParser:
         self.all_patterns["duration"] = self.duration_tagger.patterns
         self.all_patterns["reltime"] = self.reltime_tagger.patterns
         self.all_patterns["set"] = self.set_tagger.patterns
+        if self.custom_tagger:
+            self.all_patterns["custom"] = self.custom_tagger.patterns
 
         # TODO: set default timezone by pendulum
 
@@ -124,6 +128,8 @@ class TimexParser:
                     results.append(self.reltime_tagger.parse_with_pattern(extract["re_match"], extract["pattern"]))
                 elif type_name == "set":
                     results.append(self.set_tagger.parse_with_pattern(extract["re_match"], extract["pattern"]))
+                elif type_name == "custom":
+                    results.append(self.custom_tagger.parse_with_pattern(extract["re_match"], extract["pattern"]))
 
         return results
 
