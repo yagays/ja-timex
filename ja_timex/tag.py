@@ -32,6 +32,11 @@ class TIMEX:
     span: Optional[Tuple[int, int]] = None  # 入力文字列中での正規表現が取得したspan
 
     def to_tag(self) -> str:
+        """TIMEX3のタグ文字列を生成する
+
+        Returns:
+            str: タグで囲まれた文字列
+        """
         attributes = [f'type="{self.type}"', f'value="{self.value}"', f'valueFromSurface="{self.value_from_surface}"']
         if self.freq:
             attributes.append(f'freq="{self.freq}"')
