@@ -56,3 +56,20 @@ def test_second_with_ms(t):
     assert t.parse("1秒05").value == "PT1.05S"
     assert t.parse("100秒5").value == "PT100.5S"
     assert t.parse("1秒0").value == "PT1.0S"
+
+
+def test_multiple_durations(t):
+    assert t.parse("1年2ヶ月").value == "P1Y2M"
+    assert t.parse("1年2ヶ月間").value == "P1Y2M"
+    assert t.parse("1年2ヶ月10日").value == "P1Y2M10D"
+
+    assert t.parse("1時間30分").value == "PT1H30M"
+    assert t.parse("1時間30分間").value == "PT1H30M"
+    assert t.parse("1時間30分25秒").value == "PT1H30M25S"
+
+
+def test_multiple_durations_never_mixed_date_and_time(t):
+    # 日付を表す持続時間表現と、時間を表す持続時間表現は、混ざらない
+    assert t.parse("1年3時間") is None
+    assert t.parse("3日10時間") is None
+    assert t.parse("1日10分") is None  # 1日あたり10分という意味のため、DURATIONではなくSETとして扱う

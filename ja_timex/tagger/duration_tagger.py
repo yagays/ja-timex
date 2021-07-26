@@ -1,28 +1,44 @@
 import re
+from typing import Dict
 
 from ja_timex.tag import TIMEX
 from ja_timex.tagger.duration_pattern import patterns
 
 
-def detect_format(args):
+def detect_format(args: Dict) -> str:
+    """正規表現patternから抽出したフォーマットを判定する
+
+    p : 日付表現 (年/月/週/日)
+    pt: 時間表現 (時間/分/秒)
+
+    Args:
+        args (Dict): 正規表現パターンのgroupdict()
+
+    Raises:
+        ValueError: どのパターンにも判定されなかった場合
+
+    Returns:
+        str: 判定したフォーマット
+    """
+
     if "year" in args:
-        return "year"
+        return "p"
     elif "month" in args:
-        return "month"
+        return "p"
     elif "day" in args:
-        return "day"
+        return "p"
     elif "century" in args:
-        return "century"
+        return "p"
     elif "week" in args:
-        return "week"
+        return "p"
     elif "hour" in args:
-        return "hour"
+        return "pt"
     elif "minutes" in args:
-        return "minutes"
+        return "pt"
     elif "second" in args:
-        return "second"
+        return "pt"
     elif "second_with_ms" in args:
-        return "second_with_ms"
+        return "pt"
     else:
         raise ValueError
 
@@ -32,91 +48,45 @@ def construct_duration_timex(re_match, pattern):
     span = re_match.span()
     value_format = detect_format(args)
 
-    if value_format == "year":
-        value = args["year"]
+    if value_format == "p":
+        # 日付を表す持続時間表現の場合
+        value = "P"
+        if "year" in args:
+            value += args["year"] + "Y"
+        if "month" in args:
+            value += args["month"] + "M"
+        if "week" in args:
+            value += args["week"] + "W"
+        if "day" in args:
+            value += args["day"] + "D"
+
         return TIMEX(
             type="DURATION",
-            value=f"P{value}Y",
-            value_from_surface=f"P{value}Y",
+            value=value,
+            value_from_surface=value,
             text=re_match.group(),
-            value_format="year",
+            value_format="p",
             parsed=args,
             span=span,
         )
-    if value_format == "month":
-        value = args["month"]
+    elif value_format == "pt":
+        # 時間を表す持続時間表現の場合
+        value = "PT"
+        if "hour" in args:
+            value += args["hour"] + "H"
+        if "minutes" in args:
+            value += args["minutes"] + "M"
+        if "second" in args:
+            value += args["second"] + "S"
+        if "second_with_ms" in args:
+            value += args["second_with_ms"].replace("秒", ".") + "S"
+
         return TIMEX(
             type="DURATION",
-            value=f"P{value}M",
-            value_from_surface=f"P{value}M",
+            value=value,
+            value_from_surface=value,
             text=re_match.group(),
-            value_format="month",
-            parsed=args,
-            span=span,
-        )
-    if value_format == "day":
-        value = args["day"]
-        return TIMEX(
-            type="DURATION",
-            value=f"P{value}D",
-            value_from_surface=f"P{value}D",
-            text=re_match.group(),
-            value_format="day",
-            parsed=args,
-            span=span,
-        )
-    if value_format == "hour":
-        value = args["hour"]
-        return TIMEX(
-            type="DURATION",
-            value=f"PT{value}H",
-            value_from_surface=f"PT{value}H",
-            text=re_match.group(),
-            value_format="hour",
-            parsed=args,
-            span=span,
-        )
-    if value_format == "minutes":
-        value = args["minutes"]
-        return TIMEX(
-            type="DURATION",
-            value=f"PT{value}M",
-            value_from_surface=f"PT{value}M",
-            text=re_match.group(),
-            value_format="minutes",
-            parsed=args,
-            span=span,
-        )
-    if value_format == "second":
-        value = args["second"]
-        return TIMEX(
-            type="DURATION",
-            value=f"PT{value}S",
-            value_from_surface=f"PT{value}S",
-            text=re_match.group(),
-            value_format="second",
-            parsed=args,
-            span=span,
-        )
-    if value_format == "second_with_ms":
-        value = args["second_with_ms"].replace("秒", ".")
-        return TIMEX(
-            type="DURATION",
-            value=f"PT{value}S",
-            value_from_surface=f"PT{value}S",
-            text=re_match.group(),
-            value_format="second_with_ms",
-            parsed=args,
-            span=span,
-        )
-    if value_format == "week":
-        value = args["week"]
-        return TIMEX(
-            type="DURATION",
-            value=f"P{value}W",
-            value_from_surface=f"P{value}W",
-            text=re_match.group(),
-            value_format="week",
+            value_format="pt",
             parsed=args,
             span=span,
         )
@@ -143,4 +113,4 @@ class DurationTagger:
 
 
 if __name__ == "__main__":
-    abstime_tagger = DurationTagger()
+    duration_tagger = DurationTagger()

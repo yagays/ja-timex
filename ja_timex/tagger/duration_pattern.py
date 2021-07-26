@@ -30,9 +30,10 @@ patterns.append({"pattern": f"{p.minutes}分(間)?", "value": ""})
 patterns.append({"pattern": f"{p.second}秒(間)?", "value": ""})
 patterns.append({"pattern": f"{p.second_with_ms}", "value": ""})
 
+
 # 組み合わせ
-# patterns.append({"pattern": f"{p.year}年{p.month}[ヶ|か|ケ|箇]月", "value": ""})
-# patterns.append({"pattern": f"{p.year}年{p.month}[ヶ|か|ケ|箇]月{p.day}日", "value": ""})
-# patterns.append({"pattern": f"{p.hour}時間{p.minutes}分", "value": ""})
-# patterns.append({"pattern": f"{p.hour}時間{p.minutes}分{p.second}秒", "value": ""})
-# patterns.append({"pattern": f"{p.minutes}分{p.second}秒", "value": ""})
+patterns.append({"pattern": f"{p.year}年{p.month}[ヶ|か|ケ|箇]月(間)?", "value": ""})
+patterns.append({"pattern": f"{p.year}年{p.month}[ヶ|か|ケ|箇]月{p.day}日(間)?", "value": ""})
+patterns.append({"pattern": f"{p.hour}時間{p.minutes}分(間)?", "value": ""})
+patterns.append({"pattern": f"{p.hour}時間{p.minutes}分{p.second}秒(間)?", "value": ""})
+patterns.append({"pattern": f"{p.minutes}分{p.second}秒(間)?", "value": ""})
