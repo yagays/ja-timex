@@ -57,11 +57,15 @@ def test_count_without_number_and_ni(t):
     assert t.parse("1日1時間").value == "P1D"
     assert t.parse("1日1時間").freq == "PT1H"
 
+    # 「1日1時間」とは言うが、「日1時間」とは言わない
+    assert t.parse("日1時間") is None
+    assert t.parse("日30分") is None
+
 
 def test_count_range_is_temporal_expression(t):
     # 時間表現を対象としており、「3回に1回」のような時間を含まない表現は解析しない
     assert t.parse("3回に1回") is None
-    assert t.parse("1回1時間") is None
+    assert t.parse("1回1時間") is None  # 1時間は取得対象だが、前にある「1回」は含めない
 
 
 def test_count_kanni_in_minutes_and_second(t):
