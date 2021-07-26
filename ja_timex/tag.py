@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 from enum import Enum
 from typing import Dict, Optional, Tuple
 
@@ -47,3 +48,8 @@ class TIMEX:
         attributes_text = " ".join(attributes)
         tag = f"<TIMEX3 {attributes_text}>{self.text}</TIMEX3>"
         return tag
+
+    def to_datetime(self) -> datetime:
+        return datetime(
+            int(self.parsed["calendar_year"]), int(self.parsed["calendar_month"]), int(self.parsed["calendar_day"])
+        )
