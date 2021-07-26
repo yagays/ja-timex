@@ -70,6 +70,13 @@ patterns.append({"pattern": f"週{p.count}日", "value_template": "P1W", "freq_t
 patterns.append({"pattern": f"週{p.count}時間", "value_template": "P1W", "freq_template": "PT{}H"})
 patterns.append({"pattern": f"週{p.count}[回|度]", "value_template": "P1W", "freq_template": "{}X"})
 
+# 「に」を省略するパターン
+# 「1日1時間」とは言うが、「日1時間」とは言わない
+patterns.append({"pattern": f"1日{p.count}時間", "value_template": "P{}D", "freq_template": "PT{}H"})
+patterns.append({"pattern": f"1日{p.count}分", "value_template": "P{}D", "freq_template": "PT{}M"})
+patterns.append({"pattern": f"1日{p.count}秒", "value_template": "P{}D", "freq_template": "PT{}S"})
+patterns.append({"pattern": f"1日{p.count}[回|度]", "value_template": "P{}D", "freq_template": "{}X"})
+
 
 # quant:EACH
 patterns.append({"pattern": f"毎秒", "value": "PT1S", "quant": "EACH"})
