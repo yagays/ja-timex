@@ -33,6 +33,12 @@ class TIMEX:
 
     def to_tag(self) -> str:
         attributes = [f'type="{self.type}"', f'value="{self.value}"', f'valueFromSurface="{self.value_from_surface}"']
+        if self.freq:
+            attributes.append(f'freq="{self.freq}"')
+        if self.quant:
+            attributes.append(f'quant="{self.quant}"')
+        if self.mod:
+            attributes.append(f'mod="{self.mod}"')
         attributes_text = " ".join(attributes)
         tag = f"<TIMEX3 {attributes_text}>{self.text}</TIMEX3>"
         return tag

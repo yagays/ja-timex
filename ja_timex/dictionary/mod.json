@@ -38,7 +38,10 @@
         ]
     },
     "DURATION": {
-        "prefix": [],
+        "prefix": [            {
+            "pattern": "約",
+            "mod": "APPROX"
+        }],
         "suffix": []
     },
     "TIME": {

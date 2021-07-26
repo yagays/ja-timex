@@ -7,7 +7,7 @@ from ja_timex.timex import TimexParser
 def export_as_tagged_text(timexes, text):
     for timex in sorted(timexes, key=lambda x: x.span[0], reverse=True):
         # streamlit上で分かりやすいように、タグの前後を改行する
-        text = text[: timex.span[0]] + "\n" + timex.to_tag() + "\n" + text[timex.span[1] :]
+        text = text[:timex.span[0]] + "\n" + timex.to_tag() + "\n" + text[timex.span[1] :]
     return text
 
 
