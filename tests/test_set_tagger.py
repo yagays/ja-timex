@@ -54,6 +54,8 @@ def test_count_without_number_and_ni(t):
     assert t.parse("週40時間").value == "P1W"
     assert t.parse("週40時間").freq == "PT40H"
 
+
+def test_count_day_expression(t):
     assert t.parse("1日1時間").value == "P1D"
     assert t.parse("1日1時間").freq == "PT1H"
 
