@@ -2,7 +2,7 @@ import re
 from typing import Optional
 
 from ja_timex.tag import TIMEX
-from ja_timex.tagger.abstime_pattern import patterns, season2id, weekday2id
+from ja_timex.tagger.abstime_pattern import patterns
 
 
 class AbstimeTagger:

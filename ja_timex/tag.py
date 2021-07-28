@@ -1,5 +1,5 @@
-from dataclasses import dataclass
 from datetime import datetime
+from dataclasses import dataclass
 from enum import Enum
 from typing import Dict, Optional, Tuple
 
@@ -49,7 +49,10 @@ class TIMEX:
         tag = f"<TIMEX3 {attributes_text}>{self.text}</TIMEX3>"
         return tag
 
-    def to_datetime(self) -> datetime:
-        return datetime(
-            int(self.parsed["calendar_year"]), int(self.parsed["calendar_month"]), int(self.parsed["calendar_day"])
-        )
+    def to_datetime(self) -> Optional[datetime]:
+        if self.parsed:
+            return datetime(
+                int(self.parsed["calendar_year"]), int(self.parsed["calendar_month"]), int(self.parsed["calendar_day"])
+            )
+        else:
+            return None

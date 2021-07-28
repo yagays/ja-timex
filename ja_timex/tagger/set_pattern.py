@@ -334,32 +334,32 @@ patterns += [
 # quant:EACH
 patterns += [
     Pattern(
-        re_pattern=f"毎秒",
+        re_pattern="毎秒",
         parse_func=parse_quant,
         option={"value_template": "PT1S", "quant": "EACH"},
     ),
     Pattern(
-        re_pattern=f"毎分",
+        re_pattern="毎分",
         parse_func=parse_quant,
         option={"value_template": "PT1M", "quant": "EACH"},
     ),
     Pattern(
-        re_pattern=f"毎時間",
+        re_pattern="毎時間",
         parse_func=parse_quant,
         option={"value_template": "PT1H", "quant": "EACH"},
     ),
     Pattern(
-        re_pattern=f"毎日",
+        re_pattern="毎日",
         parse_func=parse_quant,
         option={"value_template": "P1D", "quant": "EACH"},
     ),
     Pattern(
-        re_pattern=f"毎月",
+        re_pattern="毎月",
         parse_func=parse_quant,
         option={"value_template": "P1M", "quant": "EACH"},
     ),
     Pattern(
-        re_pattern=f"毎年",
+        re_pattern="毎年",
         parse_func=parse_quant,
         option={"value_template": "P1Y", "quant": "EACH"},
     ),

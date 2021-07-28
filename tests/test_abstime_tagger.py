@@ -45,7 +45,7 @@ def test_normal_date_multiple_detected(t):
 
 def test_normal_date_invalid(t):
     # 2013年13月とも13月13日とも言えない場合
-    assert t.parse("13/13") == None
+    assert t.parse("13/13") is None
 
 
 def test_normal_date_with_weekday(t):

@@ -1,5 +1,4 @@
 import re
-from typing import Dict
 
 from ja_timex.tag import TIMEX
 from ja_timex.tagger.duration_pattern import patterns

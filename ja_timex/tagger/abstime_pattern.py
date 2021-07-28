@@ -185,7 +185,7 @@ date_templates = [
     f"{p.calendar_month}月",
     f"{p.calendar_day}日",
 ]
-for delimiter in ["/", "\-", "\.", "・", ","]:
+for delimiter in ["/", "\\-", "\\.", "・", ","]:
     date_templates.append(f"{p.calendar_year}年?{delimiter}{p.calendar_month}月?{delimiter}{p.calendar_day}日?")
     date_templates.append(f"{p.calendar_month}月?{delimiter}{p.calendar_day}日?")
     date_templates.append(f"{p.calendar_year}年?{delimiter}{p.calendar_month}月?")
@@ -196,7 +196,7 @@ date_templates += [
     f"{p.calendar_month}月{p.calendar_day}日{p.weekday_with_symbol}",
     f"{p.calendar_day}日{p.weekday_with_symbol}",
 ]
-for delimiter in ["/", "\-", "\.", "・", ","]:
+for delimiter in ["/", "\\-", "\\.", "・", ","]:
     date_templates.append(
         f"{p.calendar_year}年?{delimiter}{p.calendar_month}月?{delimiter}{p.calendar_day}日?{p.weekday_with_symbol}"
     )

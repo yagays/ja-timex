@@ -1,6 +1,6 @@
 import re
 from collections import defaultdict
-from typing import Dict, List, Optional
+from typing import List
 
 from ja_timex.modifier import Modifier
 from ja_timex.number_normalizer import NumberNormalizer
