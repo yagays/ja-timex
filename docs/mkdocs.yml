@@ -1,0 +1,17 @@
+site_name: ja_timex documentation
+markdown_extensions:
+  - pymdownx.highlight:
+      use_pygments: true
+      noclasses: true
+      pygments_style: monokai
+      linenums: true
+theme:
+    name: material
+    language: ja
+    icon:
+        logo: material/school
+        repo: fontawesome/brands/git-alt
+    favicon: favicon.png
+    # タブ表示を有効.
+    features:
+        - tabs
