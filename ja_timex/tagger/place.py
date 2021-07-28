@@ -2,6 +2,13 @@ import re
 from dataclasses import dataclass
 
 
+class Pattern:
+    def __init__(self, re_pattern, parse_func, option=None) -> None:
+        self.re_pattern = re_pattern
+        self.parse_func = parse_func
+        self.option = option
+
+
 # 正規表現に用いる部分パターン
 @dataclass
 class Place:

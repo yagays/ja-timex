@@ -1,4 +1,162 @@
-from ja_timex.tagger.place import Place
+from ja_timex.tag import TIMEX
+from ja_timex.tagger.place import Pattern, Place
+
+
+def parse_century(re_match, pattern):
+    args = re_match.groupdict()
+    span = re_match.span()
+
+    century_num = int(args["accentury"])
+    century_range = f"{century_num - 1}" + "XX"
+    value = century_range.zfill(4)
+    f"{century_num - 1}" + "XX"
+    return TIMEX(
+        type="TIME",
+        value=value,
+        value_from_surface=value,
+        text=re_match.group(),
+        mod=pattern.option["mod"],
+        value_format="century",
+        parsed=args,
+        span=span,
+    )
+
+
+def parse_year(re_match, pattern):
+    args = re_match.groupdict()
+    span = re_match.span()
+
+    value = args["year"]
+    return TIMEX(
+        type="TIME",
+        value=f"P{value}Y",
+        value_from_surface=f"P{value}Y",
+        text=re_match.group(),
+        mod=pattern.option["mod"],
+        value_format="year",
+        parsed=args,
+        span=span,
+    )
+
+
+def parse_month(re_match, pattern):
+    args = re_match.groupdict()
+    span = re_match.span()
+
+    value = args["month"]
+    return TIMEX(
+        type="TIME",
+        value=f"P{value}M",
+        value_from_surface=f"P{value}M",
+        text=re_match.group(),
+        mod=pattern.option["mod"],
+        value_format="month",
+        parsed=args,
+        span=span,
+    )
+
+
+def parse_day(re_match, pattern):
+    args = re_match.groupdict()
+    span = re_match.span()
+
+    value = args["day"]
+    return TIMEX(
+        type="TIME",
+        value=f"P{value}D",
+        value_from_surface=f"P{value}D",
+        text=re_match.group(),
+        mod=pattern.option["mod"],
+        value_format="day",
+        parsed=args,
+        span=span,
+    )
+
+
+def parse_hour(re_match, pattern):
+    args = re_match.groupdict()
+    span = re_match.span()
+
+    value = args["hour"]
+    return TIMEX(
+        type="TIME",
+        value=f"PT{value}H",
+        value_from_surface=f"PT{value}H",
+        text=re_match.group(),
+        mod=pattern.option["mod"],
+        value_format="hour",
+        parsed=args,
+        span=span,
+    )
+
+
+def parse_minutes(re_match, pattern):
+    args = re_match.groupdict()
+    span = re_match.span()
+
+    value = args["minutes"]
+    return TIMEX(
+        type="TIME",
+        value=f"PT{value}M",
+        value_from_surface=f"PT{value}M",
+        text=re_match.group(),
+        mod=pattern.option["mod"],
+        value_format="minutes",
+        parsed=args,
+        span=span,
+    )
+
+
+def parse_second(re_match, pattern):
+    args = re_match.groupdict()
+    span = re_match.span()
+
+    value = args["second"]
+    return TIMEX(
+        type="TIME",
+        value=f"PT{value}S",
+        value_from_surface=f"PT{value}S",
+        text=re_match.group(),
+        mod=pattern.option["mod"],
+        value_format="second",
+        parsed=args,
+        span=span,
+    )
+
+
+def parse_second_with_ms(re_match, pattern):
+    args = re_match.groupdict()
+    span = re_match.span()
+
+    value = args["second_with_ms"].replace("秒", ".")
+    return TIMEX(
+        type="TIME",
+        value=f"PT{value}S",
+        value_from_surface=f"PT{value}S",
+        text=re_match.group(),
+        mod=pattern.option["mod"],
+        value_format="second_with_ms",
+        parsed=args,
+        span=span,
+    )
+
+
+def parse_week(re_match, pattern):
+    args = re_match.groupdict()
+    span = re_match.span()
+
+    value = args["week"]
+    return TIMEX(
+        week="TIME",
+        value=f"P{value}W",
+        value_from_surface=f"P{value}W",
+        text=re_match.group(),
+        mod=pattern.option["mod"],
+        value_format="week",
+        parsed=args,
+        span=span,
+    )
+
 
 p = Place()
 
@@ -6,40 +164,137 @@ patterns = []
 
 
 # 年
-patterns.append({"pattern": f"{p.year}年{p.around_prefix}?(前|まえ)", "mod": "BEFORE"})
-patterns.append({"pattern": f"{p.year}年{p.around_prefix}?(後|あと)", "mod": "AFTER"})
-patterns.append({"pattern": f"{p.year}年(はじめ|初め|始め|初頭|初期|前半|前記|頭)", "mod": "START"})
-patterns.append({"pattern": f"{p.year}年(なかば|半ば|中ごろ|中頃|中盤|中旬|中期|頭)", "mod": "MID"})
-patterns.append({"pattern": f"{p.year}年(後半|後期|終盤|終わり|末)", "mod": "END"})
-patterns.append({"pattern": f"{p.year}年([こご]ろ|頃|近く|前後|くらい|ばかり)", "mod": "APPROX"})
+patterns += [
+    Pattern(
+        re_pattern=f"{p.year}年{p.around_prefix}?(前|まえ)",
+        parse_func=parse_year,
+        option={"mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern=f"{p.year}年{p.around_prefix}?(後|あと)",
+        parse_func=parse_year,
+        option={"mod": "AFTER"},
+    ),
+    Pattern(
+        re_pattern=f"{p.year}年(はじめ|初め|始め|初頭|初期|前半|前記|頭)",
+        parse_func=parse_year,
+        option={"mod": "START"},
+    ),
+    Pattern(
+        re_pattern=f"{p.year}年(なかば|半ば|中ごろ|中頃|中盤|中旬|中期|頭)",
+        parse_func=parse_year,
+        option={"mod": "MID"},
+    ),
+    Pattern(
+        re_pattern=f"{p.year}年(後半|後期|終盤|終わり|末)",
+        parse_func=parse_year,
+        option={"mod": "END"},
+    ),
+    Pattern(
+        re_pattern=f"{p.year}年([こご]ろ|頃|近く|前後|くらい|ばかり)",
+        parse_func=parse_year,
+        option={"mod": "APPROX"},
+    ),
+]
 
 # 月
-patterns.append({"pattern": f"{p.month}月{p.around_prefix}?(前|まえ)", "mod": "BEFORE"})
-patterns.append({"pattern": f"{p.month}月{p.around_prefix}?(後|あと)", "mod": "AFTER"})
+patterns += [
+    Pattern(
+        re_pattern=f"{p.month}月{p.around_prefix}?(前|まえ)",
+        parse_func=parse_month,
+        option={"mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern=f"{p.month}月{p.around_prefix}?(後|あと)",
+        parse_func=parse_month,
+        option={"mod": "AFTER"},
+    ),
+]
+
 
 # 日
-patterns.append({"pattern": f"{p.day}日{p.around_prefix}?(前|まえ)", "mod": "BEFORE"})
-patterns.append({"pattern": f"{p.day}日{p.around_prefix}?(後|あと)", "mod": "AFTER"})
+patterns += [
+    Pattern(
+        re_pattern=f"{p.day}日{p.around_prefix}?(前|まえ)",
+        parse_func=parse_day,
+        option={"mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern=f"{p.day}日{p.around_prefix}?(後|あと)",
+        parse_func=parse_day,
+        option={"mod": "AFTER"},
+    ),
+]
 
 # 世紀
-patterns.append({"pattern": f"{p.century}世紀{p.around_prefix}?(前|まえ)", "mod": "BEFORE"})
-patterns.append({"pattern": f"{p.century}世紀{p.around_prefix}?(後|あと)", "mod": "AFTER"})
+patterns += [
+    Pattern(
+        re_pattern=f"{p.ac_century}世紀{p.around_prefix}?(前|まえ)",
+        parse_func=parse_century,
+        option={"mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern=f"{p.ac_century}世紀{p.around_prefix}?(後|あと)",
+        parse_func=parse_century,
+        option={"mod": "AFTER"},
+    ),
+]
 
 # 週
-patterns.append({"pattern": f"{p.week}週{p.around_prefix}?(前|まえ)", "mod": "BEFORE"})
-patterns.append({"pattern": f"{p.week}週{p.around_prefix}?(後|あと)", "mod": "AFTER"})
+patterns += [
+    Pattern(
+        re_pattern=f"{p.week}日{p.around_prefix}?(前|まえ)",
+        parse_func=parse_week,
+        option={"mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern=f"{p.week}日{p.around_prefix}?(後|あと)",
+        parse_func=parse_week,
+        option={"mod": "AFTER"},
+    ),
+]
 
 # 時間
-patterns.append({"pattern": f"{p.hour}時間{p.around_prefix}?(前|まえ)", "mod": "BEFORE"})
-patterns.append({"pattern": f"{p.hour}時間{p.around_prefix}?(後|あと)", "mod": "AFTER"})
+patterns += [
+    Pattern(
+        re_pattern=f"{p.hour}日{p.around_prefix}?(前|まえ)",
+        parse_func=parse_hour,
+        option={"mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern=f"{p.hour}日{p.around_prefix}?(後|あと)",
+        parse_func=parse_hour,
+        option={"mod": "AFTER"},
+    ),
+]
 
 # 分
-patterns.append({"pattern": f"{p.minutes}分{p.around_prefix}?(前|まえ)", "mod": "BEFORE"})
-patterns.append({"pattern": f"{p.minutes}分{p.around_prefix}?(後|あと)", "mod": "AFTER"})
+patterns += [
+    Pattern(
+        re_pattern=f"{p.minutes}日{p.around_prefix}?(前|まえ)",
+        parse_func=parse_minutes,
+        option={"mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern=f"{p.minutes}日{p.around_prefix}?(後|あと)",
+        parse_func=parse_minutes,
+        option={"mod": "AFTER"},
+    ),
+]
 
 # 秒
-patterns.append({"pattern": f"{p.second}秒{p.around_prefix}?(前|まえ)", "mod": "BEFORE"})
-patterns.append({"pattern": f"{p.second}秒{p.around_prefix}?(後|あと)", "mod": "AFTER"})
+patterns += [
+    Pattern(
+        re_pattern=f"{p.second}日{p.around_prefix}?(前|まえ)",
+        parse_func=parse_second,
+        option={"mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern=f"{p.second}日{p.around_prefix}?(後|あと)",
+        parse_func=parse_second,
+        option={"mod": "AFTER"},
+    ),
+]
 
 
 # {"pattern":"以前", "process_type":"or_less"}
