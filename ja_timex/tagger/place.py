@@ -9,7 +9,7 @@ class Pattern:
         self.option = option
 
     def __repr__(self) -> str:
-        return f"<Pattern: {self.re_pattern} / {self.parse_func}>"
+        return f"<Pattern: {self.re_pattern} / parse_func:{self.parse_func.__name__} / option:{self.option}>"
 
 
 # 正規表現に用いる部分パターン
