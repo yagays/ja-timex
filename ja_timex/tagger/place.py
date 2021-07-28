@@ -65,3 +65,31 @@ class Place:
             return True
         else:
             return False
+
+
+weekday2id = {"月": "1", "火": "2", "水": "3", "木": "4", "金": "5", "土": "6", "日": "7"}
+season2id = {"春": "SP", "夏": "SU", "秋": "FA", "冬": "WI"}
+
+
+def get_weekday_id(text: str) -> str:
+    """曜日の文字表現からidを取得
+
+    Args:
+        text (str): 曜日の文字表現
+
+    Returns:
+        str: 曜日に対応するid文字列
+    """
+    return weekday2id[text]
+
+
+def get_season_id(text: str) -> str:
+    """季節の文字表かからidを取得
+
+    Args:
+        text (str): 季節の文字表現
+
+    Returns:
+        str: 季節に対応するid文字列
+    """
+    return season2id[text]

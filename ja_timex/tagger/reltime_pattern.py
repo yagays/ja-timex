@@ -1,8 +1,10 @@
+import re
+
 from ja_timex.tag import TIMEX
 from ja_timex.tagger.place import Pattern, Place
 
 
-def parse_century(re_match, pattern):
+def parse_century(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
@@ -22,7 +24,7 @@ def parse_century(re_match, pattern):
     )
 
 
-def parse_year(re_match, pattern):
+def parse_year(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
@@ -39,7 +41,7 @@ def parse_year(re_match, pattern):
     )
 
 
-def parse_month(re_match, pattern):
+def parse_month(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
@@ -56,7 +58,7 @@ def parse_month(re_match, pattern):
     )
 
 
-def parse_day(re_match, pattern):
+def parse_day(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
@@ -73,7 +75,7 @@ def parse_day(re_match, pattern):
     )
 
 
-def parse_hour(re_match, pattern):
+def parse_hour(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
@@ -90,7 +92,7 @@ def parse_hour(re_match, pattern):
     )
 
 
-def parse_minutes(re_match, pattern):
+def parse_minutes(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
@@ -107,7 +109,7 @@ def parse_minutes(re_match, pattern):
     )
 
 
-def parse_second(re_match, pattern):
+def parse_second(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
@@ -124,7 +126,7 @@ def parse_second(re_match, pattern):
     )
 
 
-def parse_second_with_ms(re_match, pattern):
+def parse_second_with_ms(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
@@ -141,7 +143,7 @@ def parse_second_with_ms(re_match, pattern):
     )
 
 
-def parse_week(re_match, pattern):
+def parse_week(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 

@@ -1,3 +1,5 @@
+import re
+
 from ja_timex.tag import TIMEX
 from ja_timex.tagger.place import Pattern, Place
 
@@ -14,7 +16,7 @@ patterns = []
 #   e.g. 「3日に5日」とは言えないが、「3日に5時間」「3日に5回」は言える
 
 
-def parse_count_range(re_match, pattern):
+def parse_count_range(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
@@ -37,7 +39,7 @@ def parse_count_range(re_match, pattern):
     )
 
 
-def parse_quant(re_match, pattern):
+def parse_quant(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 

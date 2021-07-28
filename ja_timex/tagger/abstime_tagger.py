@@ -1,34 +1,13 @@
-import re
-from typing import Optional
+from typing import List
 
-from ja_timex.tag import TIMEX
 from ja_timex.tagger.abstime_pattern import patterns
+from ja_timex.tagger.base_tagger import BaseTagger
+from ja_timex.tagger.place import Pattern
 
 
-class AbstimeTagger:
-    def __init__(self) -> None:
+class AbstimeTagger(BaseTagger):
+    def __init__(self, patterns: List[Pattern] = patterns) -> None:
         self.patterns = patterns
-
-    def parse(self, text: str) -> Optional[TIMEX]:
-        results = []
-
-        # preprocess text
-        text = text.strip()
-
-        for pattern in self.patterns:
-            re_match = re.fullmatch(pattern.re_pattern, text)
-            if re_match:
-                results.append(pattern.parse_func(re_match, pattern))
-
-        if len(results) > 0:
-            # 2件以上該当した場合には、先に判定したものを優先する
-            # testの `test_normal_date_multiple_detected()` を参考
-            return results[0]
-        else:
-            return None
-
-    def parse_with_pattern(self, re_match, pattern):
-        return pattern.parse_func(re_match, pattern)
 
 
 if __name__ == "__main__":

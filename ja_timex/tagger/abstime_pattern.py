@@ -1,19 +1,10 @@
+import re
+
 from ja_timex.tag import TIMEX
-from ja_timex.tagger.place import Pattern, Place
-
-weekday2id = {"月": "1", "火": "2", "水": "3", "木": "4", "金": "5", "土": "6", "日": "7"}
-season2id = {"春": "SP", "夏": "SU", "秋": "FA", "冬": "WI"}
+from ja_timex.tagger.place import Pattern, Place, get_season_id, get_weekday_id
 
 
-def get_weekday_id(text: str) -> str:
-    return weekday2id[text]
-
-
-def get_season_id(text: str) -> str:
-    return season2id[text]
-
-
-def parse_absdate(re_match, pattern):
+def parse_absdate(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
@@ -46,7 +37,7 @@ def parse_absdate(re_match, pattern):
     )
 
 
-def parse_weekday(re_match, pattern):
+def parse_weekday(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
@@ -64,7 +55,7 @@ def parse_weekday(re_match, pattern):
     )
 
 
-def parse_season(re_match, pattern):
+def parse_season(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
@@ -85,7 +76,7 @@ def parse_season(re_match, pattern):
     )
 
 
-def parse_quarter(re_match, pattern):
+def parse_quarter(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
@@ -102,7 +93,7 @@ def parse_quarter(re_match, pattern):
     )
 
 
-def parse_fiscal_year(re_match, pattern):
+def parse_fiscal_year(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
@@ -119,7 +110,7 @@ def parse_fiscal_year(re_match, pattern):
     )
 
 
-def parse_ac_century(re_match, pattern):
+def parse_ac_century(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
@@ -137,7 +128,7 @@ def parse_ac_century(re_match, pattern):
     )
 
 
-def parse_bc_year(re_match, pattern):
+def parse_bc_year(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
@@ -154,7 +145,7 @@ def parse_bc_year(re_match, pattern):
     )
 
 
-def parse_bc_century(re_match, pattern):
+def parse_bc_century(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 

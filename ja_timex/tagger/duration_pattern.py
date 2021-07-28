@@ -1,8 +1,10 @@
+import re
+
 from ja_timex.tag import TIMEX
 from ja_timex.tagger.place import Pattern, Place
 
 
-def parse_p(re_match, pattern):
+def parse_p(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
@@ -28,7 +30,7 @@ def parse_p(re_match, pattern):
     )
 
 
-def parse_pt(re_match, pattern):
+def parse_pt(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
