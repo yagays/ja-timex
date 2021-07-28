@@ -18,6 +18,10 @@ def parse_count_range(re_match, pattern):
     args = re_match.groupdict()
     span = re_match.span()
 
+    # 「週1回」などrangeが存在しない場合は、1で埋める
+    if "range" not in args or args["range"] is None:
+        args["range"] = "1"
+
     value = pattern.option["value_template"].format(args["range"])
     freq = pattern.option["freq_template"].format(args["count"])
     return TIMEX(
@@ -29,24 +33,7 @@ def parse_count_range(re_match, pattern):
         value_format="count",
         parsed=args,
         span=span,
-    )
-
-
-def parse_count(re_match, pattern):
-    args = re_match.groupdict()
-    span = re_match.span()
-
-    value = pattern.option["value_template"].format("1")
-    freq = pattern.option["freq_template"].format(args["count"])
-    return TIMEX(
-        type="SET",
-        value=value,
-        value_from_surface=value,
-        text=re_match.group(),
-        freq=freq,
-        value_format="count",
-        parsed=args,
-        span=span,
+        pattern=pattern,
     )
 
 
@@ -265,42 +252,42 @@ patterns += [
 patterns += [
     Pattern(
         re_pattern=f"年に?{p.count}[ヶ|か|ケ|箇]?月",
-        parse_func=parse_count,
+        parse_func=parse_count_range,
         option={"value_template": "P{}Y", "freq_template": "P{}M"},
     ),
     Pattern(
         re_pattern=f"年に?{p.count}日",
-        parse_func=parse_count,
+        parse_func=parse_count_range,
         option={"value_template": "P{}Y", "freq_template": "P{}D"},
     ),
     Pattern(
         re_pattern=f"年に?{p.count}時間",
-        parse_func=parse_count,
+        parse_func=parse_count_range,
         option={"value_template": "P{}Y", "freq_template": "PT{}H"},
     ),
     Pattern(
         re_pattern=f"年に?{p.count}[回|度]",
-        parse_func=parse_count,
+        parse_func=parse_count_range,
         option={"value_template": "P{}Y", "freq_template": "{}X"},
     ),
     Pattern(
         re_pattern=f"月に?{p.count}[回|度]",
-        parse_func=parse_count,
+        parse_func=parse_count_range,
         option={"value_template": "P{}M", "freq_template": "{}X"},
     ),
     Pattern(
         re_pattern=f"週に?{p.count}日",
-        parse_func=parse_count,
+        parse_func=parse_count_range,
         option={"value_template": "P{}W", "freq_template": "P{}D"},
     ),
     Pattern(
         re_pattern=f"週に?{p.count}時間",
-        parse_func=parse_count,
+        parse_func=parse_count_range,
         option={"value_template": "P{}W", "freq_template": "PT{}H"},
     ),
     Pattern(
         re_pattern=f"週に?{p.count}[回|度]",
-        parse_func=parse_count,
+        parse_func=parse_count_range,
         option={"value_template": "P{}W", "freq_template": "{}X"},
     ),
 ]
@@ -310,22 +297,22 @@ patterns += [
 patterns += [
     Pattern(
         re_pattern=f"1日{p.count}時間",
-        parse_func=parse_count,
+        parse_func=parse_count_range,
         option={"value_template": "P{}D", "freq_template": "PT{}H"},
     ),
     Pattern(
         re_pattern=f"1日{p.count}分",
-        parse_func=parse_count,
+        parse_func=parse_count_range,
         option={"value_template": "P{}D", "freq_template": "PT{}M"},
     ),
     Pattern(
         re_pattern=f"1日{p.count}秒",
-        parse_func=parse_count,
+        parse_func=parse_count_range,
         option={"value_template": "P{}D", "freq_template": "PT{}S"},
     ),
     Pattern(
         re_pattern=f"1日{p.count}[回|度]",
-        parse_func=parse_count,
+        parse_func=parse_count_range,
         option={"value_template": "P{}D", "freq_template": "{}X"},
     ),
 ]

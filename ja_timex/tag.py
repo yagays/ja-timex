@@ -1,7 +1,9 @@
-from datetime import datetime
 from dataclasses import dataclass
+from datetime import datetime
 from enum import Enum
 from typing import Dict, Optional, Tuple
+
+from ja_timex.tagger.place import Pattern
 
 
 class TIME_TYPE(Enum):
@@ -31,6 +33,7 @@ class TIMEX:
     value_format: Optional[str] = None
     additional_info: Optional[str] = None
     span: Optional[Tuple[int, int]] = None  # 入力文字列中での正規表現が取得したspan
+    pattern: Optional[Pattern] = None
 
     def to_tag(self) -> str:
         """TIMEX3のタグ文字列を生成する

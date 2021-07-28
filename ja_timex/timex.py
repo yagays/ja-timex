@@ -91,6 +91,7 @@ class TimexParser:
     def _extract(self, processed_text: str):
         all_extracts = []
 
+        # すべてのtaggerのパターンの正規表現を順に適用していく
         for type_name, patterns in self.all_patterns.items():
             for pattern in patterns:
                 # 文字列中からのパターン検知

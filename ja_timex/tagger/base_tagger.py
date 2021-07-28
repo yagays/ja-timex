@@ -1,15 +1,13 @@
 import re
-from typing import Optional
 
 from ja_timex.tag import TIMEX
-from ja_timex.tagger.abstime_pattern import patterns
 
 
-class AbstimeTagger:
-    def __init__(self) -> None:
+class BaseTagger:
+    def __init__(self, patterns=None) -> None:
         self.patterns = patterns
 
-    def parse(self, text: str) -> Optional[TIMEX]:
+    def parse(self, text: str) -> TIMEX:
         results = []
 
         # preprocess text
@@ -29,7 +27,3 @@ class AbstimeTagger:
 
     def parse_with_pattern(self, re_match, pattern):
         return pattern.parse_func(re_match, pattern)
-
-
-if __name__ == "__main__":
-    abstime_tagger = AbstimeTagger()

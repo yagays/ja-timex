@@ -8,6 +8,9 @@ class Pattern:
         self.parse_func = parse_func
         self.option = option
 
+    def __repr__(self) -> str:
+        return f"<Pattern: {self.re_pattern} / {self.parse_func}>"
+
 
 # 正規表現に用いる部分パターン
 @dataclass
