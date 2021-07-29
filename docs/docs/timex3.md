@@ -15,6 +15,15 @@ TIMEX3タグには、下記の属性を持ちます。
 | @freq             | 頻度集合表現における頻度                               | `2X`         | 頻度集合表現のみ |
 | @quant            | 頻度集合表現における期間                               | `P1W`        | 頻度集合表現のみ |
 | @mod              | 時間情報表現の補足情報としてのモダリティ               | `APPROX`     | 任意             |
+| @rangeStart              |                |      |              |
+| @rangeEnd              |                |      |              |
+
+なお、[Python PEP8](https://www.python.org/dev/peps/pep-0008/)のコーディング規約に則り、キャメルケースで書かれる属性名は`TIMEX`クラス上ではスネークケースで表現します。
+
+- 属性名とクラス変数名が異なるもの
+  - `timex.value_from_surface`
+  - `timex.range_start`
+  - `timex.range_end`
 
 ### @tid
 
@@ -79,3 +88,10 @@ TIMEX3タグには、下記の属性を持ちます。
 | AFTER        | 日付/時刻表現より後 | 過ぎ         |
 | ON_OR_BEFORE | 日付/時刻表現以前   | 以前         |
 | ON_OR_AFTER  | 日付/時刻表現以後   | 以降、以来   |
+
+### `@range_start`および`@range_end`
+
+## 小西らおよび成澤の定義との差異
+
+- `@temporalFunction`の削除
+  - 文脈情報より曖昧性解消可能かどうかの真偽値を表す`@temporalFunction`は、アノテーションにおいては`@value`および`@valueFromSurface`を区別するために重要な要素であったが、ja-timexではルールベースによる常に一貫した判定が不可能なため、`TIMEX`タグとして値を付与しないことにした
