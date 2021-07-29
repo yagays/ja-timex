@@ -22,8 +22,6 @@ class TIMEX:
     text: str
 
     tid: Optional[str] = None
-    temporal_function: Optional[bool] = None
-    # 頻度集合表現
     freq: Optional[str] = None
     quant: Optional[str] = None
     mod: Optional[str] = None
