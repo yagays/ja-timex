@@ -9,7 +9,6 @@ def parse_absdate(re_match: re.Match, pattern: Pattern) -> TIMEX:
     span = re_match.span()
 
     # fill unknown position by "X"
-
     if "calendar_year" not in args:
         args["calendar_year"] = "XXXX"
     if "calendar_month" not in args:
@@ -21,9 +20,9 @@ def parse_absdate(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args["calendar_month"] = args["calendar_month"].zfill(2)
     args["calendar_day"] = args["calendar_day"].zfill(2)
 
-    additional_info = None
-    if "weekday" in args:
-        additional_info = {"weekday_text": args["weekday"], "weekday_id": get_weekday_id(args["weekday"])}
+    # additional_info = None
+    # if "weekday" in args:
+    #     additional_info = {"weekday_text": args["weekday"], "weekday_id": get_weekday_id(args["weekday"])}
 
     return TIMEX(
         type="DATE",
@@ -32,7 +31,6 @@ def parse_absdate(re_match: re.Match, pattern: Pattern) -> TIMEX:
         text=re_match.group(),
         value_format="absdate",
         parsed=args,
-        additional_info=additional_info,
         span=span,
     )
 
@@ -163,6 +161,34 @@ def parse_bc_century(re_match: re.Match, pattern: Pattern) -> TIMEX:
     )
 
 
+def parse_time(re_match: re.Match, pattern: Pattern) -> TIMEX:
+    args = re_match.groupdict()
+    span = re_match.span()
+
+    # fill unknown position by "X"
+    if "clock_hour" not in args:
+        args["clock_hour"] = "XX"
+    if "clock_minutes" not in args:
+        args["clock_minutes"] = "XX"
+    if "clock_second" not in args:
+        args["clock_second"] = "XX"
+    # zero padding
+    hour = args["clock_hour"].zfill(2)
+    minutes = args["clock_minutes"].zfill(2)
+    second = args["clock_second"].zfill(2)
+
+    value = f"T{hour}-{minutes}-{second}"
+    return TIMEX(
+        type="TIME",
+        value=value,
+        value_from_surface=value,
+        text=re_match.group(),
+        value_format="time",
+        parsed=args,
+        span=span,
+    )
+
+
 p = Place()
 patterns = []
 
@@ -236,6 +262,55 @@ patterns += [
     Pattern(
         re_pattern=p.bc_century,
         parse_func=parse_bc_century,
+        option={},
+    ),
+]
+
+# 時刻
+patterns += [
+    Pattern(
+        re_pattern=f"{p.clock_hour}時{p.clock_minutes}分{p.clock_second}秒",
+        parse_func=parse_time,
+        option={},
+    ),
+    Pattern(
+        re_pattern=f"{p.clock_hour}時{p.clock_minutes}分",
+        parse_func=parse_time,
+        option={},
+    ),
+    Pattern(
+        re_pattern=f"{p.clock_minutes}分{p.clock_second}秒",
+        parse_func=parse_time,
+        option={},
+    ),
+    Pattern(
+        re_pattern=f"{p.clock_hour}時",
+        parse_func=parse_time,
+        option={},
+    ),
+    Pattern(
+        re_pattern=f"{p.clock_minutes}分",
+        parse_func=parse_time,
+        option={},
+    ),
+    Pattern(
+        re_pattern=f"{p.clock_second}秒",
+        parse_func=parse_time,
+        option={},
+    ),
+    Pattern(
+        re_pattern=f"{p.clock_hour}:{p.clock_minutes}:{p.clock_second}",
+        parse_func=parse_time,
+        option={},
+    ),
+    Pattern(
+        re_pattern=f"{p.clock_hour}:{p.clock_minutes}",
+        parse_func=parse_time,
+        option={},
+    ),
+    Pattern(
+        re_pattern=f"{p.clock_minutes}:{p.clock_second}",
+        parse_func=parse_time,
         option={},
     ),
 ]

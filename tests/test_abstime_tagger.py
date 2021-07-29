@@ -119,5 +119,40 @@ def test_bc_century(t):
     assert t.parse("紀元前21世紀").value == "BC20XX"
 
 
-# def test_(t):
-#     t.parse("").value == ""
+def test_time(t):
+    assert t.parse("23時59分59秒").value == "T23-59-59"
+    assert t.parse("23時59分").value == "T23-59-XX"
+    assert t.parse("59分59秒").value == "TXX-59-59"
+    assert t.parse("23時").value == "T23-XX-XX"
+    assert t.parse("59分").value == "TXX-59-XX"
+    assert t.parse("59秒").value == "TXX-XX-59"
+
+    assert t.parse("00時00分00秒").value == "T00-00-00"
+    assert t.parse("0時0分0秒").value == "T00-00-00"
+
+    assert t.parse("23時59秒") is None
+    assert t.parse("23.5時59秒") is None
+
+    assert t.parse("23:59:59").value == "T23-59-59"
+    # HH:MMとMM:SSが考えられるパターンでは前者を優先する
+    assert t.parse("23:59").value == "T23-59-XX"
+    assert t.parse("59:59").value == "TXX-59-59"  # 24時を大幅に超えてMM:SSだと考えられる場合
+
+    # 正確には時間の範囲は[0,24]だが、深夜から翌日に掛けて25以上の値を取る場合がある
+    # 日付表現を伴わない場合もあるので、＠valueや@valueFromSurfaceでは日付の正規化は行わない
+    assert t.parse("25時30分").value == "T25-30-XX"
+    assert t.parse("29時").value == "T29-XX-XX"
+    # 時刻表現として30時以上はないものとする
+    assert t.parse("30時") is None
+
+
+def test_timex_type(t):
+    assert t.parse("2021年7月18日").type == "DATE"
+    assert t.parse("月曜日").type == "DATE"
+    assert t.parse("春").type == "DATE"
+    assert t.parse("Q1").type == "DATE"
+    assert t.parse("2021年度").type == "DATE"
+    assert t.parse("1世紀").type == "DATE"
+    assert t.parse("紀元前1年").type == "DATE"
+    assert t.parse("紀元前1世紀").type == "DATE"
+    assert t.parse("1時2分3秒").type == "TIME"
