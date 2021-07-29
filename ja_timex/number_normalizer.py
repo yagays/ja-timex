@@ -1,4 +1,6 @@
 import re
+from dataclasses import dataclass
+from typing import Tuple
 
 import mojimoji
 
@@ -7,6 +9,18 @@ char2int = {"〇": 0, "一": 1, "二": 2, "三": 3, "四": 4, "五": 5, "六": 6
 char2power_allow_head = {"十": 1, "百": 2, "千": 3}
 char2power = {"万": 4, "億": 8, "兆": 12, "京": 16, "垓": 20}
 char_int_table = str.maketrans({k: str(v) for k, v in char2int.items()})
+
+
+@dataclass
+class IgnorePhrase:
+    """漢数字を含む慣用句で変換しないパターン
+
+    pattern: 慣用句のパターン
+    relative_position_to_ref: 漢数字を基準として、パターンの文字列の取りうるインデックスの相対位置
+    """
+
+    pattern: str
+    relative_position_to_ref: Tuple[int, int]
 
 
 def kansuji2number(text: str) -> str:
@@ -45,8 +59,8 @@ def kansuji2number(text: str) -> str:
 class NumberNormalizer:
     def __init__(self) -> None:
         self.ignore_kansuji_phrase = {
-            "一": [{"pattern": "一時的", "relative_position_to_ref": (0, 3)}],
-            "十": [{"pattern": "不十分", "relative_position_to_ref": (-1, 2)}],
+            "一": [IgnorePhrase(pattern="一時的", relative_position_to_ref=(0, 3))],
+            "十": [IgnorePhrase(pattern="不十分", relative_position_to_ref=(-1, 2))],
         }
 
     def normalize(self, text: str) -> str:
@@ -95,9 +109,9 @@ class NumberNormalizer:
             should_ignore = False
             if re_iter.group() in self.ignore_kansuji_phrase:
                 for ignore_phrase in self.ignore_kansuji_phrase[re_iter.group()]:
-                    text_start_i = start_i + ignore_phrase["relative_position_to_ref"][0]
-                    text_end_i = start_i + ignore_phrase["relative_position_to_ref"][1]
-                    if text[text_start_i:text_end_i] == ignore_phrase["pattern"]:
+                    text_start_i = start_i + ignore_phrase.relative_position_to_ref[0]
+                    text_end_i = start_i + ignore_phrase.relative_position_to_ref[1]
+                    if text[text_start_i:text_end_i] == ignore_phrase.pattern:
                         should_ignore = True
 
             if not should_ignore:
