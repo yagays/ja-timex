@@ -48,29 +48,6 @@ def test_normal_date_invalid(t):
     assert t.parse("13/13") is None
 
 
-def test_normal_date_with_weekday(t):
-    # 日付はoptionに入る???
-    assert t.parse("2021年7月18日日曜日").value == "2021-07-18"
-    assert t.parse("7月18日日曜日").value == "XXXX-07-18"
-    assert t.parse("18日日曜日").value == "XXXX-XX-18"
-
-    assert t.parse("2021年7月18日(日)").value == "2021-07-18"
-    assert t.parse("2021年7月18日(日曜)").value == "2021-07-18"
-    assert t.parse("2021年7月18日(日曜日)").value == "2021-07-18"
-    assert t.parse("2021年7月18日 日").value == "2021-07-18"
-    assert t.parse("2021年7月18日 日曜").value == "2021-07-18"
-    assert t.parse("2021年7月18日 日曜日").value == "2021-07-18"
-
-    assert t.parse("2021年7月18日 (日)").value == "2021-07-18"
-    assert t.parse("2021年7月18日 ( 日 )").value == "2021-07-18"
-    assert t.parse("2021年7月18日 ( 日 ) ").value == "2021-07-18"  # 末尾のスペースはtagger内の前処理で消える
-
-    assert t.parse("2021年7月18日日曜日").additional_info == {"weekday_text": "日", "weekday_id": "7"}
-    assert t.parse("2021年7月18日日曜").additional_info == {"weekday_text": "日", "weekday_id": "7"}
-    assert t.parse("2021年7月18日(日)").additional_info == {"weekday_text": "日", "weekday_id": "7"}
-    assert t.parse("2021年7月18日 (日)").additional_info == {"weekday_text": "日", "weekday_id": "7"}
-
-
 def test_weekday(t):
     assert t.parse("月曜日").value == "XXXX-WXX-1"
     assert t.parse("火曜日").value == "XXXX-WXX-2"
