@@ -27,8 +27,8 @@ def test_abstime_partial_pattern_of_number_expression(p):
 
 
 def test_tid_is_modified_in_parsing(p):
-    results = p.parse("彼は2008年4月から週に3回ジョギングを1時間行ってきた")
+    timexes = p.parse("彼は2008年4月から週に3回ジョギングを1時間行ってきた")
 
-    assert results[0].tid == "t0"
-    assert results[1].tid == "t1"
-    assert results[2].tid == "t2"
+    assert timexes[0].tid == "t0"
+    assert timexes[1].tid == "t1"
+    assert timexes[2].tid == "t2"
