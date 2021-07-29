@@ -172,10 +172,19 @@ def parse_time(re_match: re.Match, pattern: Pattern) -> TIMEX:
         args["clock_minutes"] = "XX"
     if "clock_second" not in args:
         args["clock_second"] = "XX"
+
     # zero padding
     hour = args["clock_hour"].zfill(2)
     minutes = args["clock_minutes"].zfill(2)
     second = args["clock_second"].zfill(2)
+
+    # AM/PMを24時間表記に変更する
+    if args.get("am_prefix") or args.get("am_suffix"):
+        if hour == "12":
+            hour = "00"
+    if args.get("pm_prefix") or args.get("pm_suffix"):
+        if hour != "XX" and 1 <= int(hour) <= 11:
+            hour = str(int(hour) + 12)
 
     value = f"T{hour}-{minutes}-{second}"
     return TIMEX(
@@ -269,12 +278,12 @@ patterns += [
 # 時刻
 patterns += [
     Pattern(
-        re_pattern=f"{p.clock_hour}時{p.clock_minutes}分{p.clock_second}秒",
+        re_pattern=f"{p.ampm_prefix}?{p.clock_hour}時{p.clock_minutes}分{p.clock_second}秒",
         parse_func=parse_time,
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.clock_hour}時{p.clock_minutes}分",
+        re_pattern=f"{p.ampm_prefix}?{p.clock_hour}時{p.clock_minutes}分{p.ampm_suffix}?",
         parse_func=parse_time,
         option={},
     ),
@@ -284,7 +293,7 @@ patterns += [
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.clock_hour}時",
+        re_pattern=f"{p.ampm_prefix}?{p.clock_hour}時{p.ampm_suffix}?",
         parse_func=parse_time,
         option={},
     ),
@@ -299,12 +308,12 @@ patterns += [
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.clock_hour}:{p.clock_minutes}:{p.clock_second}",
+        re_pattern=f"{p.ampm_prefix}?{p.clock_hour}:{p.clock_minutes}:{p.clock_second}{p.ampm_suffix}?",
         parse_func=parse_time,
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.clock_hour}:{p.clock_minutes}",
+        re_pattern=f"{p.ampm_prefix}?{p.clock_hour}:{p.clock_minutes}{p.ampm_suffix}?",
         parse_func=parse_time,
         option={},
     ),

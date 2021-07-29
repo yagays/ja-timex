@@ -146,6 +146,36 @@ def test_time(t):
     assert t.parse("30時") is None
 
 
+def test_time_ampm(t):
+    # 変換の正しさ
+    assert t.parse("12:10AM").value == "T00-10-XX"
+    assert t.parse("1:10AM").value == "T01-10-XX"
+    assert t.parse("11:10AM").value == "T11-10-XX"
+    assert t.parse("12:10PM").value == "T12-10-XX"
+    assert t.parse("1:10PM").value == "T13-10-XX"
+    assert t.parse("11:10PM").value == "T23-10-XX"
+
+    # 対応するprefix/suffixの正しさ
+    assert t.parse("午前12時10分").value == "T00-10-XX"
+    assert t.parse("午後11時10分").value == "T23-10-XX"
+    assert t.parse("AM12時10分").value == "T00-10-XX"
+    assert t.parse("PM11時10分").value == "T23-10-XX"
+    assert t.parse("am12時10分").value == "T00-10-XX"
+    assert t.parse("pm11時10分").value == "T23-10-XX"
+    assert t.parse("12:10AM").value == "T00-10-XX"
+    assert t.parse("11:10PM").value == "T23-10-XX"
+    assert t.parse("12:10 AM").value == "T00-10-XX"
+    assert t.parse("11:10 PM").value == "T23-10-XX"
+
+    # 時間のみ
+    assert t.parse("午前12時").value == "T00-XX-XX"
+    assert t.parse("午後11時").value == "T23-XX-XX"
+
+    # 本来は午前午後/AMPMの12 Hour Clockの記載で0時は存在しないが、慣例として24 Hour Clockでの0時に割り当てる
+    assert t.parse("午前0時").value == "T00-XX-XX"
+    assert t.parse("00:10 AM").value == "T00-10-XX"
+
+
 def test_timex_type(t):
     assert t.parse("2021年7月18日").type == "DATE"
     assert t.parse("月曜日").type == "DATE"

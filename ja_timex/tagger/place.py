@@ -28,7 +28,12 @@ class Place:
     bc_century: str = "紀元前(?P<bc_century>[1-9]?[0-9]{,2})世紀"
 
     # abstime: 時刻表現
-
+    am_prefix: str = "(?P<am_prefix>(午前|am|AM|))"
+    am_suffix: str = "(?P<am_suffix>(am|AM))"
+    pm_prefix: str = "(?P<pm_prefix>(午後|pm|PM))"
+    pm_suffix: str = "(?P<pm_suffix>(pm|PM))"
+    ampm_prefix: str = f"({am_prefix}|{pm_prefix})"
+    ampm_suffix: str = f"\\s?({am_suffix}|{pm_suffix})"
     clock_hour: str = "(?P<clock_hour>[0-2]?[0-9])"
     clock_minutes: str = "(?P<clock_minutes>[0-5]?[0-9])"
     clock_second: str = "(?P<clock_second>[0-5]?[0-9])"
