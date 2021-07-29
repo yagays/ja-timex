@@ -29,6 +29,7 @@ if text:
         for timex in timexes:
             timex_df = pd.DataFrame(
                 [
+                    timex.tid,
                     timex.type,
                     timex.value,
                     timex.value_from_surface,
@@ -46,6 +47,7 @@ if text:
                     timex.span,
                 ],
                 index=[
+                    "@tid",
                     "@type",
                     "@value",
                     "@value_from_surface",

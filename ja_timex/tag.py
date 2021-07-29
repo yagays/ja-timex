@@ -15,11 +15,13 @@ class TIME_TYPE(Enum):
 
 @dataclass
 class TIMEX:
+
     type: str
     value: str
     value_from_surface: str
     text: str
 
+    tid: Optional[str] = None
     temporal_function: Optional[bool] = None
     # 頻度集合表現
     freq: Optional[str] = None
@@ -41,7 +43,10 @@ class TIMEX:
         Returns:
             str: タグで囲まれた文字列
         """
-        attributes = [f'type="{self.type}"', f'value="{self.value}"', f'valueFromSurface="{self.value_from_surface}"']
+        attributes = []
+        if self.tid:
+            attributes.append(f'tid="{self.tid}"')
+        attributes += [f'type="{self.type}"', f'value="{self.value}"', f'valueFromSurface="{self.value_from_surface}"']
         if self.freq:
             attributes.append(f'freq="{self.freq}"')
         if self.quant:

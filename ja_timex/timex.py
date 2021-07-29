@@ -77,7 +77,7 @@ class TimexParser:
         # 規格化
         timex_tags = self._parse(type2extracts)
 
-        # 修飾語によるタグの情報付与
+        # 規格化後のタグの情報付与
         timex_tags = self._modify_additional_information(timex_tags, processed_text)
 
         # 複数のタグの関係性推定
@@ -135,11 +135,11 @@ class TimexParser:
         return results
 
     def _modify_additional_information(self, timex_tags: List[TIMEX], processed_text: str) -> List[TIMEX]:
-        # add tid
-
-        # update mod
+        # update @tid and @mod
         modified_tags = []
-        for timex in timex_tags:
+        for i, timex in enumerate(timex_tags):
+            timex.tid = f"t{i}"
+
             parsed_mod = self.modifier.parse(processed_text, timex.span, timex.type)
             if parsed_mod:
                 timex.mod = parsed_mod

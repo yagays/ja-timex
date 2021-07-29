@@ -19,3 +19,12 @@ def test_to_tag_duration():
 def test_to_tag_set():
     date = TIMEX(type="SET", value="P1W", value_from_surface="P1W", text="週に1回", freq="1X")
     assert date.to_tag() == '<TIMEX3 type="SET" value="P1W" valueFromSurface="P1W" freq="1X">週に1回</TIMEX3>'
+
+
+def test_tid():
+    # tidは文脈情報を利用してTimexParser.parse()内の後処理で付与されるため、Optional[str]としている
+    date = TIMEX(type="DATE", tid="t0", value="2021-07-18", value_from_surface="2021-07-18", text="2021年07月18日")
+    assert (
+        date.to_tag()
+        == '<TIMEX3 tid="t0" type="DATE" value="2021-07-18" valueFromSurface="2021-07-18">2021年07月18日</TIMEX3>'
+    )
