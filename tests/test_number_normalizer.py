@@ -8,10 +8,6 @@ def nn():
     return NumberNormalizer()
 
 
-def test_normalize_number(nn):
-    pass
-
-
 def test_normalize_zen_to_han(nn):
     assert nn._normalize_zen_to_han("１世紀") == "1世紀"
     assert nn._normalize_zen_to_han("２０２１年") == "2021年"
