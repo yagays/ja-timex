@@ -44,19 +44,32 @@ def kansuji2number(text: str) -> str:
 
 class NumberNormalizer:
     def __init__(self) -> None:
-        pass
-        self.ignore_kansuji_phrase = {"一": "一時的", "十": "十分"}
+        self.ignore_kansuji_phrase = {
+            "一": [{"pattern": "一時的", "relative_position_to_ref": (0, 3)}],
+            "十": [{"pattern": "不十分", "relative_position_to_ref": (-1, 2)}],
+        }
 
     def normalize(self, text: str) -> str:
         text = self._normalize_zen_to_han(text)
-
         text = self._normalize_kansuji(text)
+        text = self._remove_comma_inside_digits(text)
 
         return text
 
     def _normalize_zen_to_han(self, text: str) -> str:
+        """半角数字に正規化する
+
+        全角文字の数字および全角内に含まれる句点および句読点を、すべて半角にする
+
+        Args:
+            text (str): 入力文字列
+
+        Returns:
+            str: 半角に正規化した文字列
+        """
         text = mojimoji.zen_to_han(text, kana=False, ascii=False)
 
+        # 数字の間にはいる,や.の全角文字を半角にする
         re_match = re.search("[0-9][，．][0-9]", text)
         if re_match:
             number_start_i, number_end_i = re_match.span()
@@ -65,21 +78,41 @@ class NumberNormalizer:
 
         return text
 
-    def _normalize_kansuji(self, text):
+    def _normalize_kansuji(self, text: str) -> str:
+        """漢数字をアラビア数字に正規化する
+
+        Args:
+            text (str): 入力文字列
+
+        Returns:
+            [str]: アラビア数字に正規化した文字列
+        """
         for re_iter in re.finditer("[〇一二三四五六七八九十百千万億兆京垓]+", text):
             start_i, end_i = re_iter.span()
             replace_text = kansuji2number(re_iter.group())
 
             # 慣用句などの無視すべき表現をチェックする
-            # if re_iter.group() in self.ignore_kansuji_phrase:
-            #     for ignore_phrase in self.ignore_kansuji_phrase[re_iter.group()]:
-            #         if text[start_i:start_i+len(ignore_phrase)] == ignore_phrase:
-            #             continue
+            should_ignore = False
+            if re_iter.group() in self.ignore_kansuji_phrase:
+                for ignore_phrase in self.ignore_kansuji_phrase[re_iter.group()]:
+                    text_start_i = start_i + ignore_phrase["relative_position_to_ref"][0]
+                    text_end_i = start_i + ignore_phrase["relative_position_to_ref"][1]
+                    if text[text_start_i:text_end_i] == ignore_phrase["pattern"]:
+                        should_ignore = True
 
-            text = text[:start_i] + replace_text + text[end_i:]
+            if not should_ignore:
+                text = text[:start_i] + replace_text + text[end_i:]
         return text
 
     def _remove_comma_inside_digits(self, text: str) -> str:
+        """可読性のために挿入されるカンマを削除する
+
+        Args:
+            text (str): 入力文字列
+
+        Returns:
+            str: カンマを削除した文字列
+        """
         re_match = re.search("(([0-9]{1,3}(,[0-9]{3})*)(?![0-9]))", text)
         if re_match:
             number_start_i, number_end_i = re_match.span()

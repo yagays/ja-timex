@@ -128,9 +128,6 @@ def test_kansuji2number_positional_notation():
     assert kansuji2number("六・〇〇") == "6・00"
     assert kansuji2number("一〇・三〇") == "10・30"
 
-    # 以下の表記は存在するが、ここでは数字のみが入ってくる前提のため、考慮しない
-    # assert kansuji2number("一〇万年") == "10万年"
-
 
 def test_test_kansuji2number_mixed():
     # その桁が0であることを示すような、記法が混ざるパターン
@@ -162,25 +159,27 @@ def test_normalize_kansuji(nn):
     # 青空文庫「パソコン創世記」富田倫生
     assert nn._normalize_kansuji("一九六〇年代に出合った歌と一九七〇年代に生まれた") == "1960年代に出合った歌と1970年代に生まれた"
 
+
+def test_normalize_kansuji_should_not_normalize(nn):
+    assert nn._normalize_kansuji("一時をお知らせします") == "1時をお知らせします"
+    assert nn._normalize_kansuji("一時的なお知らせ") == "一時的なお知らせ"
+
+    assert nn._normalize_kansuji("準備に十分") == "準備に10分"
+    assert nn._normalize_kansuji("準備が不十分") == "準備が不十分"
+
+    # 文脈の意味を考慮しないと判定できない例は、今のところ対象としない
     # assert nn._normalize_kansuji("一時をお知らせします")
     # assert nn._normalize_kansuji("一時はどうなることかと")
-    # assert nn._normalize_kansuji("一時的な断水")
-
-    # assert nn._normalize_kansuji("十分な量")
-    # assert nn._normalize_kansuji("十分間のインターバル")
-    # assert nn._normalize_kansuji("準備が不十分")
-
-    # assert nn.normalize_kansuji("二分五厘")
+    # assert nn._normalize_kansuji("十分なインターバル")
+    # assert nn._normalize_kansuji("十分のインターバル")
+    # assert nn.normalize_kansuji("打率は二分五厘")
 
 
 def test_normalize_phrase_contains_number(nn):
-    # 下記は青空文庫より用例を収集
+    # 慣用句として本来は漢数字から数字に置換すべきではないが、時間表現とは関係ないので許容しているケース
 
-    # 魔都 久生十蘭
-    assert nn.normalize("噴水が歌を唄うということですが一体それは真実でしょうか")
+    # 青空文庫「魔都」 久生十蘭
+    assert nn._normalize_kansuji("噴水が歌を唄うということですが一体それは真実でしょうか") == "噴水が歌を唄うということですが1体それは真実でしょうか"
 
-    # 三国志 05 臣道の巻 吉川英治
-    assert nn.normalize("三人の血はひとつだ。三人は一心同体だと")
-
-    # 獄中への手紙 06 一九三九年（昭和十四年） 宮本百合子
-    assert nn.normalize("歩くのがまだ十分ゆかず。")
+    # 「三国志 05 臣道の巻」 吉川英治
+    assert nn._normalize_kansuji("三人の血はひとつだ。三人は一心同体だと") == "3人の血はひとつだ。3人は1心同体だと"
