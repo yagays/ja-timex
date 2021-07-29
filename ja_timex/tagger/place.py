@@ -66,7 +66,7 @@ class Place:
     day_range: str = "(?P<day_range>[0-9]+\\.?[0-9]*)"
     range: str = "(?P<range>[0-9]+\\.?[0-9]*)"  # 頻度における数値としての表現
 
-    # prefix and suffix for mod
+    # prefix and suffix for mod (pattern nameは要らないかも)
     before_suffix: str = "(?P<before_suffix>(前|まえ))"
     after_suffix: str = "(?P<after_suffix>(後|あと))"
     start_suffix: str = "(?P<start_suffix>(はじめ|初め|始め|初頭|初期|前半|前記|頭))"

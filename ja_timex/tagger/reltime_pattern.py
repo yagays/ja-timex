@@ -240,7 +240,6 @@ patterns += [
         parse_func=parse_ac_century,
         option={"mod": "APPROX"},
     ),
-    # stard, mid,end suffixを付ける
 ]
 
 # 週
