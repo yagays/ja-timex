@@ -1,6 +1,7 @@
 import pytest
 
 from ja_timex.modifier import Modifier
+from ja_timex.tag import TIMEX
 
 
 @pytest.fixture(scope="module")
@@ -9,12 +10,20 @@ def m():
 
 
 def test_modifier_prefix(m):
-    assert m.parse("約1年前", (1, 2), "DATE") == "APPROX"
+    target_text = "約1年前"
+    target_timex = TIMEX(type="DATE", value="", value_from_surface="", text=target_text, span=(1, 2))
+    assert m.parse(target_text, target_timex).mod == "APPROX"
 
-    assert m.parse("約、1年前", (2, 3), "DATE") is None
+    target_text = "約、1年前"
+    target_timex = TIMEX(type="DATE", value="", value_from_surface="", text=target_text, span=(2, 3))
+    assert m.parse(target_text, target_timex).mod is None
 
 
 def test_modifier_suffix(m):
-    assert m.parse("2021年頃", (0, 4), "DATE") == "APPROX"
+    target_text = "2021年頃"
+    target_timex = TIMEX(type="DATE", value="", value_from_surface="", text=target_text, span=(0, 4))
+    assert m.parse(target_text, target_timex).mod == "APPROX"
 
-    assert m.parse("2021年かその頃", (0, 4), "DATE") is None
+    target_text = "2021年かその頃"
+    target_timex = TIMEX(type="DATE", value="", value_from_surface="", text=target_text, span=(0, 4))
+    assert m.parse(target_text, target_timex).mod is None

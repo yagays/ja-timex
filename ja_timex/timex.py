@@ -140,9 +140,7 @@ class TimexParser:
         for i, timex in enumerate(timex_tags):
             timex.tid = f"t{i}"
 
-            parsed_mod = self.modifier.parse(processed_text, timex.span, timex.type)
-            if parsed_mod:
-                timex.mod = parsed_mod
+            timex = self.modifier.parse(processed_text, timex)
 
             modified_tags.append(timex)
 
