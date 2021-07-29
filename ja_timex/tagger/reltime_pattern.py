@@ -4,11 +4,11 @@ from ja_timex.tag import TIMEX
 from ja_timex.tagger.place import Pattern, Place
 
 
-def parse_century(re_match: re.Match, pattern: Pattern) -> TIMEX:
+def parse_ac_century(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
-    century_num = int(args["accentury"])
+    century_num = int(args["ac_century"])
     century_range = f"{century_num - 1}" + "XX"
     value = century_range.zfill(4)
     f"{century_num - 1}" + "XX"
@@ -18,7 +18,7 @@ def parse_century(re_match: re.Match, pattern: Pattern) -> TIMEX:
         value_from_surface=value,
         text=re_match.group(),
         mod=pattern.option["mod"],
-        value_format="century",
+        value_format="ac_century",
         parsed=args,
         span=span,
     )
@@ -149,7 +149,7 @@ def parse_week(re_match: re.Match, pattern: Pattern) -> TIMEX:
 
     value = args["week"]
     return TIMEX(
-        week="TIME",
+        type="TIME",
         value=f"P{value}W",
         value_from_surface=f"P{value}W",
         text=re_match.group(),
@@ -168,43 +168,38 @@ patterns = []
 # 年
 patterns += [
     Pattern(
-        re_pattern=f"{p.year}年{p.around_prefix}?(前|まえ)",
+        re_pattern=f"{p.year}年{p.around_suffix}?{p.before_suffix}",
         parse_func=parse_year,
         option={"mod": "BEFORE"},
     ),
     Pattern(
-        re_pattern=f"{p.year}年{p.around_prefix}?(後|あと)",
+        re_pattern=f"{p.year}年{p.around_suffix}?{p.after_suffix}",
         parse_func=parse_year,
         option={"mod": "AFTER"},
     ),
     Pattern(
-        re_pattern=f"{p.year}年(はじめ|初め|始め|初頭|初期|前半|前記|頭)",
+        re_pattern=f"{p.year}年{p.approx_suffix}",
         parse_func=parse_year,
-        option={"mod": "START"},
-    ),
-    Pattern(
-        re_pattern=f"{p.year}年(なかば|半ば|中ごろ|中頃|中盤|中旬|中期|頭)",
-        parse_func=parse_year,
-        option={"mod": "MID"},
-    ),
-    Pattern(
-        re_pattern=f"{p.year}年(後半|後期|終盤|終わり|末)",
-        parse_func=parse_year,
-        option={"mod": "END"},
+        option={"mod": "APPROX"},
     ),
 ]
 
 # 月
 patterns += [
     Pattern(
-        re_pattern=f"{p.month}月{p.around_prefix}?(前|まえ)",
+        re_pattern=f"{p.month}[ヶ|か|ケ|箇]月{p.around_suffix}?{p.before_suffix}",
         parse_func=parse_month,
         option={"mod": "BEFORE"},
     ),
     Pattern(
-        re_pattern=f"{p.month}月{p.around_prefix}?(後|あと)",
+        re_pattern=f"{p.month}[ヶ|か|ケ|箇]月{p.around_suffix}?{p.after_suffix}",
         parse_func=parse_month,
         option={"mod": "AFTER"},
+    ),
+    Pattern(
+        re_pattern=f"{p.month}[ヶ|か|ケ|箇]月{p.approx_suffix}",
+        parse_func=parse_month,
+        option={"mod": "APPROX"},
     ),
 ]
 
@@ -212,84 +207,115 @@ patterns += [
 # 日
 patterns += [
     Pattern(
-        re_pattern=f"{p.day}日{p.around_prefix}?(前|まえ)",
+        re_pattern=f"{p.day}日{p.around_suffix}?{p.before_suffix}",
         parse_func=parse_day,
         option={"mod": "BEFORE"},
     ),
     Pattern(
-        re_pattern=f"{p.day}日{p.around_prefix}?(後|あと)",
+        re_pattern=f"{p.day}日{p.around_suffix}?{p.after_suffix}",
         parse_func=parse_day,
         option={"mod": "AFTER"},
+    ),
+    Pattern(
+        re_pattern=f"{p.day}日{p.approx_suffix}",
+        parse_func=parse_day,
+        option={"mod": "APPROX"},
     ),
 ]
 
 # 世紀
 patterns += [
     Pattern(
-        re_pattern=f"{p.ac_century}世紀{p.around_prefix}?(前|まえ)",
-        parse_func=parse_century,
+        re_pattern=f"{p.ac_century}世紀{p.around_suffix}?{p.before_suffix}",
+        parse_func=parse_ac_century,
         option={"mod": "BEFORE"},
     ),
     Pattern(
-        re_pattern=f"{p.ac_century}世紀{p.around_prefix}?(後|あと)",
-        parse_func=parse_century,
+        re_pattern=f"{p.ac_century}世紀{p.around_suffix}?{p.after_suffix}",
+        parse_func=parse_ac_century,
         option={"mod": "AFTER"},
     ),
+    Pattern(
+        re_pattern=f"{p.ac_century}世紀{p.approx_suffix}",
+        parse_func=parse_ac_century,
+        option={"mod": "APPROX"},
+    ),
+    # stard, mid,end suffixを付ける
 ]
 
 # 週
 patterns += [
     Pattern(
-        re_pattern=f"{p.week}日{p.around_prefix}?(前|まえ)",
+        re_pattern=f"{p.week}週(間)?{p.around_suffix}?{p.before_suffix}",
         parse_func=parse_week,
         option={"mod": "BEFORE"},
     ),
     Pattern(
-        re_pattern=f"{p.week}日{p.around_prefix}?(後|あと)",
+        re_pattern=f"{p.week}週(間)?{p.around_suffix}?{p.after_suffix}",
         parse_func=parse_week,
         option={"mod": "AFTER"},
+    ),
+    Pattern(
+        re_pattern=f"{p.week}週(間)?{p.approx_suffix}",
+        parse_func=parse_week,
+        option={"mod": "APPROX"},
     ),
 ]
 
 # 時間
 patterns += [
     Pattern(
-        re_pattern=f"{p.hour}日{p.around_prefix}?(前|まえ)",
+        re_pattern=f"{p.hour}時間{p.around_suffix}?{p.before_suffix}",
         parse_func=parse_hour,
         option={"mod": "BEFORE"},
     ),
     Pattern(
-        re_pattern=f"{p.hour}日{p.around_prefix}?(後|あと)",
+        re_pattern=f"{p.hour}時間{p.around_suffix}?{p.after_suffix}",
         parse_func=parse_hour,
         option={"mod": "AFTER"},
+    ),
+    Pattern(
+        re_pattern=f"{p.hour}時間{p.approx_suffix}",
+        parse_func=parse_hour,
+        option={"mod": "APPROX"},
     ),
 ]
 
 # 分
 patterns += [
     Pattern(
-        re_pattern=f"{p.minutes}日{p.around_prefix}?(前|まえ)",
+        re_pattern=f"{p.minutes}分{p.around_suffix}?{p.before_suffix}",
         parse_func=parse_minutes,
         option={"mod": "BEFORE"},
     ),
     Pattern(
-        re_pattern=f"{p.minutes}日{p.around_prefix}?(後|あと)",
+        re_pattern=f"{p.minutes}分{p.around_suffix}?{p.after_suffix}",
         parse_func=parse_minutes,
         option={"mod": "AFTER"},
+    ),
+    Pattern(
+        re_pattern=f"{p.minutes}分{p.approx_suffix}",
+        parse_func=parse_minutes,
+        option={"mod": "APPROX"},
     ),
 ]
 
 # 秒
 patterns += [
     Pattern(
-        re_pattern=f"{p.second}日{p.around_prefix}?(前|まえ)",
+        re_pattern=f"{p.second}秒{p.around_suffix}?{p.before_suffix}",
         parse_func=parse_second,
         option={"mod": "BEFORE"},
     ),
     Pattern(
-        re_pattern=f"{p.second}日{p.around_prefix}?(後|あと)",
+        re_pattern=f"{p.second}秒{p.around_suffix}?{p.after_suffix}",
         parse_func=parse_second,
         option={"mod": "AFTER"},
+    ),
+    Pattern(
+        re_pattern=f"{p.second}秒{p.approx_suffix}",
+        parse_func=parse_second,
+        option={"mod": "APPROX"},
     ),
 ]
 

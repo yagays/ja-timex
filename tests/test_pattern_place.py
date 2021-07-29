@@ -169,13 +169,13 @@ def test_place_second_with_ms(place):
 
 
 def test_place_around_prefix(place):
-    assert place.is_valid("around_prefix", "くらい")
-    assert place.is_valid("around_prefix", "ぐらい")
-    assert place.is_valid("around_prefix", "より")
-    assert place.is_valid("around_prefix", "よりも")
+    assert place.is_valid("around_suffix", "くらい")
+    assert place.is_valid("around_suffix", "ぐらい")
+    assert place.is_valid("around_suffix", "より")
+    assert place.is_valid("around_suffix", "よりも")
 
-    assert not place.is_valid("around_prefix", "くぐらい")
-    assert not place.is_valid("around_prefix", "ほど程度")
+    assert not place.is_valid("around_suffix", "くぐらい")
+    assert not place.is_valid("around_suffix", "ほど程度")
 
 
 # duration

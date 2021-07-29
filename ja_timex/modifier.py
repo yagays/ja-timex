@@ -13,12 +13,11 @@ class Modifier:
             self.pattern2mod_by_type = json.load(f)
 
     def parse(self, text, timex: TIMEX) -> Optional[str]:
-        timex = self._moidfy_mod(text, timex)
+        # timex = self._moidfy_mod(text, timex)
 
         return timex
 
     def _moidfy_mod(self, text, timex: TIMEX) -> Optional[str]:
-        mod_add = None
         span = timex.span
         timex_type = timex.type
         timex_start_i = span[0]

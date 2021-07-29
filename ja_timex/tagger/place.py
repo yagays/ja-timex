@@ -22,10 +22,10 @@ class Place:
     weekday: str = "(?P<weekday>[月火水木金土日])"
     season: str = "(?P<season>(春|夏|秋|冬))"
     quarter: str = "(?P<quarter>[1-4])"
-    fiscal_year: str = "(?P<fiscal_year>[0-9]{4})年度"
-    ac_century: str = "(?P<ac_century>[1-9]?[0-9]{,2})世紀"
-    bc_year: str = "紀元前(?P<bc_year>[0-9]{,4})年"
-    bc_century: str = "紀元前(?P<bc_century>[1-9]?[0-9]{,2})世紀"
+    fiscal_year: str = "(?P<fiscal_year>[0-9]{4})"
+    ac_century: str = "(?P<ac_century>[1-9]?[0-9]{,2})"
+    bc_year: str = "(?P<bc_year>[0-9]{,4})"
+    bc_century: str = "(?P<bc_century>[1-9]?[0-9]{,2})"
 
     # abstime: 時刻表現
     am_prefix: str = "(?P<am_prefix>(午前|am|AM|))"
@@ -59,15 +59,26 @@ class Place:
     second: str = "(?P<second>[0-9]+\\.?[0-9]*)"
     second_with_ms: str = "(?P<second_with_ms>[0-9]+[秒][0-9]+)"
 
-    # reltime: 相対的な時間における曖昧表現
-    around_prefix = "(以上|[くぐ]らい|ほど|程度|ばかり|近く|より(も)?)"
-
     # duration: 持続時間
     count: str = "(?P<count>[0-9]+\\.?[0-9]*)"
     year_range: str = "(?P<year_range>[0-9]+\\.?[0-9]*)"  # 期間としての月
     month_range: str = "(?P<month_range>[0-9]+\\.?[0-9]*)"
     day_range: str = "(?P<day_range>[0-9]+\\.?[0-9]*)"
     range: str = "(?P<range>[0-9]+\\.?[0-9]*)"  # 頻度における数値としての表現
+
+    # prefix and suffix for mod
+    before_suffix: str = "(?P<before_suffix>(前|まえ))"
+    after_suffix: str = "(?P<after_suffix>(後|あと))"
+    start_suffix: str = "(?P<start_suffix>(はじめ|初め|始め|初頭|初期|前半|前記|頭))"
+    mid_suffix: str = "(?P<mid_suffix>(なかば|半ば|中ごろ|中頃|中盤|中旬|中期|頭))"
+    end_suffix: str = "(?P<end_suffix>(後半|後期|終盤|終わり|末))"
+    approx_suffix: str = "(?P<approx_suffix>(近く|前後|くらい|ばかり))"
+
+    # reltime: 相対的な時間における曖昧表現
+    around_suffix = "([くぐ]らい|ほど|程度|ばかり|近く|より(も)?)"
+
+    # 助数詞
+    # month_counter: str = "[ヶ|か|ケ|箇]月"
 
     def is_valid(self, target, text):
         # for tests

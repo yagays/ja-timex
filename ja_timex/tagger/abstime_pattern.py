@@ -254,22 +254,22 @@ patterns += [
         option={},
     ),
     Pattern(
-        re_pattern=p.fiscal_year,
+        re_pattern=f"{p.fiscal_year}年度",
         parse_func=parse_fiscal_year,
         option={},
     ),
     Pattern(
-        re_pattern=p.ac_century,
+        re_pattern=f"{p.ac_century}世紀",
         parse_func=parse_ac_century,
         option={},
     ),
     Pattern(
-        re_pattern=p.bc_year,
+        re_pattern=f"紀元前{p.bc_year}年",
         parse_func=parse_bc_year,
         option={},
     ),
     Pattern(
-        re_pattern=p.bc_century,
+        re_pattern=f"紀元前{p.bc_century}世紀",
         parse_func=parse_bc_century,
         option={},
     ),
