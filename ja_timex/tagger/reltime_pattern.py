@@ -192,11 +192,6 @@ patterns += [
         parse_func=parse_year,
         option={"mod": "END"},
     ),
-    Pattern(
-        re_pattern=f"{p.year}年([こご]ろ|頃|近く|前後|くらい|ばかり)",
-        parse_func=parse_year,
-        option={"mod": "APPROX"},
-    ),
 ]
 
 # 月

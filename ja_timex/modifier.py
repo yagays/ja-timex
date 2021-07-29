@@ -31,7 +31,8 @@ class Modifier:
 
             timex_prefix = text[timex_start_i - prefix_word_len : timex_start_i]
             if timex_prefix == prefix:
-                mod_add = pattern2mod["mod"]
+                timex.mod = pattern2mod["mod"]
+                timex.span = (timex_start_i - prefix_word_len, timex_end_i)
                 break
 
         # check suffix
@@ -39,11 +40,12 @@ class Modifier:
             suffix = pattern2mod["pattern"]
             suffix_word_len = len(suffix)
 
-            timex_suffix = text[timex_end_i + 1 : timex_end_i + 1 + suffix_word_len]
+            timex_suffix = text[timex_end_i : timex_end_i + suffix_word_len]
             if timex_suffix == suffix:
-                mod_add = pattern2mod["mod"]
+
+                timex.mod = pattern2mod["mod"]
+                timex.span = (timex_start_i, timex_end_i + suffix_word_len)
                 break
 
         # TODO: prefixとsuffixどちらもあったときにどうするか？
-        timex.mod = mod_add
         return timex
