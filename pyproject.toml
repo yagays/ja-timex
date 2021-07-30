@@ -23,6 +23,7 @@ mkdocs = "^1.2.2"
 mkdocs-material = "^7.2.1"
 Pygments = "^2.9.0"
 pymdown-extensions = "^8.2"
+lxml = "^4.6.3"
 
 [tool.black]
 line-length = 120

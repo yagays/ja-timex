@@ -32,7 +32,6 @@ def test_normal_date(t):
 
 def test_normal_date_multiple_detected(t):
     # 年/月か月/日かが判定できなく、複数取得されるパターン
-
     # 基本的には月/日を優先する
     assert t.parse("7/8").value == "XXXX-07-08"
     assert t.parse("12/10").value == "XXXX-12-10"  # 2012年10月とも取れる
@@ -41,6 +40,46 @@ def test_normal_date_multiple_detected(t):
     # 月が取る値の範囲外の場合は年になる
     assert t.parse("2021/07").value == "2021-07-XX"
     assert t.parse("13/8").value == "0013-08-XX"  # :TODO どこかで2013に変換したい
+
+
+def test_normal_date_seireki(t):
+    assert t.parse("西暦2021年").value == "2021-XX-XX"
+    assert t.parse("西暦2021年7月").value == "2021-07-XX"
+    assert t.parse("西暦2021/7/18").value == "2021-07-18"
+    assert t.parse("西暦2021/7").value == "2021-07-XX"
+
+
+def test_normal_date_wareki(t):
+    assert t.parse("令和3年").value == "2021-XX-XX"
+    assert t.parse("令和03年").value == "2021-XX-XX"
+    assert t.parse("令和3年7月18日").value == "2021-07-18"
+
+    # 平成33年は存在しないが、元号が変わる前の未来の日付の表記などに存在する
+    assert t.parse("平成33年").value == "2021-XX-XX"
+
+    # 元年
+    assert t.parse("令和元年").value == "2019-XX-XX"
+    assert t.parse("令和1年").value == "2019-XX-XX"
+    assert t.parse("平成元年").value == "1989-XX-XX"
+    assert t.parse("平成1年").value == "1989-XX-XX"
+
+    # 英字表記
+    assert t.parse("R3年7月18日").value == "2021-07-18"
+    assert t.parse("Ｒ3/7/18").value == "2021-07-18"
+
+    # その他の元号
+    assert t.parse("平成31年").value == "2019-XX-XX"
+    assert t.parse("昭和64年").value == "1989-XX-XX"
+    assert t.parse("大正15年").value == "1926-XX-XX"
+    assert t.parse("明治45年").value == "1912-XX-XX"
+    assert t.parse("大化1年").value == "0645-XX-XX"
+
+    # 存在しない元号と年
+    assert t.parse("歯姫3年") is None
+    assert t.parse("飛鳥時代3年") is None
+    assert t.parse("令和0年") is None
+    assert t.parse("令和00年") is None
+    assert t.parse("令和-3年") is None
 
 
 def test_normal_date_invalid(t):

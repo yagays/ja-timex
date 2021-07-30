@@ -1,5 +1,11 @@
+import json
 import re
 from dataclasses import dataclass
+
+weekday2id = {"月": "1", "火": "2", "水": "3", "木": "4", "金": "5", "土": "6", "日": "7"}
+season2id = {"春": "SP", "夏": "SU", "秋": "FA", "冬": "WI"}
+with open("ja_timex/dictionary/wareki.json") as f:
+    wareki2year = json.load(f)
 
 
 class Pattern:
@@ -17,6 +23,7 @@ class Pattern:
 class Place:
     # abstime: 日付表現
     calendar_year: str = "(?P<calendar_year>[0-9]{,4})"  # 暦の年
+    calendar_year_wareki: str = "(?P<calendar_year_wareki>([1-9][0-9]{0,1}|0[1-9]|元))"  # 和暦の年 (0年は除外)
     calendar_month: str = "(?P<calendar_month>1[0-2]|0?[1-9])"  # 暦の月
     calendar_day: str = "(?P<calendar_day>[12][0-9]|3[01]|0?[1-9])"  # 暦の日
     weekday: str = "(?P<weekday>[月火水木金土日])"
@@ -75,10 +82,13 @@ class Place:
     approx_suffix: str = "(?P<approx_suffix>(近く|前後|くらい|ばかり))"
 
     # reltime: 相対的な時間における曖昧表現
-    around_suffix = "([くぐ]らい|ほど|程度|ばかり|近く|より(も)?)"
+    around_suffix: str = "([くぐ]らい|ほど|程度|ばかり|近く|より(も)?)"
 
     # 助数詞
     # month_counter: str = "[ヶ|か|ケ|箇]月"
+
+    # 和暦と西暦
+    wareki_prefix: str = f"(?P<wareki_prefix>({'|'.join(wareki2year.keys())}))"
 
     def is_valid(self, target, text):
         # for tests
@@ -87,10 +97,6 @@ class Place:
             return True
         else:
             return False
-
-
-weekday2id = {"月": "1", "火": "2", "水": "3", "木": "4", "金": "5", "土": "6", "日": "7"}
-season2id = {"春": "SP", "夏": "SU", "秋": "FA", "冬": "WI"}
 
 
 def get_weekday_id(text: str) -> str:
@@ -115,3 +121,18 @@ def get_season_id(text: str) -> str:
         str: 季節に対応するid文字列
     """
     return season2id[text]
+
+
+def get_wareki_first_year(text: str) -> int:
+    """和暦の元号のゼロ年に対応する西暦を取得
+
+    和暦から西暦に変換するために、和暦における元年に-1をした西暦を計算する
+
+    Args:
+        text (str): 和暦の元号
+
+    Returns:
+        int: 対応する元号のゼロ年の西暦
+    """
+
+    return wareki2year[text] - 1

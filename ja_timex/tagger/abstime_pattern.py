@@ -1,7 +1,7 @@
 import re
 
 from ja_timex.tag import TIMEX
-from ja_timex.tagger.place import Pattern, Place, get_season_id, get_weekday_id
+from ja_timex.tagger.place import Pattern, Place, get_season_id, get_wareki_first_year, get_weekday_id
 
 
 def parse_absdate(re_match: re.Match, pattern: Pattern) -> TIMEX:
@@ -15,6 +15,15 @@ def parse_absdate(re_match: re.Match, pattern: Pattern) -> TIMEX:
         args["calendar_month"] = "XX"
     if "calendar_day" not in args:
         args["calendar_day"] = "XX"
+
+    # 和暦を西暦に変換
+    if args.get("wareki_prefix"):
+        if args["calendar_year_wareki"] == "元":
+            wareki_year = 1
+        else:
+            wareki_year = int(args["calendar_year_wareki"])
+        args["calendar_year"] = str(wareki_year + get_wareki_first_year(args["wareki_prefix"]))
+
     # zero padding
     args["calendar_year"] = args["calendar_year"].zfill(4)
     args["calendar_month"] = args["calendar_month"].zfill(2)
@@ -204,17 +213,26 @@ patterns = []
 
 # 日付
 date_templates = [
-    f"{p.calendar_year}年{p.calendar_month}月{p.calendar_day}日",
+    f"(西暦)?{p.calendar_year}年{p.calendar_month}月{p.calendar_day}日",
     f"{p.calendar_month}月{p.calendar_day}日",  # 年は表現できる範囲が広いため、年/月より月/日を優先する
-    f"{p.calendar_year}年{p.calendar_month}月",
-    f"{p.calendar_year}年",
+    f"(西暦)?{p.calendar_year}年{p.calendar_month}月",
+    f"(西暦)?{p.calendar_year}年",
     f"{p.calendar_month}月",
     f"{p.calendar_day}日",
+    # 和暦
+    f"{p.wareki_prefix}{p.calendar_year_wareki}年{p.calendar_month}月{p.calendar_day}日",
+    f"{p.wareki_prefix}{p.calendar_year_wareki}年{p.calendar_month}月",
+    f"{p.wareki_prefix}{p.calendar_year_wareki}年",
 ]
 for delimiter in ["/", "\\-", "\\.", "・", ","]:
-    date_templates.append(f"{p.calendar_year}年?{delimiter}{p.calendar_month}月?{delimiter}{p.calendar_day}日?")
+    date_templates.append(f"(西暦)?{p.calendar_year}年?{delimiter}{p.calendar_month}月?{delimiter}{p.calendar_day}日?")
     date_templates.append(f"{p.calendar_month}月?{delimiter}{p.calendar_day}日?")
-    date_templates.append(f"{p.calendar_year}年?{delimiter}{p.calendar_month}月?")
+    date_templates.append(f"(西暦)?{p.calendar_year}年?{delimiter}{p.calendar_month}月?")
+    # 和暦
+    date_templates.append(
+        f"{p.wareki_prefix}{p.calendar_year_wareki}年?{delimiter}{p.calendar_month}月?{delimiter}{p.calendar_day}日?"
+    )
+    date_templates.append(f"{p.wareki_prefix}{p.calendar_year_wareki}年?{delimiter}{p.calendar_month}月?")
 
 for date_template in date_templates:
     patterns.append(
