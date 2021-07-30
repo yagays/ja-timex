@@ -29,10 +29,6 @@ def parse_absdate(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args["calendar_month"] = args["calendar_month"].zfill(2)
     args["calendar_day"] = args["calendar_day"].zfill(2)
 
-    # additional_info = None
-    # if "weekday" in args:
-    #     additional_info = {"weekday_text": args["weekday"], "weekday_id": get_weekday_id(args["weekday"])}
-
     return TIMEX(
         type="DATE",
         value=f'{args["calendar_year"]}-{args["calendar_month"]}-{args["calendar_day"]}',

@@ -45,15 +45,10 @@ class Place:
     clock_minutes: str = "(?P<clock_minutes>[0-5]?[0-9])"
     clock_second: str = "(?P<clock_second>[0-5]?[0-9])"
 
-    @property
-    def weekday_with_suffix(self):
-        # (日曜日)などの記号付きの表記
-        return self.weekday + "(曜日|曜)?"
-
-    @property
-    def weekday_with_symbol(self):
-        # (日曜日)などの記号付きの表記
-        return "\\s{,1}\\(?\\s{,1}" + self.weekday_with_suffix + "\\s{,1}\\)?"
+    # 曜日付きの表記
+    weekday_with_suffix: str = f"{weekday}(曜日|曜)?"
+    # (日曜日)などの記号付きの表記
+    weekday_with_symbol: str  = "\\s{,1}\\(?\\s{,1}" + weekday_with_suffix + "\\s{,1}\\)?" 
 
     # duraton: 期間表現
     year: str = "(?P<year>[0-9]{,4})"
@@ -83,9 +78,6 @@ class Place:
 
     # reltime: 相対的な時間における曖昧表現
     around_suffix: str = "([くぐ]らい|ほど|程度|ばかり|近く|より(も)?)"
-
-    # 助数詞
-    # month_counter: str = "[ヶ|か|ケ|箇]月"
 
     # 和暦と西暦
     wareki_prefix: str = f"(?P<wareki_prefix>({'|'.join(wareki2year.keys())}))"
