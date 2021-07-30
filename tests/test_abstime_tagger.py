@@ -104,12 +104,6 @@ def test_weekday(t):
 
 
 def test_season(t):
-    # 季節単体では誤検出が多いため取得しない
-    assert t.parse("春") is None
-    assert t.parse("夏") is None
-    assert t.parse("秋") is None
-    assert t.parse("冬") is None
-
     assert t.parse("2021春").value == "2021-SP"
     assert t.parse("2021夏").value == "2021-SU"
     assert t.parse("2021秋").value == "2021-FA"
@@ -119,7 +113,16 @@ def test_season(t):
     assert t.parse("2021/春").value == "2021-SP"
     assert t.parse("2021春").value == "2021-SP"
 
-    # def test_quarter(t):
+    # 季節単体では誤検出が多いため取得しない
+    assert t.parse("春") is None
+    assert t.parse("夏") is None
+    assert t.parse("秋") is None
+    assert t.parse("冬") is None
+    assert t.parse("春日") is None
+    assert t.parse("千秋楽") is None    
+
+
+def test_quarter(t):
     assert t.parse("Q1").value == "XXXX-Q1"
     assert t.parse("Q2").value == "XXXX-Q2"
     assert t.parse("Q3").value == "XXXX-Q3"
