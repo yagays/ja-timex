@@ -1,17 +1,23 @@
 site_name: ja_timex documentation
 markdown_extensions:
-  - pymdownx.highlight:
-      use_pygments: true
-      noclasses: true
-      pygments_style: monokai
-      linenums: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - def_list
 theme:
     name: material
     language: ja
     icon:
-        logo: material/school
+        logo: material/av-timer
         repo: fontawesome/brands/git-alt
     favicon: favicon.png
-    # タブ表示を有効.
-    features:
-        - tabs
+extra_css:
+  - stylesheets/extra.css
+nav:
+    - イントロダクション: index.md
+    - installation.md
+    - quick_start.md
+    - timex3.md
+    - FAQ.md
+    - definition_glossary.md
+    - policy.md
+    - changelog.md
