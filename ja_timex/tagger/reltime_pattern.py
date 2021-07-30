@@ -327,32 +327,32 @@ patterns += [
 # 昨日/明日などの単語表現
 patterns += [
     Pattern(
-        re_pattern=f"[昨前]日",
+        re_pattern="[昨前]日",
         parse_func=parse_word,
         option={"value": "P1D", "mod": "BEFORE"},
     ),
     Pattern(
-        re_pattern=f"一昨日",
+        re_pattern="一昨日",
         parse_func=parse_word,
         option={"value": "P2D", "mod": "BEFORE"},
     ),
     Pattern(
-        re_pattern=f"一昨[昨々]日",
+        re_pattern="一昨[昨々]日",
         parse_func=parse_word,
         option={"value": "P3D", "mod": "BEFORE"},
     ),
     Pattern(
-        re_pattern=f"[翌明]日",
+        re_pattern="[翌明]日",
         parse_func=parse_word,
         option={"value": "P1D", "mod": "AFTER"},
     ),
     Pattern(
-        re_pattern=f"(翌々|明後)日",
+        re_pattern="(翌々|明後)日",
         parse_func=parse_word,
         option={"value": "P2D", "mod": "AFTER"},
     ),
     Pattern(
-        re_pattern=f"明[昨々]後日",
+        re_pattern="明[昨々]後日",
         parse_func=parse_word,
         option={"value": "P3D", "mod": "AFTER"},
     ),
