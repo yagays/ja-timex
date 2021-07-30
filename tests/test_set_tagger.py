@@ -139,6 +139,38 @@ def test_count_frequency(t):
     assert t.parse("3日に10度").freq == "10X"
 
 
-def test_count_range(t):
-    assert t.parse("3年に1回").value == "P3Y"
-    assert t.parse("3年に1回").freq == "1X"
+def test_quant_each(t):
+    assert t.parse("毎秒").value == "PT1S"
+    assert t.parse("毎秒").quant == "EACH"
+
+    assert t.parse("毎分").value == "PT1M"
+    assert t.parse("毎分").quant == "EACH"
+
+    assert t.parse("毎時間").value == "PT1H"
+    assert t.parse("毎時間").quant == "EACH"
+
+    assert t.parse("毎時").value == "PT1H"
+    assert t.parse("毎時").quant == "EACH"
+
+    assert t.parse("毎日").value == "P1D"
+    assert t.parse("毎日").quant == "EACH"
+
+    assert t.parse("毎週").value == "P1W"
+    assert t.parse("毎週").quant == "EACH"
+
+    assert t.parse("毎月").value == "P1M"
+    assert t.parse("毎月").quant == "EACH"
+
+    assert t.parse("毎年").value == "P1Y"
+    assert t.parse("毎年").quant == "EACH"
+
+
+def test_quant_every(t):
+    assert t.parse("1日おき").value == "P1D"
+    assert t.parse("1日おき").quant == "EVERY"
+
+    assert t.parse("1日ごと").value == "P1D"
+    assert t.parse("1日ごと").quant == "EVERY"
+
+    assert t.parse("3.5日おき").value == "P3.5D"
+    assert t.parse("3.5日おき").quant == "EVERY"

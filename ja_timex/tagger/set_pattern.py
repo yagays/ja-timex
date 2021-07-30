@@ -43,7 +43,13 @@ def parse_quant(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
-    value = pattern.option["value"]
+    if "value" in pattern.option:
+        # EACHの場合
+        value = pattern.option["value"]
+    else:
+        # EVERYの場合
+        value = pattern.option["value_template"].format(args["range"])
+
     return TIMEX(
         type="SET",
         value=value,
@@ -323,38 +329,77 @@ patterns += [
 # quant:EACH
 patterns += [
     Pattern(
-        re_pattern="毎秒",
+        re_pattern=f"毎秒",
         parse_func=parse_quant,
-        option={"value_template": "PT1S", "quant": "EACH"},
+        option={"value": "PT1S", "quant": "EACH"},
     ),
     Pattern(
-        re_pattern="毎分",
+        re_pattern=f"毎分",
         parse_func=parse_quant,
-        option={"value_template": "PT1M", "quant": "EACH"},
+        option={"value": "PT1M", "quant": "EACH"},
     ),
     Pattern(
-        re_pattern="毎時間",
+        re_pattern=f"毎時(間)?",
         parse_func=parse_quant,
-        option={"value_template": "PT1H", "quant": "EACH"},
+        option={"value": "PT1H", "quant": "EACH"},
     ),
     Pattern(
-        re_pattern="毎日",
+        re_pattern=f"毎日",
         parse_func=parse_quant,
-        option={"value_template": "P1D", "quant": "EACH"},
+        option={"value": "P1D", "quant": "EACH"},
     ),
     Pattern(
-        re_pattern="毎月",
+        re_pattern=f"毎週",
         parse_func=parse_quant,
-        option={"value_template": "P1M", "quant": "EACH"},
+        option={"value": "P1W", "quant": "EACH"},
+    ),
+    Pattern(
+        re_pattern=f"毎月",
+        parse_func=parse_quant,
+        option={"value": "P1M", "quant": "EACH"},
     ),
     Pattern(
         re_pattern="毎年",
         parse_func=parse_quant,
-        option={"value_template": "P1Y", "quant": "EACH"},
+        option={"value": "P1Y", "quant": "EACH"},
     ),
 ]
 
-# # patterns.append({"pattern": f"毎{p.count}?(回|日|時間)", "quant": ""})
-
-# # quant:EVERY
-# patterns.append({"pattern": f"毎{p.count}?(回|日|時間)", "quant": "EVERY"})
+# quant:EVERY
+patterns += [
+    Pattern(
+        re_pattern=f"{p.range}秒(おき|ごと)",
+        parse_func=parse_quant,
+        option={"value_template": "PT{}S", "quant": "EVERY"},
+    ),
+    Pattern(
+        re_pattern=f"{p.range}分(おき|ごと)",
+        parse_func=parse_quant,
+        option={"value_template": "PT{}M", "quant": "EVERY"},
+    ),
+    Pattern(
+        re_pattern=f"{p.range}時間(おき|ごと)",
+        parse_func=parse_quant,
+        option={"value_template": "PT{}H", "quant": "EVERY"},
+    ),
+    Pattern(
+        re_pattern=f"{p.range}日(おき|ごと)",
+        parse_func=parse_quant,
+        option={"value_template": "P{}D", "quant": "EVERY"},
+    ),
+    Pattern(
+        re_pattern=f"{p.range}週(おき|ごと)",
+        parse_func=parse_quant,
+        option={"value_template": "P{}W", "quant": "EVERY"},
+    ),
+    Pattern(
+        re_pattern=f"{p.range}[ヶ|か|ケ|箇]月(おき|ごと)",
+        parse_func=parse_quant,
+        option={"value_template": "P{}M", "quant": "EVERY"},
+    ),
+    Pattern(
+        re_pattern="{p.range}年(おき|ごと)",
+        parse_func=parse_quant,
+        option={"value_template": "P{}Y", "quant": "EVERY"},
+    ),
+]
