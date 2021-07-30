@@ -21,7 +21,7 @@ def parse_count_range(re_match: re.Match, pattern: Pattern) -> TIMEX:
     span = re_match.span()
 
     # 「週1回」などrangeが存在しない場合は、1で埋める
-    if "range" not in args or args["range"] is None:
+    if not args.get("range"):
         args["range"] = "1"
 
     value = pattern.option["value_template"].format(args["range"])
