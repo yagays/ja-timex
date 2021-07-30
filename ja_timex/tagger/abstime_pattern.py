@@ -36,7 +36,6 @@ def parse_absdate(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="DATE",
         value=f'{args["calendar_year"]}-{args["calendar_month"]}-{args["calendar_day"]}',
-        value_from_surface=f'{args["calendar_year"]}-{args["calendar_month"]}-{args["calendar_day"]}',
         text=re_match.group(),
         value_format="absdate",
         parsed=args,
@@ -54,7 +53,6 @@ def parse_weekday(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="DATE",
         value=value,
-        value_from_surface=value,
         text=re_match.group(),
         value_format="weekday",
         parsed=args,
@@ -75,7 +73,6 @@ def parse_season(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="DATE",
         value=value,
-        value_from_surface=value,
         text=re_match.group(),
         value_format="season",
         parsed=args,
@@ -92,7 +89,6 @@ def parse_quarter(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="DATE",
         value=value,
-        value_from_surface=value,
         text=re_match.group(),
         value_format="quarter",
         parsed=args,
@@ -109,7 +105,6 @@ def parse_fiscal_year(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="DATE",
         value=value,
-        value_from_surface=value,
         text=re_match.group(),
         value_format="fiscal_year",
         parsed=args,
@@ -127,7 +122,6 @@ def parse_ac_century(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="DATE",
         value=value,
-        value_from_surface=value,
         text=re_match.group(),
         value_format="century",
         parsed=args,
@@ -144,7 +138,6 @@ def parse_bc_year(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="DATE",
         value=value,
-        value_from_surface=value,
         text=re_match.group(),
         value_format="bc_year",
         parsed=args,
@@ -162,7 +155,6 @@ def parse_bc_century(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="DATE",
         value=value,
-        value_from_surface=value,
         text=re_match.group(),
         value_format="bc_century",
         parsed=args,
@@ -199,7 +191,6 @@ def parse_time(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="TIME",
         value=value,
-        value_from_surface=value,
         text=re_match.group(),
         value_format="time",
         parsed=args,

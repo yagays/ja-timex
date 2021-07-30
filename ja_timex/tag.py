@@ -18,7 +18,6 @@ class TIMEX:
 
     type: str
     value: str
-    value_from_surface: str
     text: str
 
     tid: Optional[str] = None
@@ -41,7 +40,7 @@ class TIMEX:
         attributes = []
         if self.tid:
             attributes.append(f'tid="{self.tid}"')
-        attributes += [f'type="{self.type}"', f'value="{self.value}"', f'valueFromSurface="{self.value_from_surface}"']
+        attributes += [f'type="{self.type}"', f'value="{self.value}"']
         if self.freq:
             attributes.append(f'freq="{self.freq}"')
         if self.quant:

@@ -22,7 +22,6 @@ def parse_p(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="DURATION",
         value=value,
-        value_from_surface=value,
         text=re_match.group(),
         value_format="p",
         parsed=args,
@@ -48,7 +47,6 @@ def parse_pt(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="DURATION",
         value=value,
-        value_from_surface=value,
         text=re_match.group(),
         value_format="pt",
         parsed=args,

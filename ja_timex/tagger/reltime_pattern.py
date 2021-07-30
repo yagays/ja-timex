@@ -15,7 +15,6 @@ def parse_ac_century(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="TIME",
         value=value,
-        value_from_surface=value,
         text=re_match.group(),
         mod=pattern.option["mod"],
         value_format="ac_century",
@@ -32,7 +31,6 @@ def parse_year(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="TIME",
         value=f"P{value}Y",
-        value_from_surface=f"P{value}Y",
         text=re_match.group(),
         mod=pattern.option["mod"],
         value_format="year",
@@ -49,7 +47,6 @@ def parse_month(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="TIME",
         value=f"P{value}M",
-        value_from_surface=f"P{value}M",
         text=re_match.group(),
         mod=pattern.option["mod"],
         value_format="month",
@@ -66,7 +63,6 @@ def parse_day(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="TIME",
         value=f"P{value}D",
-        value_from_surface=f"P{value}D",
         text=re_match.group(),
         mod=pattern.option["mod"],
         value_format="day",
@@ -83,7 +79,6 @@ def parse_hour(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="TIME",
         value=f"PT{value}H",
-        value_from_surface=f"PT{value}H",
         text=re_match.group(),
         mod=pattern.option["mod"],
         value_format="hour",
@@ -100,7 +95,6 @@ def parse_minutes(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="TIME",
         value=f"PT{value}M",
-        value_from_surface=f"PT{value}M",
         text=re_match.group(),
         mod=pattern.option["mod"],
         value_format="minutes",
@@ -117,7 +111,6 @@ def parse_second(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="TIME",
         value=f"PT{value}S",
-        value_from_surface=f"PT{value}S",
         text=re_match.group(),
         mod=pattern.option["mod"],
         value_format="second",
@@ -134,7 +127,6 @@ def parse_second_with_ms(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="TIME",
         value=f"PT{value}S",
-        value_from_surface=f"PT{value}S",
         text=re_match.group(),
         mod=pattern.option["mod"],
         value_format="second_with_ms",
@@ -151,7 +143,6 @@ def parse_week(re_match: re.Match, pattern: Pattern) -> TIMEX:
     return TIMEX(
         type="TIME",
         value=f"P{value}W",
-        value_from_surface=f"P{value}W",
         text=re_match.group(),
         mod=pattern.option["mod"],
         value_format="week",
