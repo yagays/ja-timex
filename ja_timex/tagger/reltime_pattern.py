@@ -11,7 +11,6 @@ def parse_ac_century(re_match: re.Match, pattern: Pattern) -> TIMEX:
     century_num = int(args["ac_century"])
     century_range = f"{century_num - 1}" + "XX"
     value = century_range.zfill(4)
-    f"{century_num - 1}" + "XX"
     return TIMEX(
         type="DATE",
         value=value,
