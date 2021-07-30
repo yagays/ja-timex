@@ -62,3 +62,22 @@ class TIMEX:
             )
         else:
             return None
+
+    def __repr__(self) -> str:
+        attributes = []
+        if self.tid:
+            attributes.append(f'tid="{self.tid}"')
+        attributes += [
+            f'type="{self.type}"',
+            f'value="{self.value}"',
+        ]
+        if self.freq:
+            attributes.append(f'freq="{self.freq}"')
+        if self.quant:
+            attributes.append(f'quant="{self.quant}"')
+        if self.mod:
+            attributes.append(f'mod="{self.mod}"')
+        attributes.append(f'text="{self.text}"')
+
+        attributes_text = " ".join(attributes)
+        return f"<TIMEX3 {attributes_text}>"
