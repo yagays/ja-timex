@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ja-timex"
-version = "0.1.0"
+version = "0.0.0"  # using poetry-dynamic-versioning
 description = ""
 authors = ["Yuki Okuda <y.okuda@dr-ubie.com>"]
 
@@ -51,6 +51,10 @@ exclude = '''
 profile = "hug"
 line_length = 120
 src_paths = ["ja_timex", "tests", "tools"]
+
+[tool.poetry-dynamic-versioning]
+enable = true
+style = "pep440"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
