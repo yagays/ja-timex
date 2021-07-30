@@ -48,7 +48,7 @@ class Place:
     # 曜日付きの表記
     weekday_with_suffix: str = f"{weekday}(曜日|曜)?"
     # (日曜日)などの記号付きの表記
-    weekday_with_symbol: str  = "\\s{,1}\\(?\\s{,1}" + weekday_with_suffix + "\\s{,1}\\)?" 
+    weekday_with_symbol: str = "\\s{,1}\\(?\\s{,1}" + weekday_with_suffix + "\\s{,1}\\)?"
 
     # duraton: 期間表現
     year: str = "(?P<year>[0-9]{,4})"
