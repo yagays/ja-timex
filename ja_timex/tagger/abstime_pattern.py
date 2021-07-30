@@ -45,8 +45,14 @@ def parse_weekday(re_match: re.Match, pattern: Pattern) -> TIMEX:
 
     weekday_id = get_weekday_id(args["weekday"])
     calendar_week = "XX"
-    value = f"XXXX-W{calendar_week}-{weekday_id}"
-    return TIMEX(type="DATE", value=value, text=re_match.group(), parsed=args, span=span, pattern=pattern)
+    return TIMEX(
+        type="DATE",
+        value=f"XXXX-W{calendar_week}-{weekday_id}",
+        text=re_match.group(),
+        parsed=args,
+        span=span,
+        pattern=pattern,
+    )
 
 
 def parse_season(re_match: re.Match, pattern: Pattern) -> TIMEX:
@@ -54,12 +60,10 @@ def parse_season(re_match: re.Match, pattern: Pattern) -> TIMEX:
     span = re_match.span()
 
     season_id = get_season_id(args["season"])
-    if "calendar_year" in args and args["calendar_year"]:
-        year = args["calendar_year"].zfill(4)
-    else:
-        year = "XXXX"
-    value = f"{year}-{season_id}"
-    return TIMEX(type="DATE", value=value, text=re_match.group(), parsed=args, span=span, pattern=pattern)
+    year = args["calendar_year"].zfill(4)
+    return TIMEX(
+        type="DATE", value=f"{year}-{season_id}", text=re_match.group(), parsed=args, span=span, pattern=pattern
+    )
 
 
 def parse_quarter(re_match: re.Match, pattern: Pattern) -> TIMEX:
@@ -67,10 +71,9 @@ def parse_quarter(re_match: re.Match, pattern: Pattern) -> TIMEX:
     span = re_match.span()
 
     quarter_id = args["quarter"]
-    value = f"XXXX-Q{quarter_id}"
     return TIMEX(
         type="DATE",
-        value=value,
+        value=f"XXXX-Q{quarter_id}",
         text=re_match.group(),
         parsed=args,
         span=span,
@@ -83,10 +86,9 @@ def parse_fiscal_year(re_match: re.Match, pattern: Pattern) -> TIMEX:
     span = re_match.span()
 
     fiscal_year = args["fiscal_year"]
-    value = f"FY{fiscal_year}"
     return TIMEX(
         type="DATE",
-        value=value,
+        value=f"FY{fiscal_year}",
         text=re_match.group(),
         parsed=args,
         span=span,
@@ -116,7 +118,7 @@ def parse_bc_year(re_match: re.Match, pattern: Pattern) -> TIMEX:
     span = re_match.span()
 
     bc_year = args["bc_year"]
-    value = f"BC{bc_year.zfill(4)}"
+    value = "BC" + bc_year.zfill(4)
     return TIMEX(
         type="DATE",
         value=value,
@@ -169,10 +171,9 @@ def parse_time(re_match: re.Match, pattern: Pattern) -> TIMEX:
         if hour != "XX" and 1 <= int(hour) <= 11:
             hour = str(int(hour) + 12)
 
-    value = f"T{hour}-{minutes}-{second}"
     return TIMEX(
         type="TIME",
-        value=value,
+        value=f"T{hour}-{minutes}-{second}",
         text=re_match.group(),
         parsed=args,
         span=span,
@@ -220,12 +221,17 @@ for date_template in date_templates:
 # 曜日
 patterns += [
     Pattern(
+        re_pattern=p.weekday_without_symbol,
+        parse_func=parse_weekday,
+        option={},
+    ),
+    Pattern(
         re_pattern=p.weekday_with_symbol,
         parse_func=parse_weekday,
         option={},
     ),
     Pattern(
-        re_pattern=f"({p.calendar_year}[年|/]?)?{p.season}",
+        re_pattern=f"{p.calendar_year}[年|/]?{p.season}",
         parse_func=parse_season,
         option={},
     ),

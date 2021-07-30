@@ -51,18 +51,18 @@ def test_place_weekday(place):
     assert not place.is_valid("weekday", "月火")
 
 
-def test_place_weekday_with_suffix(place):
+def test_place_weekday_without_symbol(place):
     assert not place.is_valid("weekday", "月曜日")
 
-    assert place.is_valid("weekday_with_suffix", "月曜日")
-    assert place.is_valid("weekday_with_suffix", "月曜")
-    assert place.is_valid("weekday_with_suffix", "月")
-    assert place.is_valid("weekday_with_suffix", "日")
+    assert place.is_valid("weekday_without_symbol", "月曜日")
+    assert place.is_valid("weekday_without_symbol", "月曜")
+    assert not place.is_valid("weekday_without_symbol", "月")
+    assert not place.is_valid("weekday_without_symbol", "日")
 
 
 def test_place_weekday_with_symbol(place):
     assert not place.is_valid("weekday", "(月曜日)")
-    assert not place.is_valid("weekday_with_suffix", "(月曜日)")
+    assert not place.is_valid("weekday_without_symbol", "(月曜日)")
 
     assert place.is_valid("weekday_with_symbol", "(月曜日)")
     assert place.is_valid("weekday_with_symbol", "(月曜)")

@@ -22,7 +22,7 @@ class Pattern:
 @dataclass
 class Place:
     # abstime: 日付表現
-    calendar_year: str = "(?P<calendar_year>[0-9]{,4})"  # 暦の年
+    calendar_year: str = "(?P<calendar_year>[0-9]{1,4})"  # 暦の年
     calendar_year_wareki: str = "(?P<calendar_year_wareki>([1-9][0-9]{0,1}|0[1-9]|元))"  # 和暦の年 (0年は除外)
     calendar_month: str = "(?P<calendar_month>1[0-2]|0?[1-9])"  # 暦の月
     calendar_day: str = "(?P<calendar_day>[12][0-9]|3[01]|0?[1-9])"  # 暦の日
@@ -46,9 +46,9 @@ class Place:
     clock_second: str = "(?P<clock_second>[0-5]?[0-9])"
 
     # 曜日付きの表記
-    weekday_with_suffix: str = f"{weekday}(曜日|曜)?"
+    weekday_without_symbol: str = f"{weekday}(曜日|曜)"
     # (日曜日)などの記号付きの表記
-    weekday_with_symbol: str = "\\s{,1}\\(?\\s{,1}" + weekday_with_suffix + "\\s{,1}\\)?"
+    weekday_with_symbol: str = "\\s{,1}\\(\\s{,1}" + f"{weekday}(曜日|曜)?" + "\\s{,1}\\)"
 
     # duraton: 期間表現
     year: str = "(?P<year>[0-9]{,4})"

@@ -96,21 +96,28 @@ def test_weekday(t):
     assert t.parse("土曜日").value == "XXXX-WXX-6"
     assert t.parse("日曜日").value == "XXXX-WXX-7"
 
-    assert t.parse("月").value == "XXXX-WXX-1"
+    # 曜日1文字だけでは誤検出が多いため取得しないが、括弧があると取得する
     assert t.parse("月曜").value == "XXXX-WXX-1"
     assert t.parse("(月曜日)").value == "XXXX-WXX-1"
     assert t.parse("(月)").value == "XXXX-WXX-1"
+    assert t.parse("月") is None
 
 
 def test_season(t):
-    assert t.parse("春").value == "XXXX-SP"
-    assert t.parse("夏").value == "XXXX-SU"
-    assert t.parse("秋").value == "XXXX-FA"
-    assert t.parse("冬").value == "XXXX-WI"
+    # 季節単体では誤検出が多いため取得しない
+    assert t.parse("春") is None
+    assert t.parse("夏") is None
+    assert t.parse("秋") is None
+    assert t.parse("冬") is None
 
     assert t.parse("2021春").value == "2021-SP"
+    assert t.parse("2021夏").value == "2021-SU"
+    assert t.parse("2021秋").value == "2021-FA"
+    assert t.parse("2021冬").value == "2021-WI"
+
     assert t.parse("2021年春").value == "2021-SP"
     assert t.parse("2021/春").value == "2021-SP"
+    assert t.parse("2021春").value == "2021-SP"
 
     # def test_quarter(t):
     assert t.parse("Q1").value == "XXXX-Q1"
@@ -218,7 +225,7 @@ def test_time_ampm(t):
 def test_timex_type(t):
     assert t.parse("2021年7月18日").type == "DATE"
     assert t.parse("月曜日").type == "DATE"
-    assert t.parse("春").type == "DATE"
+    assert t.parse("2020年春").type == "DATE"
     assert t.parse("Q1").type == "DATE"
     assert t.parse("2021年度").type == "DATE"
     assert t.parse("1世紀").type == "DATE"
