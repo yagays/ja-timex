@@ -18,12 +18,6 @@ TIMEX3タグには、下記の属性を持ちます。
 | @rangeStart       |                                                        |              |                  |
 | @rangeEnd         |                                                        |              |                  |
 
-なお、[Python PEP8](https://www.python.org/dev/peps/pep-0008/)のコーディング規約に則り、キャメルケースで書かれる属性名は`TIMEX`クラス上ではスネークケースで表現します。
-
-- 属性名とクラス変数名が異なるもの
-  - `timex.value_from_surface`
-  - `timex.range_start`
-  - `timex.range_end`
 
 ## `@tid`
 `@tid`は、入力テキストの中で各TIMEX3タグに対して一意に付与される識別子です。`t0`から始まり、1ずつ値が増えていきます。
@@ -97,7 +91,6 @@ TIMEX3タグには、下記の属性を持ちます。
 | ON_OR_BEFORE | 日付/時刻表現以前   | 以前         |
 | ON_OR_AFTER  | 日付/時刻表現以後   | 以降、以来   |
 
-## `@range_start`および`@range_end`
 
 ## 小西らおよび成澤の定義との差異
 

@@ -25,9 +25,6 @@ class TIMEX:
     freq: Optional[str] = None
     quant: Optional[str] = None
     mod: Optional[str] = None
-    range_start: Optional[str] = None
-    range_end: Optional[str] = None
-    ordinal: Optional[str] = None
 
     parsed: Optional[Dict] = None
     value_format: Optional[str] = None
