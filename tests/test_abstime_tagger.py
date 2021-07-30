@@ -119,7 +119,7 @@ def test_season(t):
     assert t.parse("秋") is None
     assert t.parse("冬") is None
     assert t.parse("春日") is None
-    assert t.parse("千秋楽") is None    
+    assert t.parse("千秋楽") is None
 
 
 def test_quarter(t):
@@ -143,10 +143,6 @@ def test_fiscal_year(t):
     # 西暦で2,3桁年度は表現しない
     assert t.parse("132年度") is None
     assert t.parse("32年度") is None
-
-
-# def test_fiscal_year_wareki(t):
-#     assert t.parse("令和3年度").value == "FYR03"
 
 
 def test_ac_century(t):

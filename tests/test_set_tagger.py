@@ -12,27 +12,17 @@ def test_count(t):
     assert t.parse("年1回").value == "P1Y"
     assert t.parse("年1回").freq == "1X"
 
-    # ここから下は全部同じ表現になるが正しいのか？
-    # @unitが必要かもしれない
     assert t.parse("年に1ヶ月").value == "P1Y"
     assert t.parse("年に1ヶ月").freq == "P1M"
     assert t.parse("年に1日").value == "P1Y"
     assert t.parse("年に1日").freq == "P1D"
     assert t.parse("年に1時間").value == "P1Y"
     assert t.parse("年に1時間").freq == "PT1H"
-    # assert t.parse("年に1分").value == "P1Y"
-    # assert t.parse("年に1分").freq == "PT1M"
-    # assert t.parse("年に1秒").value == "P1Y"
-    # assert t.parse("年に1秒").freq == "PT1S"
-
-    # assert t.parse("日に3回").value == "P1D"
-    # assert t.parse("日に3回").freq == "3X"
 
 
 def test_count_without_number_and_ni(t):
-    # 年次有給休暇の時季指定義務
-    # https://www.mhlw.go.jp/content/000350327.pdf
-    # 継続勤務6年6か月で年20日が限度となります
+    # 年次有給休暇の時季指定義務 https://www.mhlw.go.jp/content/000350327.pdf
+    # 「継続勤務6年6か月で年20日が限度となります」
     assert t.parse("年20日").value == "P1Y"
     assert t.parse("年20日").freq == "P20D"
 

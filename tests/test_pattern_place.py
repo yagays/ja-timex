@@ -91,8 +91,6 @@ def test_place_quarter(place):
 
 
 # 期間
-
-
 def test_place_year(place):
     # same as test_abstime_pattern.py
     assert place.is_valid("year", "2021")
@@ -166,8 +164,6 @@ def test_place_second_with_ms(place):
 
 
 # reltime
-
-
 def test_place_around_prefix(place):
     assert place.is_valid("around_suffix", "くらい")
     assert place.is_valid("around_suffix", "ぐらい")
@@ -179,8 +175,6 @@ def test_place_around_prefix(place):
 
 
 # duration
-
-
 def test_place_count(place):
     assert place.is_valid("count", "1")  # 1回
     assert place.is_valid("count", "1.5")
