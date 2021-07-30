@@ -27,7 +27,6 @@ class TIMEX:
 
     parsed: Optional[Dict] = None
     value_format: Optional[str] = None
-    additional_info: Optional[str] = None
     span: Optional[Tuple[int, int]] = None  # 入力文字列中での正規表現が取得したspan
     pattern: Optional[Pattern] = None
 
