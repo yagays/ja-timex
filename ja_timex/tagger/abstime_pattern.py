@@ -33,7 +33,6 @@ def parse_absdate(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="DATE",
         value=f'{args["calendar_year"]}-{args["calendar_month"]}-{args["calendar_day"]}',
         text=re_match.group(),
-        value_format="absdate",
         parsed=args,
         span=span,
     )
@@ -50,7 +49,6 @@ def parse_weekday(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="DATE",
         value=value,
         text=re_match.group(),
-        value_format="weekday",
         parsed=args,
         span=span,
     )
@@ -70,7 +68,6 @@ def parse_season(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="DATE",
         value=value,
         text=re_match.group(),
-        value_format="season",
         parsed=args,
         span=span,
     )
@@ -86,7 +83,6 @@ def parse_quarter(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="DATE",
         value=value,
         text=re_match.group(),
-        value_format="quarter",
         parsed=args,
         span=span,
     )
@@ -102,7 +98,6 @@ def parse_fiscal_year(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="DATE",
         value=value,
         text=re_match.group(),
-        value_format="fiscal_year",
         parsed=args,
         span=span,
     )
@@ -119,7 +114,6 @@ def parse_ac_century(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="DATE",
         value=value,
         text=re_match.group(),
-        value_format="century",
         parsed=args,
         span=span,
     )
@@ -135,7 +129,6 @@ def parse_bc_year(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="DATE",
         value=value,
         text=re_match.group(),
-        value_format="bc_year",
         parsed=args,
         span=span,
     )
@@ -152,7 +145,6 @@ def parse_bc_century(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="DATE",
         value=value,
         text=re_match.group(),
-        value_format="bc_century",
         parsed=args,
         span=span,
     )
@@ -188,7 +180,6 @@ def parse_time(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="TIME",
         value=value,
         text=re_match.group(),
-        value_format="time",
         parsed=args,
         span=span,
     )

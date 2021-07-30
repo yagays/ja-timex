@@ -37,7 +37,6 @@ if text:
                     timex.quant,
                     timex.mod,
                     timex.parsed,
-                    timex.value_format,
                     timex.span,
                 ],
                 index=[
@@ -49,7 +48,6 @@ if text:
                     "@quant",
                     "@mod",
                     "@parsed",
-                    "@value_format",
                     "@span",
                 ],
                 columns=["value"],

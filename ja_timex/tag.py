@@ -1,16 +1,8 @@
 from dataclasses import dataclass
 from datetime import datetime
-from enum import Enum
 from typing import Dict, Optional, Tuple
 
 from ja_timex.tagger.place import Pattern
-
-
-class TIME_TYPE(Enum):
-    DATE = 1
-    TIME = 2
-    DURATION = 3
-    SET = 4
 
 
 @dataclass
@@ -26,7 +18,6 @@ class TIMEX:
     mod: Optional[str] = None
 
     parsed: Optional[Dict] = None
-    value_format: Optional[str] = None
     span: Optional[Tuple[int, int]] = None  # 入力文字列中での正規表現が取得したspan
     pattern: Optional[Pattern] = None
 

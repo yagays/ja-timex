@@ -17,7 +17,6 @@ def parse_ac_century(re_match: re.Match, pattern: Pattern) -> TIMEX:
         value=value,
         text=re_match.group(),
         mod=pattern.option["mod"],
-        value_format="ac_century",
         parsed=args,
         span=span,
     )
@@ -33,7 +32,6 @@ def parse_year(re_match: re.Match, pattern: Pattern) -> TIMEX:
         value=f"P{value}Y",
         text=re_match.group(),
         mod=pattern.option["mod"],
-        value_format="year",
         parsed=args,
         span=span,
     )
@@ -49,7 +47,6 @@ def parse_month(re_match: re.Match, pattern: Pattern) -> TIMEX:
         value=f"P{value}M",
         text=re_match.group(),
         mod=pattern.option["mod"],
-        value_format="month",
         parsed=args,
         span=span,
     )
@@ -65,7 +62,6 @@ def parse_day(re_match: re.Match, pattern: Pattern) -> TIMEX:
         value=f"P{value}D",
         text=re_match.group(),
         mod=pattern.option["mod"],
-        value_format="day",
         parsed=args,
         span=span,
     )
@@ -81,7 +77,6 @@ def parse_hour(re_match: re.Match, pattern: Pattern) -> TIMEX:
         value=f"PT{value}H",
         text=re_match.group(),
         mod=pattern.option["mod"],
-        value_format="hour",
         parsed=args,
         span=span,
     )
@@ -97,7 +92,6 @@ def parse_minutes(re_match: re.Match, pattern: Pattern) -> TIMEX:
         value=f"PT{value}M",
         text=re_match.group(),
         mod=pattern.option["mod"],
-        value_format="minutes",
         parsed=args,
         span=span,
     )
@@ -113,7 +107,6 @@ def parse_second(re_match: re.Match, pattern: Pattern) -> TIMEX:
         value=f"PT{value}S",
         text=re_match.group(),
         mod=pattern.option["mod"],
-        value_format="second",
         parsed=args,
         span=span,
     )
@@ -129,7 +122,6 @@ def parse_second_with_ms(re_match: re.Match, pattern: Pattern) -> TIMEX:
         value=f"PT{value}S",
         text=re_match.group(),
         mod=pattern.option["mod"],
-        value_format="second_with_ms",
         parsed=args,
         span=span,
     )
@@ -145,7 +137,6 @@ def parse_week(re_match: re.Match, pattern: Pattern) -> TIMEX:
         value=f"P{value}W",
         text=re_match.group(),
         mod=pattern.option["mod"],
-        value_format="week",
         parsed=args,
         span=span,
     )

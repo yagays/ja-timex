@@ -31,7 +31,6 @@ def parse_count_range(re_match: re.Match, pattern: Pattern) -> TIMEX:
         value=value,
         text=re_match.group(),
         freq=freq,
-        value_format="count",
         parsed=args,
         span=span,
         pattern=pattern,
@@ -54,7 +53,6 @@ def parse_quant(re_match: re.Match, pattern: Pattern) -> TIMEX:
         value=value,
         text=re_match.group(),
         quant=pattern.option["quant"],
-        value_format="count",
         parsed=args,
         span=span,
     )
