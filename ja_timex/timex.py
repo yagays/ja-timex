@@ -2,7 +2,6 @@ import re
 from collections import defaultdict
 from typing import List
 
-from ja_timex.modifier import Modifier
 from ja_timex.number_normalizer import NumberNormalizer
 from ja_timex.tag import TIMEX
 from ja_timex.tagger.abstime_tagger import AbstimeTagger
@@ -47,7 +46,6 @@ class TimexParser:
         reltime_tagger=ReltimeTagger(),
         set_tagger=SetTagger(),
         custom_tagger=None,
-        modifier=Modifier(),
     ) -> None:
         self.number_normalizer = number_normalizer
         self.abstime_tagger = abstime_tagger
@@ -55,7 +53,6 @@ class TimexParser:
         self.reltime_tagger = reltime_tagger
         self.set_tagger = set_tagger
         self.custom_tagger = custom_tagger
-        self.modifier = modifier
 
         self.all_patterns = {}
         self.all_patterns["abstime"] = self.abstime_tagger.patterns
@@ -135,13 +132,10 @@ class TimexParser:
         return results
 
     def _modify_additional_information(self, timex_tags: List[TIMEX], processed_text: str) -> List[TIMEX]:
-        # update @tid and @mod
+        # update @tid
         modified_tags = []
         for i, timex in enumerate(timex_tags):
             timex.tid = f"t{i}"
-
-            timex = self.modifier.parse(processed_text, timex)
-
             modified_tags.append(timex)
 
         return timex_tags
