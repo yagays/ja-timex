@@ -91,3 +91,20 @@ def test_second_mod_about_prefix_and_suffix(t):
     assert t.parse("1秒前後").mod == "APPROX"
     assert t.parse("1秒くらい").mod == "APPROX"
     assert t.parse("1秒ばかり").mod == "APPROX"
+
+
+def test_word(t):
+    assert t.parse("昨日").value == "P1D"
+    assert t.parse("昨日").mod == "BEFORE"
+    assert t.parse("一昨日").value == "P2D"
+    assert t.parse("一昨日").mod == "BEFORE"
+    assert t.parse("一昨々日").value == "P3D"
+    assert t.parse("一昨昨日").value == "P3D"
+    assert t.parse("前日").value == "P1D"
+
+    assert t.parse("明日").value == "P1D"
+    assert t.parse("明日").mod == "AFTER"
+    assert t.parse("明後日").value == "P2D"
+    assert t.parse("明後日").mod == "AFTER"
+    assert t.parse("翌日").value == "P1D"
+    assert t.parse("翌々日").value == "P2D"

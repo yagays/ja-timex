@@ -13,7 +13,7 @@ def parse_ac_century(re_match: re.Match, pattern: Pattern) -> TIMEX:
     value = century_range.zfill(4)
     f"{century_num - 1}" + "XX"
     return TIMEX(
-        type="TIME",
+        type="DATE",
         value=value,
         text=re_match.group(),
         mod=pattern.option["mod"],
@@ -29,7 +29,7 @@ def parse_year(re_match: re.Match, pattern: Pattern) -> TIMEX:
 
     value = args["year"]
     return TIMEX(
-        type="TIME",
+        type="DATE",
         value=f"P{value}Y",
         text=re_match.group(),
         mod=pattern.option["mod"],
@@ -45,7 +45,7 @@ def parse_month(re_match: re.Match, pattern: Pattern) -> TIMEX:
 
     value = args["month"]
     return TIMEX(
-        type="TIME",
+        type="DATE",
         value=f"P{value}M",
         text=re_match.group(),
         mod=pattern.option["mod"],
@@ -61,7 +61,7 @@ def parse_day(re_match: re.Match, pattern: Pattern) -> TIMEX:
 
     value = args["day"]
     return TIMEX(
-        type="TIME",
+        type="DATE",
         value=f"P{value}D",
         text=re_match.group(),
         mod=pattern.option["mod"],
@@ -141,8 +141,24 @@ def parse_week(re_match: re.Match, pattern: Pattern) -> TIMEX:
 
     value = args["week"]
     return TIMEX(
-        type="TIME",
+        type="DATE",
         value=f"P{value}W",
+        text=re_match.group(),
+        mod=pattern.option["mod"],
+        parsed=args,
+        span=span,
+        pattern=pattern,
+    )
+
+
+def parse_word(re_match: re.Match, pattern: Pattern) -> TIMEX:
+    args = re_match.groupdict()
+    span = re_match.span()
+
+    value = pattern.option["value"]
+    return TIMEX(
+        type="DATE",
+        value=value,
         text=re_match.group(),
         mod=pattern.option["mod"],
         parsed=args,
@@ -306,6 +322,40 @@ patterns += [
         re_pattern=f"{p.second}秒{p.approx_suffix}",
         parse_func=parse_second,
         option={"mod": "APPROX"},
+    ),
+]
+
+# 昨日/明日などの単語表現
+patterns += [
+    Pattern(
+        re_pattern=f"[昨前]日",
+        parse_func=parse_word,
+        option={"value": "P1D", "mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern=f"一昨日",
+        parse_func=parse_word,
+        option={"value": "P2D", "mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern=f"一昨[昨々]日",
+        parse_func=parse_word,
+        option={"value": "P3D", "mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern=f"[翌明]日",
+        parse_func=parse_word,
+        option={"value": "P1D", "mod": "AFTER"},
+    ),
+    Pattern(
+        re_pattern=f"(翌々|明後)日",
+        parse_func=parse_word,
+        option={"value": "P2D", "mod": "AFTER"},
+    ),
+    Pattern(
+        re_pattern=f"明[昨々]後日",
+        parse_func=parse_word,
+        option={"value": "P3D", "mod": "AFTER"},
     ),
 ]
 
