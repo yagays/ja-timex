@@ -55,6 +55,7 @@ def parse_quant(re_match: re.Match, pattern: Pattern) -> TIMEX:
         quant=pattern.option["quant"],
         parsed=args,
         span=span,
+        pattern=pattern,
     )
 
 

@@ -35,6 +35,7 @@ def parse_absdate(re_match: re.Match, pattern: Pattern) -> TIMEX:
         text=re_match.group(),
         parsed=args,
         span=span,
+        pattern=pattern,
     )
 
 
@@ -45,13 +46,7 @@ def parse_weekday(re_match: re.Match, pattern: Pattern) -> TIMEX:
     weekday_id = get_weekday_id(args["weekday"])
     calendar_week = "XX"
     value = f"XXXX-W{calendar_week}-{weekday_id}"
-    return TIMEX(
-        type="DATE",
-        value=value,
-        text=re_match.group(),
-        parsed=args,
-        span=span,
-    )
+    return TIMEX(type="DATE", value=value, text=re_match.group(), parsed=args, span=span, pattern=pattern)
 
 
 def parse_season(re_match: re.Match, pattern: Pattern) -> TIMEX:
@@ -64,13 +59,7 @@ def parse_season(re_match: re.Match, pattern: Pattern) -> TIMEX:
     else:
         year = "XXXX"
     value = f"{year}-{season_id}"
-    return TIMEX(
-        type="DATE",
-        value=value,
-        text=re_match.group(),
-        parsed=args,
-        span=span,
-    )
+    return TIMEX(type="DATE", value=value, text=re_match.group(), parsed=args, span=span, pattern=pattern)
 
 
 def parse_quarter(re_match: re.Match, pattern: Pattern) -> TIMEX:
@@ -85,6 +74,7 @@ def parse_quarter(re_match: re.Match, pattern: Pattern) -> TIMEX:
         text=re_match.group(),
         parsed=args,
         span=span,
+        pattern=pattern,
     )
 
 
@@ -100,6 +90,7 @@ def parse_fiscal_year(re_match: re.Match, pattern: Pattern) -> TIMEX:
         text=re_match.group(),
         parsed=args,
         span=span,
+        pattern=pattern,
     )
 
 
@@ -116,6 +107,7 @@ def parse_ac_century(re_match: re.Match, pattern: Pattern) -> TIMEX:
         text=re_match.group(),
         parsed=args,
         span=span,
+        pattern=pattern,
     )
 
 
@@ -131,6 +123,7 @@ def parse_bc_year(re_match: re.Match, pattern: Pattern) -> TIMEX:
         text=re_match.group(),
         parsed=args,
         span=span,
+        pattern=pattern,
     )
 
 
@@ -147,6 +140,7 @@ def parse_bc_century(re_match: re.Match, pattern: Pattern) -> TIMEX:
         text=re_match.group(),
         parsed=args,
         span=span,
+        pattern=pattern,
     )
 
 
@@ -182,6 +176,7 @@ def parse_time(re_match: re.Match, pattern: Pattern) -> TIMEX:
         text=re_match.group(),
         parsed=args,
         span=span,
+        pattern=pattern,
     )
 
 

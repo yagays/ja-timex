@@ -25,6 +25,7 @@ def parse_p(re_match: re.Match, pattern: Pattern) -> TIMEX:
         text=re_match.group(),
         parsed=args,
         span=span,
+        pattern=pattern,
     )
 
 
@@ -49,6 +50,7 @@ def parse_pt(re_match: re.Match, pattern: Pattern) -> TIMEX:
         text=re_match.group(),
         parsed=args,
         span=span,
+        pattern=pattern,
     )
 
 
