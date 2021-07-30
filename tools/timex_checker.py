@@ -10,12 +10,10 @@ def export_as_tagged_text(timexes, text):
         text = text[: timex.span[0]] + "\n" + timex.to_tag() + "\n" + text[timex.span[1] :]
     return text
 
-
-text = st.text_area("Text to analyze", "")
-
+st.header("ja_timex Checker")
+text = st.text_area("Text to parse", "")
 
 timex_parser = TimexParser()
-
 
 if text:
     text = text.replace("\n", "").strip()
@@ -38,6 +36,7 @@ if text:
                     timex.mod,
                     timex.parsed,
                     timex.span,
+                    timex.pattern,
                 ],
                 index=[
                     "@tid",
@@ -47,9 +46,11 @@ if text:
                     "@freq",
                     "@quant",
                     "@mod",
-                    "@parsed",
-                    "@span",
+                    "parsed",
+                    "span",
+                    "pattern"
                 ],
                 columns=["value"],
             )
+            st.subheader(f"{timex.tid}: {timex.text}")
             st.table(timex_df)
