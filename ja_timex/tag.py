@@ -67,3 +67,14 @@ class TIMEX:
 
         attributes_text = " ".join(attributes)
         return f"<TIMEX3 {attributes_text}>"
+
+
+@dataclass
+class AnnotatedTIMEX(TIMEX):
+    """アノテーションされたTIMEXタグの情報を表現する際に用いるTIMEX拡張
+    """
+
+    valueFromSurface: Optional[str] = None
+    temporalFunction: Optional[str] = None
+    rangeStart: Optional[str] = None
+    rangeEnd: Optional[str] = None
