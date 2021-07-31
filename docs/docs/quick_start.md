@@ -32,7 +32,7 @@ In []: timexes[0].value
 Out[]: '2008-04-XX'
 ```
 
-詳しくは[TIMEXの仕様](timex3.md)を参照ください。
+詳しくは[TIMEX3タグの仕様](timex3.md)を参照ください。
 
 ## Pythonのdatetimeに変換する
 `TIMEX`クラスからPythonのdatetime形式に変換することができます。
