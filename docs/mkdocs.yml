@@ -4,6 +4,7 @@ markdown_extensions:
   - pymdownx.superfences
   - def_list
   - attr_list
+  - admonition
 theme:
     name: material
     language: ja
