@@ -22,8 +22,12 @@ def test_abstime(p):
 
 
 def test_abstime_partial_pattern_of_number_expression(p):
-    # 部分的な表現である3/13を取得しない
-    assert p.parse("13/13は1です") == []
+    # 部分的な表現はなるべく取得しない
+
+    timexes = p.parse("13/13は1です")
+    assert len(timexes) == 1
+    # 3/13を取得しないが、13/1は取得されてしまう
+    # 「今月8日」といった直後に続く数字があるため
 
 
 def test_tid_is_modified_in_parsing(p):

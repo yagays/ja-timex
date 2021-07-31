@@ -5,33 +5,7 @@ from typing import List
 from ja_timex.number_normalizer import NumberNormalizer
 from ja_timex.tag import TIMEX
 from ja_timex.tagger import AbstimeTagger, DurationTagger, ReltimeTagger, SetTagger
-
-
-def is_parial_pattern_of_number_expression(re_match: re.Match, processed_text: str) -> bool:
-    """対象パターンが数字表現の一部かを判定する
-
-    正規表現の記法によっては、数字表現の一部を取得してしまう例がある。
-    与えられたパターンが数字表現の一部を間違って取得していないかをチェックする
-
-    e.g. "これは13/13です" に対して "3/13" というパターンを取得している場合 -> True
-    e.g. "これは3/13です" に対して "3/13" というパターンを取得している場合 -> False
-
-    Args:
-        re_match (re.Match): 対象となる正規表現のパターン
-        processed_text (str): 入力文字列
-
-    Returns:
-        bool: 数字表現の一部かを表す真偽値
-    """
-    start_i, end_i = re_match.span()
-    has_number_list = []
-
-    if start_i != 0:
-        has_number_list.append(re.match("[0-9]", processed_text[start_i - 1]))
-    if len(processed_text) != end_i:
-        has_number_list.append(re.match("[0-9]", processed_text[end_i]))
-
-    return any(has_number_list)
+from ja_timex.util import is_parial_pattern_of_number_expression
 
 
 class TimexParser:
