@@ -1,6 +1,8 @@
 from dataclasses import dataclass, field
-from datetime import datetime
-from typing import Dict, Optional, Tuple
+from datetime import datetime, timedelta
+from typing import Dict, Optional, Tuple, Union
+
+from dateutil.relativedelta import relativedelta
 
 from ja_timex.pattern.place import Pattern
 
@@ -16,7 +18,7 @@ class TIMEX:
     quant: Optional[str] = None
     mod: Optional[str] = None
 
-    parsed: Dict = field(default_factory=dict)
+    parsed: Dict[str, str] = field(default_factory=dict)
     span: Optional[Tuple[int, int]] = None  # 入力文字列中での正規表現が取得したspan
     pattern: Optional[Pattern] = None
 
@@ -54,6 +56,39 @@ class TIMEX:
             )
         else:
             return None
+
+    @property
+    def is_valid_timedelta(self) -> bool:
+        if self.type == "DURATION" and self.parsed != {}:
+            return True
+        else:
+            return False
+
+    def to_delta(self) -> Union[timedelta, relativedelta, None]:
+        if not self.is_valid_timedelta:
+            return None
+
+        if self.value[:2] == "PT":
+            args = {}
+            for arg_name in ["hour", "minutes", "second"]:
+                args[arg_name] = 0.0
+                if self.parsed.get(arg_name):
+                    args[arg_name] = float(self.parsed[arg_name])
+            # timedeltaはint/float
+            return timedelta(hours=args["hour"], minutes=args["minutes"], seconds=args["second"])
+        else:
+            relative_args = {}
+            for arg_name in ["year", "month", "week", "day"]:
+                relative_args[arg_name] = 0
+                if self.parsed.get(arg_name):
+                    relative_args[arg_name] = int(self.parsed[arg_name])
+            # relaivedeltaはint
+            return relativedelta(
+                years=relative_args["year"],
+                months=relative_args["month"],
+                weeks=relative_args["week"],
+                days=relative_args["day"],
+            )  # noqa
 
     def __repr__(self) -> str:
         attributes = []

@@ -48,9 +48,6 @@ class TimexParser:
         # 規格化後のタグの情報付与
         timex_tags = self._modify_additional_information(timex_tags, processed_text)
 
-        # 複数のタグの関係性推定
-        timex_tags = self._relation_detection(timex_tags, processed_text)
-
         return timex_tags
 
     def _normalize_number(self, raw_text: str) -> str:
@@ -110,12 +107,4 @@ class TimexParser:
             timex.tid = f"t{i}"
             modified_tags.append(timex)
 
-        return sorted_timex_tags
-
-    def _relation_detection(self, timex_tags, processed_text):
-        return timex_tags
-
-
-if __name__ == "__main__":
-    timex = TimexParser()
-    # timex.parse("2021年7月23日")
+        return modified_tags

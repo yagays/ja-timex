@@ -68,7 +68,7 @@ class Place:
     day_range: str = "(?P<day_range>[0-9]+\\.?[0-9]*)"
     range: str = "(?P<range>[0-9]+\\.?[0-9]*)"  # 頻度における数値としての表現
 
-    # prefix and suffix for mod (pattern nameは要らないかも)
+    # prefix and suffix for mod
     before_suffix: str = "(?P<before_suffix>(前|まえ))"
     after_suffix: str = "(?P<after_suffix>(後|あと))"
     start_suffix: str = "(?P<start_suffix>((はじ|初|始)め|初[頭期]|前[半記]|頭))"
@@ -83,7 +83,7 @@ class Place:
     # reltime: 相対的な時間における曖昧表現
     around_suffix: str = "([くぐ]らい|ほど|程度|ばかり|近く|より(も)?)"
 
-    # 和暦と西暦
+    # 和暦の元号
     wareki_prefix: str = f"(?P<wareki_prefix>({'|'.join(wareki2year.keys())}))"
 
     def is_valid(self, target, text):
