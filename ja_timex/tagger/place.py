@@ -51,7 +51,7 @@ class Place:
     weekday_with_symbol: str = "\\s{,1}\\(\\s{,1}" + f"{weekday}(曜日|曜)?" + "\\s{,1}\\)"
 
     # duraton: 期間表現
-    year: str = "(?P<year>[0-9]{,4})"
+    year: str = "(?P<year>[0-9]{1,4})"
     month: str = "(?P<month>[0-9]+)"  # 日付における月とは異なり、18ヶ月など任意の数字を取れる
     day: str = "(?P<day>[0-9]+\\.?[0-9]*)"
     century: str = "(?P<century>[1-9]?[0-9]{,2})"

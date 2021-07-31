@@ -73,3 +73,10 @@ def test_multiple_durations_never_mixed_date_and_time(t):
     assert t.parse("1年3時間") is None
     assert t.parse("3日10時間") is None
     assert t.parse("1日10分") is None  # 1日あたり10分という意味のため、DURATIONではなくSETとして扱う
+
+
+def test_invalid_duration(t):
+    assert t.parse("年を超す") is None
+    assert t.parse("強化月間") is None
+    assert t.parse("週またぎの行事") is None
+    assert t.parse("日が変わる") is None
