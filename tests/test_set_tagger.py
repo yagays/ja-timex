@@ -1,6 +1,6 @@
 import pytest
 
-from ja_timex.tagger.set_tagger import SetTagger
+from ja_timex.tagger import SetTagger
 
 
 @pytest.fixture(scope="module")

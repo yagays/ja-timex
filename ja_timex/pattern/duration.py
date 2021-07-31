@@ -1,7 +1,7 @@
 import re
 
+from ja_timex.pattern.place import Pattern, Place
 from ja_timex.tag import TIMEX
-from ja_timex.tagger.place import Pattern, Place
 
 
 def parse_p(re_match: re.Match, pattern: Pattern) -> TIMEX:

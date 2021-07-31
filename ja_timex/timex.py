@@ -4,10 +4,7 @@ from typing import List
 
 from ja_timex.number_normalizer import NumberNormalizer
 from ja_timex.tag import TIMEX
-from ja_timex.tagger.abstime_tagger import AbstimeTagger
-from ja_timex.tagger.duration_tagger import DurationTagger
-from ja_timex.tagger.reltime_tagger import ReltimeTagger
-from ja_timex.tagger.set_tagger import SetTagger
+from ja_timex.tagger import AbstimeTagger, DurationTagger, ReltimeTagger, SetTagger
 
 
 def is_parial_pattern_of_number_expression(re_match: re.Match, processed_text: str) -> bool:

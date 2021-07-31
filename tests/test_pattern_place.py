@@ -1,6 +1,6 @@
 import pytest
 
-from ja_timex.tagger.abstime_pattern import Place
+from ja_timex.pattern.place import Place
 
 
 @pytest.fixture(scope="module")

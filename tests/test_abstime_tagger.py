@@ -1,6 +1,6 @@
 import pytest
 
-from ja_timex.tagger.abstime_tagger import AbstimeTagger
+from ja_timex.tagger import AbstimeTagger
 
 
 @pytest.fixture(scope="module")
