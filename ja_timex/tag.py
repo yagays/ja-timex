@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Dict, Optional, Tuple
 
@@ -16,7 +16,7 @@ class TIMEX:
     quant: Optional[str] = None
     mod: Optional[str] = None
 
-    parsed: Optional[Dict] = None
+    parsed: Dict = field(default_factory=dict)
     span: Optional[Tuple[int, int]] = None  # 入力文字列中での正規表現が取得したspan
     pattern: Optional[Pattern] = None
 
@@ -40,8 +40,15 @@ class TIMEX:
         tag = f"<TIMEX3 {attributes_text}>{self.text}</TIMEX3>"
         return tag
 
+    @property
+    def is_valid_datetime(self) -> bool:
+        if self.parsed.get("calendar_year") or self.parsed.get("calendar_month") or self.parsed.get("calendar_day"):
+            return True
+        else:
+            return False
+
     def to_datetime(self) -> Optional[datetime]:
-        if self.parsed:
+        if self.is_valid_datetime:
             return datetime(
                 int(self.parsed["calendar_year"]), int(self.parsed["calendar_month"]), int(self.parsed["calendar_day"])
             )
