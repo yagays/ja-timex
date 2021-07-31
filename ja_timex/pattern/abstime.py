@@ -33,6 +33,7 @@ def parse_absdate(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="DATE",
         value=f'{args["calendar_year"]}-{args["calendar_month"]}-{args["calendar_day"]}',
         text=re_match.group(),
+        mod=pattern.option.get("mod"),
         parsed=args,
         span=span,
         pattern=pattern,
@@ -320,3 +321,42 @@ patterns += [
         option={},
     ),
 ]
+
+# @mod
+mod2suffix = {
+    "START": p.start_suffix,
+    "MID": p.mid_suffix,
+    "END": p.end_suffix,
+    "APPROX": p.abstime_approx_suffix,
+    "ON_OR_BEFORE": p.on_or_before_suffix,
+    "ON_OR_AFTER": p.on_or_after_suffix,
+}
+
+for mod, suffix in mod2suffix.items():
+    patterns += [
+        Pattern(
+            re_pattern=f"(西暦)?{p.calendar_year}年{p.calendar_month}月{suffix}",
+            parse_func=parse_absdate,
+            option={"mod": mod},
+        ),
+        Pattern(
+            re_pattern=f"(西暦)?{p.calendar_year}年{suffix}",
+            parse_func=parse_absdate,
+            option={"mod": mod},
+        ),
+        Pattern(
+            re_pattern=f"{p.calendar_month}月{suffix}",
+            parse_func=parse_absdate,
+            option={"mod": mod},
+        ),
+        Pattern(
+            re_pattern=f"{p.wareki_prefix}{p.calendar_year_wareki}年{p.calendar_month}月{suffix}",
+            parse_func=parse_absdate,
+            option={"mod": mod},
+        ),
+        Pattern(
+            re_pattern=f"{p.wareki_prefix}{p.calendar_year_wareki}年{suffix}",
+            parse_func=parse_absdate,
+            option={"mod": mod},
+        ),
+    ]

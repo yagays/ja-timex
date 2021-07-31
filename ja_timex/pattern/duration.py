@@ -68,7 +68,7 @@ patterns += [
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.month}[ヶ|か|ケ|箇]?月(間)?",
+        re_pattern=f"{p.month}[ヶ|か|カ|ケ|箇]?月(間)?",
         parse_func=parse_p,
         option={},
     ),
@@ -83,12 +83,12 @@ patterns += [
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.year}年{p.month}[ヶ|か|ケ|箇]月(間)?",
+        re_pattern=f"{p.year}年{p.month}[ヶ|か|カ|ケ|箇]月(間)?",
         parse_func=parse_p,
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.year}年{p.month}[ヶ|か|ケ|箇]月{p.day}日(間)?",
+        re_pattern=f"{p.year}年{p.month}[ヶ|か|カ|ケ|箇]月{p.day}日(間)?",
         parse_func=parse_p,
         option={},
     ),

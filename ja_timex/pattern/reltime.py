@@ -193,17 +193,17 @@ patterns += [
 # 月
 patterns += [
     Pattern(
-        re_pattern=f"{p.month}[ヶ|か|ケ|箇]月{p.around_suffix}?{p.before_suffix}",
+        re_pattern=f"{p.month}[ヶ|か|カ|ケ|箇]月{p.around_suffix}?{p.before_suffix}",
         parse_func=parse_month,
         option={"mod": "BEFORE"},
     ),
     Pattern(
-        re_pattern=f"{p.month}[ヶ|か|ケ|箇]月{p.around_suffix}?{p.after_suffix}",
+        re_pattern=f"{p.month}[ヶ|か|カ|ケ|箇]月{p.around_suffix}?{p.after_suffix}",
         parse_func=parse_month,
         option={"mod": "AFTER"},
     ),
     Pattern(
-        re_pattern=f"{p.month}[ヶ|か|ケ|箇]月{p.approx_suffix}",
+        re_pattern=f"{p.month}[ヶ|か|カ|ケ|箇]月{p.approx_suffix}",
         parse_func=parse_month,
         option={"mod": "APPROX"},
     ),

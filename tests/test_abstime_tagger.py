@@ -231,3 +231,41 @@ def test_timex_type(t):
     assert t.parse("紀元前1年").type == "DATE"
     assert t.parse("紀元前1世紀").type == "DATE"
     assert t.parse("1時2分3秒").type == "TIME"
+
+
+def test_mod(t):
+    # value
+    assert t.parse("2021年7月末").value == "2021-07-XX"
+
+    # type
+    assert t.parse("2021年7月頭").mod == "START"
+    assert t.parse("2021年7月中旬").mod == "MID"
+    assert t.parse("2021年7月末").mod == "END"
+    assert t.parse("2021年7月前後").mod == "APPROX"
+
+
+def test_mod_start(t):
+    assert t.parse("2021年始め").mod == "START"
+    assert t.parse("2021年初頭").mod == "START"
+    assert t.parse("2021年前半").mod == "START"
+
+
+def test_mod_mid(t):
+    assert t.parse("2021年半ば").mod == "MID"
+    assert t.parse("2021年なかば").mod == "MID"
+    assert t.parse("2021年中旬").mod == "MID"
+
+
+def test_mod_end(t):
+    assert t.parse("2021年後半").mod == "END"
+    assert t.parse("7月終わり").mod == "END"
+    assert t.parse("令和2年おわり").mod == "END"
+
+
+def test_mod_on_or_before(t):
+    assert t.parse("2021年以前").mod == "ON_OR_BEFORE"
+
+
+def test_mod_on_or_after(t):
+    assert t.parse("2021年以降").mod == "ON_OR_AFTER"
+    assert t.parse("7月以来").mod == "ON_OR_AFTER"

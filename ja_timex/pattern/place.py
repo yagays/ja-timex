@@ -71,9 +71,13 @@ class Place:
     # prefix and suffix for mod (pattern nameは要らないかも)
     before_suffix: str = "(?P<before_suffix>(前|まえ))"
     after_suffix: str = "(?P<after_suffix>(後|あと))"
-    start_suffix: str = "(?P<start_suffix>(はじめ|初め|始め|初頭|初期|前半|前記|頭))"
-    mid_suffix: str = "(?P<mid_suffix>(なかば|半ば|中ごろ|中頃|中盤|中旬|中期|頭))"
-    end_suffix: str = "(?P<end_suffix>(後半|後期|終盤|終わり|末))"
+    start_suffix: str = "(?P<start_suffix>((はじ|初|始)め|初[頭期]|前[半記]|頭))"
+    mid_suffix: str = "(?P<mid_suffix>((なか|半)ば|中(ごろ|頃|盤|旬|期)))"
+    end_suffix: str = "(?P<end_suffix>(後[半期]|終盤|[終お]わり|末))"
+    abstime_approx_suffix: str = "(?P<abstime_approx_suffix>(近く|前後|くらい))"
+    on_or_before_suffix: str = "(?P<on_or_before_suffix>(以前))"
+    on_or_after_suffix: str = "(?P<on_or_after_suffix>(以[来降後]))"
+
     approx_suffix: str = "(?P<approx_suffix>(近く|前後|くらい|ばかり))"
 
     # reltime: 相対的な時間における曖昧表現

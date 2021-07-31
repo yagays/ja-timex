@@ -62,7 +62,7 @@ def parse_quant(re_match: re.Match, pattern: Pattern) -> TIMEX:
 # 年
 patterns += [
     Pattern(
-        re_pattern=f"{p.range}?年に{p.count}[ヶ|か|ケ|箇]?月",
+        re_pattern=f"{p.range}?年に{p.count}[ヶ|か|カ|ケ|箇]?月",
         parse_func=parse_count_range,
         option={"value_template": "P{}Y", "freq_template": "P{}M"},
     ),
@@ -101,32 +101,32 @@ patterns += [
 # 月
 patterns += [
     Pattern(
-        re_pattern=f"{p.range}?[ヶ|か|ケ|箇]?月に{p.count}週",
+        re_pattern=f"{p.range}?[ヶ|か|カ|ケ|箇]?月に{p.count}週",
         parse_func=parse_count_range,
         option={"value_template": "P{}M", "freq_template": "P{}W"},
     ),
     Pattern(
-        re_pattern=f"{p.range}?[ヶ|か|ケ|箇]?月に{p.count}日",
+        re_pattern=f"{p.range}?[ヶ|か|カ|ケ|箇]?月に{p.count}日",
         parse_func=parse_count_range,
         option={"value_template": "P{}M", "freq_template": "P{}D"},
     ),
     Pattern(
-        re_pattern=f"{p.range}?[ヶ|か|ケ|箇]?月に{p.count}時間",
+        re_pattern=f"{p.range}?[ヶ|か|カ|ケ|箇]?月に{p.count}時間",
         parse_func=parse_count_range,
         option={"value_template": "P{}M", "freq_template": "PT{}H"},
     ),
     Pattern(
-        re_pattern=f"{p.range}?[ヶ|か|ケ|箇]?月に{p.count}分",
+        re_pattern=f"{p.range}?[ヶ|か|カ|ケ|箇]?月に{p.count}分",
         parse_func=parse_count_range,
         option={"value_template": "P{}M", "freq_template": "PT{}M"},
     ),
     Pattern(
-        re_pattern=f"{p.range}?[ヶ|か|ケ|箇]?月に{p.count}秒",
+        re_pattern=f"{p.range}?[ヶ|か|カ|ケ|箇]?月に{p.count}秒",
         parse_func=parse_count_range,
         option={"value_template": "P{}M", "freq_template": "PT{}S"},
     ),
     Pattern(
-        re_pattern=f"{p.range}?[ヶ|か|ケ|箇]?月に{p.count}[回|度]",
+        re_pattern=f"{p.range}?[ヶ|か|カ|ケ|箇]?月に{p.count}[回|度]",
         parse_func=parse_count_range,
         option={"value_template": "P{}M", "freq_template": "{}X"},
     ),
@@ -256,7 +256,7 @@ patterns += [
 # # 「年1回」「週1日」とは言うが、「2年1回」や「3週1日」とは言わない
 patterns += [
     Pattern(
-        re_pattern=f"年に?{p.count}[ヶ|か|ケ|箇]?月",
+        re_pattern=f"年に?{p.count}[ヶ|か|カ|ケ|箇]?月",
         parse_func=parse_count_range,
         option={"value_template": "P{}Y", "freq_template": "P{}M"},
     ),
@@ -390,7 +390,7 @@ patterns += [
         option={"value_template": "P{}W", "quant": "EVERY"},
     ),
     Pattern(
-        re_pattern=f"{p.range}[ヶ|か|ケ|箇]月(おき|ごと)",
+        re_pattern=f"{p.range}[ヶ|か|カ|ケ|箇]月(おき|ごと)",
         parse_func=parse_quant,
         option={"value_template": "P{}M", "quant": "EVERY"},
     ),
