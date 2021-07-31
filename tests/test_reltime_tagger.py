@@ -8,6 +8,16 @@ def t():
     return ReltimeTagger()
 
 
+def test_reltime_type(t):
+    assert t.parse("1世紀前").type == "DURATION"
+    assert t.parse("1年前").type == "DURATION"
+    assert t.parse("1ヶ月前").type == "DURATION"
+    assert t.parse("1日前").type == "DURATION"
+    assert t.parse("1時間前").type == "DURATION"
+    assert t.parse("1分前").type == "DURATION"
+    assert t.parse("1秒前").type == "DURATION"
+
+
 def test_year(t):
     assert t.parse("1年前").value == "P1Y"
     assert t.parse("1年くらい前").value == "P1Y"
@@ -93,7 +103,7 @@ def test_second_mod_about_prefix_and_suffix(t):
     assert t.parse("1秒ばかり").mod == "APPROX"
 
 
-def test_word(t):
+def test_word_before_and_after(t):
     assert t.parse("昨日").value == "P1D"
     assert t.parse("昨日").mod == "BEFORE"
     assert t.parse("一昨日").value == "P2D"
@@ -108,3 +118,18 @@ def test_word(t):
     assert t.parse("明後日").mod == "AFTER"
     assert t.parse("翌日").value == "P1D"
     assert t.parse("翌々日").value == "P2D"
+
+
+def test_word_now(t):
+    # 今日か今週かで表現する幅が異なるので、valueの値としてP0{D,W,M,Y}を取ることは表層表現を表すために必要
+    assert t.parse("今日").value == "P0D"
+    assert t.parse("今日").mod == "NOW"
+
+    assert t.parse("今週").value == "P0W"
+    assert t.parse("今週").mod == "NOW"
+
+    assert t.parse("今月").value == "P0M"
+    assert t.parse("今月").mod == "NOW"
+
+    assert t.parse("今年").value == "P0Y"
+    assert t.parse("今年").mod == "NOW"

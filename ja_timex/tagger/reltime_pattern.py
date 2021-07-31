@@ -12,7 +12,7 @@ def parse_ac_century(re_match: re.Match, pattern: Pattern) -> TIMEX:
     century_range = f"{century_num - 1}" + "XX"
     value = century_range.zfill(4)
     return TIMEX(
-        type="DATE",
+        type="DURATION",
         value=value,
         text=re_match.group(),
         mod=pattern.option["mod"],
@@ -28,7 +28,7 @@ def parse_year(re_match: re.Match, pattern: Pattern) -> TIMEX:
 
     value = args["year"]
     return TIMEX(
-        type="DATE",
+        type="DURATION",
         value=f"P{value}Y",
         text=re_match.group(),
         mod=pattern.option["mod"],
@@ -44,7 +44,7 @@ def parse_month(re_match: re.Match, pattern: Pattern) -> TIMEX:
 
     value = args["month"]
     return TIMEX(
-        type="DATE",
+        type="DURATION",
         value=f"P{value}M",
         text=re_match.group(),
         mod=pattern.option["mod"],
@@ -60,7 +60,7 @@ def parse_day(re_match: re.Match, pattern: Pattern) -> TIMEX:
 
     value = args["day"]
     return TIMEX(
-        type="DATE",
+        type="DURATION",
         value=f"P{value}D",
         text=re_match.group(),
         mod=pattern.option["mod"],
@@ -76,7 +76,7 @@ def parse_hour(re_match: re.Match, pattern: Pattern) -> TIMEX:
 
     value = args["hour"]
     return TIMEX(
-        type="TIME",
+        type="DURATION",
         value=f"PT{value}H",
         text=re_match.group(),
         mod=pattern.option["mod"],
@@ -92,7 +92,7 @@ def parse_minutes(re_match: re.Match, pattern: Pattern) -> TIMEX:
 
     value = args["minutes"]
     return TIMEX(
-        type="TIME",
+        type="DURATION",
         value=f"PT{value}M",
         text=re_match.group(),
         mod=pattern.option["mod"],
@@ -108,7 +108,7 @@ def parse_second(re_match: re.Match, pattern: Pattern) -> TIMEX:
 
     value = args["second"]
     return TIMEX(
-        type="TIME",
+        type="DURATION",
         value=f"PT{value}S",
         text=re_match.group(),
         mod=pattern.option["mod"],
@@ -124,7 +124,7 @@ def parse_second_with_ms(re_match: re.Match, pattern: Pattern) -> TIMEX:
 
     value = args["second_with_ms"].replace("秒", ".")
     return TIMEX(
-        type="TIME",
+        type="DURATION",
         value=f"PT{value}S",
         text=re_match.group(),
         mod=pattern.option["mod"],
@@ -140,7 +140,7 @@ def parse_week(re_match: re.Match, pattern: Pattern) -> TIMEX:
 
     value = args["week"]
     return TIMEX(
-        type="DATE",
+        type="DURATION",
         value=f"P{value}W",
         text=re_match.group(),
         mod=pattern.option["mod"],
@@ -156,7 +156,7 @@ def parse_word(re_match: re.Match, pattern: Pattern) -> TIMEX:
 
     value = pattern.option["value"]
     return TIMEX(
-        type="DATE",
+        type="DURATION",
         value=value,
         text=re_match.group(),
         mod=pattern.option["mod"],
@@ -355,6 +355,35 @@ patterns += [
         re_pattern="明[昨々]後日",
         parse_func=parse_word,
         option={"value": "P3D", "mod": "AFTER"},
+    ),
+]
+
+# 今を表す言葉
+patterns += [
+    Pattern(
+        re_pattern="[今本]日",
+        parse_func=parse_word,
+        option={"value": "P0D", "mod": "NOW"},
+    ),
+    Pattern(
+        re_pattern="今週",
+        parse_func=parse_word,
+        option={"value": "P0W", "mod": "NOW"},
+    ),
+    Pattern(
+        re_pattern="今月",
+        parse_func=parse_word,
+        option={"value": "P0M", "mod": "NOW"},
+    ),
+    Pattern(
+        re_pattern="今年",
+        parse_func=parse_word,
+        option={"value": "P0Y", "mod": "NOW"},
+    ),
+    Pattern(
+        re_pattern="[今本]日",
+        parse_func=parse_word,
+        option={"value": "P0D", "mod": "NOW"},
     ),
 ]
 
