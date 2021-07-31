@@ -6,4 +6,4 @@
 pip install ja-timex
 ```
 
-`ja_timex`は、Python 3.6以上のバージョンをサポートしています。
+`ja_timex`は、Python 3.7以上のバージョンをサポートしています。
