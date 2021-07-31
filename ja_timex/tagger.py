@@ -1,5 +1,5 @@
 import re
-from typing import List
+from typing import List, Optional
 
 from ja_timex.pattern.abstime import patterns as abstime_patterns
 from ja_timex.pattern.duration import patterns as duration_patterns
@@ -13,7 +13,18 @@ class BaseTagger:
     def __init__(self, patterns=None) -> None:
         self.patterns = patterns
 
-    def parse(self, text: str) -> TIMEX:
+    def parse(self, text: str) -> Optional[TIMEX]:
+        """すべてのPatternを用いてパースする
+
+        入力文字列に対して、すべてのパータンをチェックして結果をTIMEX形式に変換する。
+        任意のTagger単体で実行するときに利用する。
+
+        Args:
+            text (str): 入力文字列
+
+        Returns:
+            Optional[TIMEX]: 抽出された時間情報表現
+        """
         results = []
 
         # preprocess text

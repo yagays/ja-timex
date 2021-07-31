@@ -7,7 +7,6 @@ from ja_timex.pattern.place import Pattern
 
 @dataclass
 class TIMEX:
-
     type: str
     value: str
     text: str
