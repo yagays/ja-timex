@@ -1,6 +1,7 @@
 site_name: ja_timex documentation
 site_description: 自然言語で書かれた時間情報表現を抽出/規格化するルールベースの解析器のPythonパッケージ
 repo_url: https://github.com/yagays/ja-timex
+edit_uri: blob/master/docs/docs/
 site_author: Yuki Okuda (yag_ays)
 markdown_extensions:
   - pymdownx.highlight
