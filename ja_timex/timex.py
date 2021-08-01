@@ -1,6 +1,6 @@
 import re
 from collections import defaultdict
-from typing import List
+from typing import DefaultDict, Dict, List
 
 from ja_timex.number_normalizer import NumberNormalizer
 from ja_timex.tag import TIMEX
@@ -35,7 +35,7 @@ class TimexParser:
 
         # TODO: set default timezone by pendulum
 
-    def parse(self, raw_text: str):
+    def parse(self, raw_text: str) -> List[TIMEX]:
         # 数の認識/規格化
         processed_text = self._normalize_number(raw_text)
 
@@ -53,7 +53,7 @@ class TimexParser:
     def _normalize_number(self, raw_text: str) -> str:
         return self.number_normalizer.normalize(raw_text)
 
-    def _extract(self, processed_text: str):
+    def _extract(self, processed_text: str) -> List[Dict]:
         all_extracts = []
 
         # すべてのtaggerのパターンの正規表現を順に適用していく
@@ -67,7 +67,7 @@ class TimexParser:
                     all_extracts.append({"type_name": type_name, "re_match": re_match, "pattern": pattern})
         return all_extracts
 
-    def _drop_duplicates(self, processed_text, all_extracts):
+    def _drop_duplicates(self, processed_text: str, all_extracts: List[Dict]) -> DefaultDict[str, List[Dict]]:
         type2extracts = defaultdict(list)
         text_coverage_flag = [False] * len(processed_text)
 
@@ -82,7 +82,7 @@ class TimexParser:
 
         return type2extracts
 
-    def _parse(self, type2extracts) -> List[TIMEX]:
+    def _parse(self, type2extracts: DefaultDict[str, List[Dict]]) -> List[TIMEX]:
         results = []
         for type_name, extracts in type2extracts.items():
             for extract in extracts:

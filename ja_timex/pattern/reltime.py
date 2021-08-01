@@ -464,29 +464,3 @@ patterns += [
         option={"value": "P0D", "mod": "NOW"},
     ),
 ]
-
-
-# {"pattern":"以前", "process_type":"or_less"}
-# {"pattern":"まで", "process_type":"made"}
-# {"pattern":"迄", "process_type":"or_less"}
-# {"pattern":"より前", "process_type":"less"}
-# {"pattern":"以降", "process_type":"or_over"}
-# {"pattern":"より後", "process_type":"over"}
-# {"pattern":"~", "process_type":"kara_suffix"}
-# {"pattern":"〜", "process_type":"kara_suffix"}
-# {"pattern":"～", "process_type":"kara_suffix"}
-# {"pattern":"-", "process_type":"kara_suffix"}
-# {"pattern":"−", "process_type":"kara_suffix"}
-# {"pattern":"ー", "process_type":"kara_suffix"}
-# {"pattern":"から", "process_type":"kara_suffix"}
-# {"pattern":"上旬", "process_type":"joujun"}
-# {"pattern":"中旬", "process_type":"tyujun"}
-# {"pattern":"下旬", "process_type":"gejun"}
-# {"pattern":"PM", "process_type":"gogo"}
-# {"pattern":"AM", "process_type":"gozen"}
-# {"pattern":"ＰＭ", "process_type":"gogo"}
-# {"pattern":"ＡＭ", "process_type":"gozen"}
-# {"pattern":"PM", "process_type":"gogo"}
-# {"pattern":"AM", "process_type":"gozen"}
-# {"pattern":"　ＰＭ", "process_type":"gogo"}
-# {"pattern":"　ＡＭ", "process_type":"gozen"}
