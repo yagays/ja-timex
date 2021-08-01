@@ -1,7 +1,7 @@
 # クイックスタート
 
-## `ja_timex`で文字列をパースする
-`ja_timex`から`TimexParser`クラスをインポートして、日付や時間が含まれている文字列を解析します。
+## `ja-timex`で文字列を解析する
+`ja-timex`から`TimexParser`クラスをインポートして、日付や時間が含まれている文字列を解析します。
 
 ```python
 from ja_timex import TimexParser
@@ -20,28 +20,67 @@ Out[]:
  <TIMEX3 tid="t2" type="DURATION" value="PT1H" text="1時間">]
 ```
 
-## 規格化された時間情報表現`TIMEX`
+## `TIMEX`を利用する
 
 各要素の`TIMEX`クラスは、TIMEX3の仕様に従って規格化された時間情報表現のdataclassです。
 
 ```python
-In []: timexes[0].type
+In []: timex = timexes[0] 
+# <TIMEX3 tid="t0" type="DATE" value="2008-04-XX" text="2008年4月">
+
+In []: timex.type
 Out[]: 'DATE'
 
-In []: timexes[0].value
+In []: timex.value
 Out[]: '2008-04-XX'
 ```
+
+```python
+In []: timex = timexes[1]
+# <TIMEX3 tid="t1" type="SET" value="P1W" freq="3X" text="週に3回">
+
+In []: timex.value
+Out[]: 'P1W'
+
+In []: timex.freq
+Out[]: '3X'
+```
+
 
 詳しくは[TIMEX3タグの仕様](timex3.md)を参照ください。
 
 ## Pythonのdatetimeに変換する
-`TIMEX`クラスからPythonのdatetime形式に変換することができます。
-
+日付表現は、`TIMEX`クラスからPythonのdatetime形式に変換することができます。
 ```python
-In []: timex_date = timex.parse("2021年7月18日")[0]
+In []: timex = timexes[0]
+# <TIMEX3 tid="t0" type="DATE" value="2008-04-XX" text="2008年4月">
 
-In []: timex_date.to_datetime()
-Out[]: datetime.datetime(2021, 7, 18, 0, 0)
+In []: timex.to_datetime()
+Out[]: DateTime(2021, 7, 18, 0, 0, 0, tzinfo=Timezone('Asia/Tokyo'))
 ```
 
-なお、`DATE`の場合は年,月,日が、`TIME`の場合は時間,分が揃っていなければエラーとなります。
+!!!Warning
+    `DATE`の場合は年,月,日が揃っていなければエラーとなります。
+
+!!!Tips
+    ja-timexでは[`pendulum`](https://pendulum.eustace.io/)というdatetimeの扱いを容易するパッケージを利用しています。`pendulum`は基本的にPythonのdatetime/timedeltaを継承して実装されており、互換性があります。
+
+## Pythonのtimedeltaに変換する
+持続時間表現は、`TIMEX`クラスからPythonのtimedelta形式に変換することができます。
+
+```python
+In []: timex = timexes[2]
+# <TIMEX3 tid="t2" type="DURATION" value="PT1H" text="1時間">
+
+In []: timex.to_duration()
+Out[]: Duration(hours=1)
+```
+
+通常のdatetime/timedeltaと同様に、計算が可能です。
+
+```python
+In []: from datetime import datetime
+
+In []: datetime(2021, 7, 18, 12, 30) - timex.to_duration()
+Out[]: datetime.datetime(2021, 7, 18, 11, 30)
+```
