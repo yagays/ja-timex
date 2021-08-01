@@ -7,8 +7,30 @@
 ## 概要
 `ja-timex` は、現代日本語で書かれた自然文に含まれる時間情報表現を抽出し`TIMEX3`と呼ばれるアノテーション仕様に変換することで、プログラムが利用できるような形に規格化するルールベースの解析機です。
 
+### 入力
+
+```python
+from ja_timex import TimexParser
+
+TimexParser().parse("彼は2008年4月から週に3回ジョギングを1時間行ってきた")
+```
+
+### 出力
+
+```python
+[<TIMEX3 tid="t0" type="DATE" value="2008-04-XX" text="2008年4月">,
+ <TIMEX3 tid="t1" type="SET" value="P1W" freq="3X" text="週に3回">,
+ <TIMEX3 tid="t2" type="DURATION" value="PT1H" text="1時間">]
+```
+
+## インストール
+
+```
+pip install ja-timex
+```
+
 ## ドキュメント
-[ja\_timex documentation](https://ja-timex.github.io/docs/)
+[ja\-timex documentation](https://ja-timex.github.io/docs/)
 
 ### 参考仕様
 本パッケージは、以下の論文で提案されている`TIMEX3`の仕様を参考に実装しています。

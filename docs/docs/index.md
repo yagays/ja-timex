@@ -1,4 +1,4 @@
-# ja_timex
+# ja-timex
 
 ![logo](img/logo_title_34_small.png){align=right}
 
