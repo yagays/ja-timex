@@ -60,10 +60,12 @@ class TIMEX:
             return None
 
         # TODO: 補完するときのdefaultの設定をできるようにする
+        # TODO: timezoneを設定できるようにする
         return pendulum.datetime(
             year=int(self.parsed.get("calendar_year", 2021)),
             month=int(self.parsed.get("calendar_month", 1)),
             day=int(self.parsed.get("calendar_day", 1)),
+            tz="Asia/Tokyo"
         )
 
     @property
