@@ -1,4 +1,5 @@
 site_name: ja_timex documentation
+repo_url: https://github.com/yagays/ja-timex
 markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences

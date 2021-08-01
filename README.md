@@ -1,3 +1,5 @@
+![](docs/docs/img/logo_title_wide.png)
+
 # ja-timex
 
 自然言語で書かれた時間情報表現を抽出/規格化するルールベースの解析器
