@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ja-timex"
-version = "0.1.2"
+version = "0.1.3"
 description = "Analyze and parse natural language temporal expression from Japanese sentences"
 authors = ["Yuki Okuda <y.okuda@dr-ubie.com>"]
 license = "MIT"
