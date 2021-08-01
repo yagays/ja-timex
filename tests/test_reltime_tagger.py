@@ -111,6 +111,7 @@ def test_word_before_and_after(t):
     assert t.parse("一昨々日").value == "P3D"
     assert t.parse("一昨昨日").value == "P3D"
     assert t.parse("前日").value == "P1D"
+    assert t.parse("先日").value == "P1D"
 
     assert t.parse("明日").value == "P1D"
     assert t.parse("明日").mod == "AFTER"
@@ -118,6 +119,24 @@ def test_word_before_and_after(t):
     assert t.parse("明後日").mod == "AFTER"
     assert t.parse("翌日").value == "P1D"
     assert t.parse("翌々日").value == "P2D"
+
+    assert t.parse("来週").value == "P1W"
+    assert t.parse("再来週").value == "P2W"
+    assert t.parse("先週").value == "P1W"
+    assert t.parse("先々週").value == "P2W"
+
+    assert t.parse("来月").value == "P1M"
+    assert t.parse("再来月").value == "P2M"
+    assert t.parse("先月").value == "P1M"
+    assert t.parse("先々月").value == "P2M"
+
+    assert t.parse("来年").value == "P1Y"
+    assert t.parse("再来年").value == "P2Y"
+    assert t.parse("おととし").value == "P2Y"
+    assert t.parse("一昨年").value == "P2Y"
+    # 年に関しては「先」を用いない
+    assert not t.parse("先年")
+    assert not t.parse("先々年")
 
 
 def test_word_now(t):

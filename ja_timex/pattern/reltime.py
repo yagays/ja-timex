@@ -324,10 +324,11 @@ patterns += [
     ),
 ]
 
-# 昨日/明日などの単語表現
+# 単語表現
+# 日
 patterns += [
     Pattern(
-        re_pattern="[昨前]日",
+        re_pattern="[先前昨]日",
         parse_func=parse_word,
         option={"value": "P1D", "mod": "BEFORE"},
     ),
@@ -355,6 +356,83 @@ patterns += [
         re_pattern="明[昨々]後日",
         parse_func=parse_word,
         option={"value": "P3D", "mod": "AFTER"},
+    ),
+]
+
+# 週
+patterns += [
+    Pattern(
+        re_pattern="[先前昨]週",
+        parse_func=parse_word,
+        option={"value": "P1W", "mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern="先々週",
+        parse_func=parse_word,
+        option={"value": "P2W", "mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern="[来翌]週",
+        parse_func=parse_word,
+        option={"value": "P1W", "mod": "AFTER"},
+    ),
+    Pattern(
+        re_pattern="(再来|翌々)週",
+        parse_func=parse_word,
+        option={"value": "P2W", "mod": "AFTER"},
+    ),
+]
+
+# 月
+patterns += [
+    Pattern(
+        re_pattern="[先前昨]月",
+        parse_func=parse_word,
+        option={"value": "P1M", "mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern="先々月",
+        parse_func=parse_word,
+        option={"value": "P2M", "mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern="[来翌]月",
+        parse_func=parse_word,
+        option={"value": "P1M", "mod": "AFTER"},
+    ),
+    Pattern(
+        re_pattern="(再来|翌々)月",
+        parse_func=parse_word,
+        option={"value": "P2M", "mod": "AFTER"},
+    ),
+]
+
+# 年
+patterns += [
+    Pattern(
+        re_pattern="(一昨年|おととし)",
+        parse_func=parse_word,
+        option={"value": "P2Y", "mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern="[去前昨]年",
+        parse_func=parse_word,
+        option={"value": "P1Y", "mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern="一昨年",
+        parse_func=parse_word,
+        option={"value": "P2Y", "mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern="[来翌]年",
+        parse_func=parse_word,
+        option={"value": "P1Y", "mod": "AFTER"},
+    ),
+    Pattern(
+        re_pattern="(再来|翌々)年",
+        parse_func=parse_word,
+        option={"value": "P2Y", "mod": "AFTER"},
     ),
 ]
 
