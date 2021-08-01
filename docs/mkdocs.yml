@@ -27,6 +27,7 @@ nav:
       - installation.md
       - quick_start.md
       - examples.md
+    - "Document":
       - timex3.md
       - FAQ.md
       - definition_glossary.md
