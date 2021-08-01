@@ -7,17 +7,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
         with:
           python-version: '3.8'
-    - name: Install poetry
-      run: pip install poetry tox
-    - name: Run mkdocs to build
-      - run: poetry run mkdocs build
-    - name: Deploy
-      - uses: peaceiris/actions-gh-pages@v3
-        with:
-          personal_token: ${{ secrets.PERSONAL_TOKEN_DOCS }}
-          external_repository: yagays/ja-timex-docs
-          publish_branch: master
-          publish_dir: ./site
+      - name: Install poetry
+        - run: pip install poetry tox
+      - name: Run mkdocs to build
+        - run: poetry run mkdocs build
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+          with:
+            personal_token: ${{ secrets.PERSONAL_TOKEN_DOCS }}
+            external_repository: yagays/ja-timex-docs
+            publish_branch: master
+            publish_dir: ./site
