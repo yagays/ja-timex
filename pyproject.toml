@@ -1,8 +1,23 @@
 [tool.poetry]
 name = "ja-timex"
-version = "0.0.0"  # using poetry-dynamic-versioning
-description = ""
+version = "0.1.0"
+description = "Analyze and parse natural language temporal expression from Japanese sentences"
 authors = ["Yuki Okuda <y.okuda@dr-ubie.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/yagays/ja-timex"
+repository = "https://github.com/yagays/ja-timex"
+keywords = ["ja_timex", "NLP", "japanese"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Natural Language :: Japanese",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Linguistic",
+]
 
 [tool.poetry.dependencies]
 python = "^3.7.1"
