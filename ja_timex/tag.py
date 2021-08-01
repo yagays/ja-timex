@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from typing import Dict, Optional, Tuple, Union
+from typing import Dict, Optional, Tuple
 
-from dateutil.relativedelta import relativedelta
+import pendulum
 
 from ja_timex.pattern.place import Pattern
 
@@ -45,50 +45,50 @@ class TIMEX:
     @property
     def is_valid_datetime(self) -> bool:
         if self.parsed.get("calendar_year") or self.parsed.get("calendar_month") or self.parsed.get("calendar_day"):
+            # DATE
             return True
+        elif self.parsed.get("clock_hour") or self.parsed.get("clock_minutes") or self.parsed.get("clock_second"):
+            # TIME
+            # 日付が無いとdatetimeを構築できないため、今はFalseにしている
+            # (pendulumでは自動で実行日の日付が付与されるが、さすがに時間表現としては不適切か)
+            return False
         else:
             return False
 
     def to_datetime(self) -> Optional[datetime]:
-        if self.is_valid_datetime:
-            return datetime(
-                int(self.parsed["calendar_year"]), int(self.parsed["calendar_month"]), int(self.parsed["calendar_day"])
-            )
-        else:
+        if not self.is_valid_datetime:
             return None
 
+        # TODO: 補完するときのdefaultの設定をできるようにする
+        return pendulum.datetime(
+            year=int(self.parsed.get("calendar_year", 2021)),
+            month=int(self.parsed.get("calendar_month", 1)),
+            day=int(self.parsed.get("calendar_day", 1)),
+        )
+
     @property
-    def is_valid_timedelta(self) -> bool:
-        if self.type == "DURATION" and self.parsed != {}:
+    def is_valid_duration(self) -> bool:
+        if self.type in ("DURATION") and self.parsed != {}:
             return True
+
         else:
             return False
 
-    def to_delta(self) -> Union[timedelta, relativedelta, None]:
-        if not self.is_valid_timedelta:
+    def to_duration(self) -> Optional[timedelta]:
+        if not self.is_valid_duration:
             return None
 
-        if self.value[:2] == "PT":
-            args = {}
-            for arg_name in ["hour", "minutes", "second"]:
-                args[arg_name] = 0.0
-                if self.parsed.get(arg_name):
-                    args[arg_name] = float(self.parsed[arg_name])
-            # timedeltaはint/float
-            return timedelta(hours=args["hour"], minutes=args["minutes"], seconds=args["second"])
-        else:
-            relative_args = {}
-            for arg_name in ["year", "month", "week", "day"]:
-                relative_args[arg_name] = 0
-                if self.parsed.get(arg_name):
-                    relative_args[arg_name] = int(self.parsed[arg_name])
-            # relaivedeltaはint
-            return relativedelta(
-                years=relative_args["year"],
-                months=relative_args["month"],
-                weeks=relative_args["week"],
-                days=relative_args["day"],
-            )  # noqa
+        # pendulum: Float year and months are not supported
+        return pendulum.duration(
+            years=int(self.parsed.get("year", 0)),
+            months=int(self.parsed.get("month", 0)),
+            weeks=float(self.parsed.get("week", 0)),
+            days=float(self.parsed.get("day", 0)),
+            hours=float(self.parsed.get("hour", 0)),
+            minutes=float(self.parsed.get("minutes", 0)),
+            seconds=float(self.parsed.get("second", 0)),
+            microseconds=float(self.parsed.get("micorsecond", 0)),
+        )
 
     def __repr__(self) -> str:
         attributes = []
