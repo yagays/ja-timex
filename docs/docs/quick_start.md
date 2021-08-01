@@ -56,11 +56,11 @@ In []: timex = timexes[0]
 # <TIMEX3 tid="t0" type="DATE" value="2008-04-XX" text="2008年4月">
 
 In []: timex.to_datetime()
-Out[]: DateTime(2021, 7, 18, 0, 0, 0, tzinfo=Timezone('Asia/Tokyo'))
+Out[]: DateTime(2008, 4, 1, 0, 0, 0, tzinfo=Timezone('Asia/Tokyo'))
 ```
 
 !!!Warning
-    `DATE`の場合は年,月,日が揃っていなければエラーとなります。
+    日付表現で不足している情報があった場合、`year`は実行時の年、`month`および`day`は`1`が補完されます。
 
 !!!Tips
     ja-timexでは[`pendulum`](https://pendulum.eustace.io/)というdatetimeの扱いを容易するパッケージを利用しています。`pendulum`は基本的にPythonのdatetime/timedeltaを継承して実装されており、互換性があります。
