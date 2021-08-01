@@ -14,8 +14,8 @@ theme:
     name: material
     language: ja
     icon:
-        logo: material/av-timer
         repo: fontawesome/brands/git-alt
+    logo: img/logo.png
     favicon: img/favicon.ico
     features:
       - navigation.expand
