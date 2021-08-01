@@ -420,11 +420,6 @@ patterns += [
         option={"value": "P1Y", "mod": "BEFORE"},
     ),
     Pattern(
-        re_pattern="一昨年",
-        parse_func=parse_word,
-        option={"value": "P2Y", "mod": "BEFORE"},
-    ),
-    Pattern(
         re_pattern="[来翌]年",
         parse_func=parse_word,
         option={"value": "P1Y", "mod": "AFTER"},

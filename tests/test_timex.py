@@ -36,3 +36,17 @@ def test_tid_is_modified_in_parsing(p):
     assert timexes[0].tid == "t0"
     assert timexes[1].tid == "t1"
     assert timexes[2].tid == "t2"
+
+
+def test_ignore_number_normalize(p):
+    # 一を1と変換しない。可読性のために、reltimeのPatternでも漢数字で扱う
+    timexes = p.parse("一昨年と一昨日は言うのに一昨月とは言わないのは何故か")
+
+    assert len(timexes) == 2
+    assert timexes[0].value == "P2Y"
+    assert timexes[1].value == "P2D"
+
+    timexes = p.parse("一昨昨日と一昨々日")
+    assert len(timexes) == 2
+    assert timexes[0].value == "P3D"
+    assert timexes[1].value == "P3D"

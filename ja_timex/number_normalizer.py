@@ -59,7 +59,13 @@ def kansuji2number(text: str) -> str:
 class NumberNormalizer:
     def __init__(self) -> None:
         self.ignore_kansuji_phrase = {
-            "一": [IgnorePhrase(pattern="一時的", relative_position_to_ref=(0, 3))],
+            "一": [
+                IgnorePhrase(pattern="一時的", relative_position_to_ref=(0, 3)),
+                IgnorePhrase(pattern="一昨年", relative_position_to_ref=(0, 3)),
+                IgnorePhrase(pattern="一昨日", relative_position_to_ref=(0, 3)),
+                IgnorePhrase(pattern="一昨々日", relative_position_to_ref=(0, 4)),
+                IgnorePhrase(pattern="一昨昨日", relative_position_to_ref=(0, 4)),
+            ],
             "十": [IgnorePhrase(pattern="不十分", relative_position_to_ref=(-1, 2))],
         }
 
