@@ -102,7 +102,7 @@ class TimexParser:
     def _modify_additional_information(self, timex_tags: List[TIMEX], processed_text: str) -> List[TIMEX]:
         # update @tid
         modified_tags = []
-        sorted_timex_tags = sorted(timex_tags, key=lambda x: x.span[0])
+        sorted_timex_tags = sorted(timex_tags, key=lambda x: x.span[0] if x.span else 0)
         for i, timex in enumerate(sorted_timex_tags):
             timex.tid = f"t{i}"
             modified_tags.append(timex)
