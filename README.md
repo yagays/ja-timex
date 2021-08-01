@@ -12,7 +12,7 @@
 ```python
 from ja_timex import TimexParser
 
-TimexParser().parse("彼は2008年4月から週に3回ジョギングを1時間行ってきた")
+timexes = TimexParser().parse("彼は2008年4月から週に3回ジョギングを1時間行ってきた")
 ```
 
 ### 出力
@@ -21,6 +21,21 @@ TimexParser().parse("彼は2008年4月から週に3回ジョギングを1時間�
 [<TIMEX3 tid="t0" type="DATE" value="2008-04-XX" text="2008年4月">,
  <TIMEX3 tid="t1" type="SET" value="P1W" freq="3X" text="週に3回">,
  <TIMEX3 tid="t2" type="DURATION" value="PT1H" text="1時間">]
+```
+
+### datetime/timedeltaへの変換
+
+```python
+# <TIMEX3 tid="t0" type="DATE" value="2008-04-XX" text="2008年4月">
+In []: timexes[0].to_datetime()
+Out[]: DateTime(2008, 4, 1, 0, 0, 0, tzinfo=Timezone('Asia/Tokyo'))
+```
+
+
+```python
+# <TIMEX3 tid="t2" type="DURATION" value="PT1H" text="1時間">
+In []: timexes[2].to_duration()
+Out[]: Duration(hours=1)
 ```
 
 ## インストール

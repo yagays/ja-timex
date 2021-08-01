@@ -51,6 +51,7 @@ Out[]: '3X'
 
 ## Pythonのdatetimeに変換する
 日付表現は、`TIMEX`クラスからPythonのdatetime形式に変換することができます。
+
 ```python
 In []: timex = timexes[0]
 # <TIMEX3 tid="t0" type="DATE" value="2008-04-XX" text="2008年4月">
