@@ -16,9 +16,22 @@ theme:
     icon:
         logo: material/av-timer
         repo: fontawesome/brands/git-alt
-    favicon: favicon.png
+    favicon: img/favicon.ico
     features:
       - navigation.expand
+    palette:
+        - media: "(prefers-color-scheme: light)"     
+          scheme: default
+          primary: teal
+          toggle:
+              icon: material/toggle-switch-off-outline
+              name: Switch to dark mode
+        - media: "(prefers-color-scheme: dark)" 
+          scheme: slate
+          primary: teal
+          toggle:
+              icon: material/toggle-switch
+              name: Switch to light mode     
 extra_css:
   - stylesheets/extra.css
 nav:
