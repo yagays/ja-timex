@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - master
+      - 'docs/*'
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -11,14 +11,19 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'
-      - name: Install poetry
-        - run: pip install poetry tox
+      - name: Install Poetry
+        run: |
+          curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+      - name: Add path for Poetry
+        run: echo "$HOME/.poetry/bin" >> $GITHUB_PATH
+      - name: Install Dependencies
+        run: poetry install --no-interaction
       - name: Run mkdocs to build
-        - run: poetry run mkdocs build
+        run: cd docs; poetry run mkdocs build
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
-          with:
-            personal_token: ${{ secrets.PERSONAL_TOKEN_DOCS }}
-            external_repository: yagays/ja-timex-docs
-            publish_branch: master
-            publish_dir: ./site
+        with:
+          personal_token: ${{ secrets.PERSONAL_TOKEN_DOCS }}
+          external_repository: ja-timex/docs
+          publish_branch: master
+          publish_dir: docs/site
