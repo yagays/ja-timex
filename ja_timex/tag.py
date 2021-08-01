@@ -61,12 +61,20 @@ class TIMEX:
 
         # TODO: 補完するときのdefaultの設定をできるようにする
         # TODO: timezoneを設定できるようにする
-        return pendulum.datetime(
-            year=int(self.parsed.get("calendar_year", 2021)),
-            month=int(self.parsed.get("calendar_month", 1)),
-            day=int(self.parsed.get("calendar_day", 1)),
-            tz="Asia/Tokyo"
-        )
+        if self.parsed.get("calendar_year") and self.parsed["calendar_year"] != "XXXX":
+            year = int(self.parsed["calendar_year"])
+        else:
+            year = pendulum.now().year
+        if self.parsed.get("calendar_month") and self.parsed["calendar_month"] != "XX":
+            month = int(self.parsed["calendar_month"])
+        else:
+            month = 1
+        if self.parsed.get("calendar_day") and self.parsed["calendar_day"] != "XX":
+            day = int(self.parsed["calendar_day"])
+        else:
+            day = 1
+
+        return pendulum.datetime(year=year, month=month, day=day, tz="Asia/Tokyo")
 
     @property
     def is_valid_duration(self) -> bool:
