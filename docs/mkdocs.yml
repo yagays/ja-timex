@@ -36,12 +36,14 @@ theme:
 extra_css:
   - stylesheets/extra.css
 nav:
-    - "Home": index.md
+    - "Home": 
+      - index.md
+      - introduction.md
     - "User Guide":
       - installation.md
       - quick_start.md
       - examples.md
-    - "Document":
+    - "Documentation":
       - timex3.md
       - FAQ.md
       - definition_glossary.md

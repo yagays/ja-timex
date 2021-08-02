@@ -33,6 +33,9 @@ Out[]: 'DATE'
 
 In []: timex.value
 Out[]: '2008-04-XX'
+
+In []: timex.text
+Out[]: '2008年4月'
 ```
 
 ```python
@@ -44,10 +47,12 @@ Out[]: 'P1W'
 
 In []: timex.freq
 Out[]: '3X'
+
+In []: timex.text
+Out[]: '週に3回'
 ```
 
-
-詳しくは[TIMEX3タグの仕様](timex3.md)を参照ください。
+仕様の詳細は[TIMEX3タグの仕様](timex3.md)を参照ください。
 
 ## Pythonのdatetimeに変換する
 日付表現は、`TIMEX`クラスからPythonのdatetime形式に変換することができます。
