@@ -50,3 +50,15 @@ def test_ignore_number_normalize(p):
     assert len(timexes) == 2
     assert timexes[0].value == "P3D"
     assert timexes[1].value == "P3D"
+
+
+def test_every_year_and_month(p):
+    timexes = p.parse("毎年6月から8月にかけて")
+
+    assert len(timexes) == 3
+    assert timexes[0].value == "P1Y"
+    assert timexes[0].type == "SET"
+    assert timexes[1].value == "XXXX-06-XX"
+    assert timexes[1].type == "DATE"
+    assert timexes[2].value == "XXXX-08-XX"
+    assert timexes[2].type == "DATE"
