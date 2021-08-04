@@ -19,6 +19,11 @@ def test_count(t):
     assert t.parse("年に1時間").value == "P1Y"
     assert t.parse("年に1時間").freq == "PT1H"
 
+    # 年に1月は取得するが年1月は取得しない
+    # 毎年1月といった表現で誤検出するため
+    assert t.parse("年に1月").value == "P1Y"
+    assert t.parse("年1月") is None
+
 
 def test_count_without_number_and_ni(t):
     # 年次有給休暇の時季指定義務 https://www.mhlw.go.jp/content/000350327.pdf

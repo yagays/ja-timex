@@ -256,7 +256,7 @@ patterns += [
 # # 「年1回」「週1日」とは言うが、「2年1回」や「3週1日」とは言わない
 patterns += [
     Pattern(
-        re_pattern=f"年に?{p.count}[ヶ|か|カ|ケ|箇]?月",
+        re_pattern=f"年に?{p.count}[ヶ|か|カ|ケ|箇]月",
         parse_func=parse_count_range,
         option={"value_template": "P{}Y", "freq_template": "P{}M"},
     ),
