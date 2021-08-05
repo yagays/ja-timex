@@ -1,7 +1,10 @@
+name: Upload Docs
+
 on:
   push:
     branches:
       - 'docs/*'
+
 jobs:
   deploy:
     runs-on: ubuntu-latest

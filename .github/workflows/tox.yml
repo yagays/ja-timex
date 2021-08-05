@@ -1,6 +1,8 @@
 name: Run Tox in Multiple Environments
+
 on:
   pull_request
+
 jobs:
   build:
     runs-on: ${{matrix.platform}}
