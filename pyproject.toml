@@ -40,6 +40,7 @@ mkdocs-material = "^7.2.1"
 Pygments = "^2.9.0"
 pymdown-extensions = "^8.2"
 lxml = "^4.6.3"
+tox = "^3.24.1"
 
 [tool.black]
 line-length = 120
