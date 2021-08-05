@@ -5,7 +5,7 @@ from pathlib import Path
 
 weekday2id = {"月": "1", "火": "2", "水": "3", "木": "4", "金": "5", "土": "6", "日": "7"}
 season2id = {"春": "SP", "夏": "SU", "秋": "FA", "冬": "WI"}
-with Path(__file__).parent.parent.joinpath("dictionary/wareki.json").open() as f:
+with Path(__file__).parent.parent.joinpath("dictionary/wareki.json").open(encoding="utf8") as f:
     wareki2year = json.load(f)
 
 
