@@ -80,6 +80,13 @@ class TIMEX:
             month = self.fill_target_value(target="calendar_month", fill_str="XX", default_value=1)
             day = self.fill_target_value(target="calendar_day", fill_str="XX", default_value=1)
 
+            if self.reference:
+                # 詳細な挙動は test_reference_datetime_default_year を参照
+                if self.parsed["calendar_year"] == "XXXX":
+                    year = self.reference.year
+                    if self.parsed["calendar_month"] == "XX":
+                        month = self.reference.month
+
             return pendulum.datetime(year=year, month=month, day=day, tz="Asia/Tokyo")
         elif self.type == "TIME" and self.reference:
             hour = self.fill_target_value(target="clock_hour", fill_str="XX", default_value=0)
