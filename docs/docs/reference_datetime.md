@@ -40,7 +40,7 @@ In []: timex_parser = TimexParser(reference=pendulum.datetime(2021, 7, 18, tz="A
 In []: timex_parser.parse("1日前")[0].to_duration()
 Out[]: Duration(days=1)
 
-In []: timex_parser.parse("1日前").to_datetime()
+In []: timex_parser.parse("1日前")[0].to_datetime()
 Out[]: DateTime(2021, 7, 17, 0, 0, 0, tzinfo=Timezone('Asia/Tokyo'))
 ```
 
