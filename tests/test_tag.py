@@ -23,7 +23,7 @@ def t_time():
             "am_prefix": "",
             "pm_prefix": None,
             "clock_hour": "18",
-            "clock_minutes": "20",
+            "clock_minute": "20",
             "am_suffix": None,
             "pm_suffix": None,
             "clock_second": "XX",
