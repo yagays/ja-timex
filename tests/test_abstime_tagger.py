@@ -221,6 +221,18 @@ def test_time_ampm(t):
     assert t.parse("00:10 AM").value == "T00-10-XX"
 
 
+def test_time_morning_evening(t):
+    assert t.parse("朝6時").value == "T06-XX-XX"
+    assert t.parse("今朝6時").value == "T06-XX-XX"
+    assert t.parse("夜6時").value == "T18-XX-XX"
+    assert t.parse("今夜6時").value == "T18-XX-XX"
+
+    assert t.parse("夜11時").value == "T23-XX-XX"
+    assert t.parse("夜12時").value == "T24-XX-XX"
+    # 夜13時とは言わない。もし取得してしまった場合も+12しない
+    assert t.parse("夜13時").value == "T13-XX-XX"
+
+
 def test_timex_type(t):
     assert t.parse("2021年7月18日").type == "DATE"
     assert t.parse("月曜日").type == "DATE"

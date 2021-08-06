@@ -62,3 +62,17 @@ def test_every_year_and_month(p):
     assert timexes[1].type == "DATE"
     assert timexes[2].value == "XXXX-08-XX"
     assert timexes[2].type == "DATE"
+
+
+def test_morning_evening(p):
+    timexes = TimexParser().parse("朝9時スタートです。")
+    assert len(timexes) == 1
+    assert timexes[0].value == "T09-XX-XX"
+    assert timexes[0].type == "TIME"
+    assert timexes[0].text == "朝9時"
+
+    timexes = TimexParser().parse("今夜9時スタートです。")
+    assert len(timexes) == 1
+    assert timexes[0].value == "T21-XX-XX"
+    assert timexes[0].type == "TIME"
+    assert timexes[0].text == "今夜9時"
