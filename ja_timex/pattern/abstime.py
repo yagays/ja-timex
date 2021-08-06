@@ -161,7 +161,7 @@ def parse_time(re_match: re.Match, pattern: Pattern) -> TIMEX:
 
     # zero padding
     hour = args["clock_hour"].zfill(2)
-    minutes = args["clock_minute"].zfill(2)
+    minute = args["clock_minute"].zfill(2)
     second = args["clock_second"].zfill(2)
 
     # AM/PMを24時間表記に変更する
@@ -178,7 +178,7 @@ def parse_time(re_match: re.Match, pattern: Pattern) -> TIMEX:
 
     return TIMEX(
         type="TIME",
-        value=f"T{hour}-{minutes}-{second}",
+        value=f"T{hour}-{minute}-{second}",
         text=re_match.group(),
         parsed=args,
         span=span,

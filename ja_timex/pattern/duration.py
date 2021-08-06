@@ -37,8 +37,8 @@ def parse_pt(re_match: re.Match, pattern: Pattern) -> TIMEX:
     value = "PT"
     if "hour" in args:
         value += args["hour"] + "H"
-    if "minutes" in args:
-        value += args["minutes"] + "M"
+    if "minute" in args:
+        value += args["minute"] + "M"
     if "second" in args:
         value += args["second"] + "S"
     if "second_with_ms" in args:
@@ -99,7 +99,7 @@ patterns += [
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.minutes}分(間)?",
+        re_pattern=f"{p.minute}分(間)?",
         parse_func=parse_pt,
         option={},
     ),
@@ -114,17 +114,17 @@ patterns += [
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.hour}時間{p.minutes}分(間)?",
+        re_pattern=f"{p.hour}時間{p.minute}分(間)?",
         parse_func=parse_pt,
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.hour}時間{p.minutes}分{p.second}秒(間)?",
+        re_pattern=f"{p.hour}時間{p.minute}分{p.second}秒(間)?",
         parse_func=parse_pt,
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.minutes}分{p.second}秒(間)?",
+        re_pattern=f"{p.minute}分{p.second}秒(間)?",
         parse_func=parse_pt,
         option={},
     ),

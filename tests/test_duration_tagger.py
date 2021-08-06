@@ -40,7 +40,7 @@ def test_hour(t):
     assert t.parse("1時") is None
 
 
-def test_minutes(t):
+def test_minute(t):
     assert t.parse("1分間").value == "PT1M"
     assert t.parse("100分間").value == "PT100M"
     assert t.parse("1分").value == "PT1M"

@@ -85,7 +85,7 @@ def test_hour_mod_about_prefix_and_suffix(t):
     assert t.parse("1時間ばかり").mod == "APPROX"
 
 
-def test_minutes_mod_about_prefix_and_suffix(t):
+def test_minute_mod_about_prefix_and_suffix(t):
     assert t.parse("1分前").mod == "BEFORE"
     assert t.parse("1分後").mod == "AFTER"
     assert t.parse("1分近く").mod == "APPROX"

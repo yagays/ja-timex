@@ -115,7 +115,7 @@ class TIMEX:
             duration_months = self.fill_target_value(target="month", fill_str="XX", default_value=0)
             duration_days = self.fill_target_value(target="day", fill_str="XX", default_value=0)
             duration_hours = self.fill_target_value(target="hour", fill_str="XX", default_value=0)
-            duration_minutes = self.fill_target_value(target="minutes", fill_str="XX", default_value=0)
+            duration_minute = self.fill_target_value(target="minute", fill_str="XX", default_value=0)
             duration_seconds = self.fill_target_value(target="second", fill_str="XX", default_value=0)
 
             duration = pendulum.duration(
@@ -123,7 +123,7 @@ class TIMEX:
                 months=duration_months,
                 days=duration_days,
                 hours=duration_hours,
-                minutes=duration_minutes,
+                minutes=duration_minute,
                 seconds=duration_seconds,
             )
             return self.reference + sign * duration
@@ -149,7 +149,7 @@ class TIMEX:
             weeks=float(self.parsed.get("week", 0)),
             days=float(self.parsed.get("day", 0)),
             hours=float(self.parsed.get("hour", 0)),
-            minutes=float(self.parsed.get("minutes", 0)),
+            minutes=float(self.parsed.get("minute", 0)),
             seconds=float(self.parsed.get("second", 0)),
             microseconds=float(self.parsed.get("micorsecond", 0)),
         )

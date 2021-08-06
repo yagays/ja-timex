@@ -86,11 +86,11 @@ def parse_hour(re_match: re.Match, pattern: Pattern) -> TIMEX:
     )
 
 
-def parse_minutes(re_match: re.Match, pattern: Pattern) -> TIMEX:
+def parse_minute(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
-    value = args["minutes"]
+    value = args["minute"]
     return TIMEX(
         type="DURATION",
         value=f"PT{value}M",
@@ -289,18 +289,18 @@ patterns += [
 # 分
 patterns += [
     Pattern(
-        re_pattern=f"{p.minutes}分{p.around_suffix}?{p.before_suffix}",
-        parse_func=parse_minutes,
+        re_pattern=f"{p.minute}分{p.around_suffix}?{p.before_suffix}",
+        parse_func=parse_minute,
         option={"mod": "BEFORE"},
     ),
     Pattern(
-        re_pattern=f"{p.minutes}分{p.around_suffix}?{p.after_suffix}",
-        parse_func=parse_minutes,
+        re_pattern=f"{p.minute}分{p.around_suffix}?{p.after_suffix}",
+        parse_func=parse_minute,
         option={"mod": "AFTER"},
     ),
     Pattern(
-        re_pattern=f"{p.minutes}分{p.approx_suffix}",
-        parse_func=parse_minutes,
+        re_pattern=f"{p.minute}分{p.approx_suffix}",
+        parse_func=parse_minute,
         option={"mod": "APPROX"},
     ),
 ]

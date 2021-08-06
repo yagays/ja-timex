@@ -61,7 +61,7 @@ class Place:
     century: str = "(?P<century>[1-9]?[0-9]{,2})"
     week: str = "(?P<week>[0-9]+\\.?[0-9]*)"
     hour: str = "(?P<hour>[0-9]+\\.?[0-9]*)"
-    minutes: str = "(?P<minutes>[0-9]+\\.?[0-9]*)"
+    minute: str = "(?P<minute>[0-9]+\\.?[0-9]*)"
     second: str = "(?P<second>[0-9]+\\.?[0-9]*)"
     second_with_ms: str = "(?P<second_with_ms>[0-9]+[秒][0-9]+)"
 

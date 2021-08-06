@@ -141,12 +141,12 @@ def test_place_hour(place):
     assert place.is_valid("hour", "1.5")
 
 
-def test_place_minutes(place):
-    assert place.is_valid("minutes", "1")
-    assert place.is_valid("minutes", "60")
-    assert place.is_valid("minutes", "180")
-    assert place.is_valid("minutes", "0.5")
-    assert place.is_valid("minutes", "1.5")
+def test_place_minute(place):
+    assert place.is_valid("minute", "1")
+    assert place.is_valid("minute", "60")
+    assert place.is_valid("minute", "180")
+    assert place.is_valid("minute", "0.5")
+    assert place.is_valid("minute", "1.5")
 
 
 def test_place_second(place):

@@ -59,7 +59,7 @@ def test_count_range_is_temporal_expression(t):
     assert t.parse("1回1時間") is None  # 1時間は取得対象だが、前にある「1回」は含めない
 
 
-def test_count_kanni_in_minutes_and_second(t):
+def test_count_kanni_in_minute_and_second(t):
     # 「に」「間に」とは言う
     assert t.parse("1秒に1回") is not None
     assert t.parse("1秒間に1回") is not None
