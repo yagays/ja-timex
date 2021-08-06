@@ -21,6 +21,7 @@ class TIMEX:
     parsed: Dict[str, str] = field(default_factory=dict)
     span: Optional[Tuple[int, int]] = None  # 入力文字列中での正規表現が取得したspan
     pattern: Optional[Pattern] = None
+    reference: Optional[datetime] = None
 
     def to_tag(self) -> str:
         """TIMEX3のタグ文字列を生成する
@@ -44,14 +45,12 @@ class TIMEX:
 
     @property
     def is_valid_datetime(self) -> bool:
-        if self.parsed.get("calendar_year") or self.parsed.get("calendar_month") or self.parsed.get("calendar_day"):
-            # DATE
+        if self.type == "DATE":
             return True
-        elif self.parsed.get("clock_hour") or self.parsed.get("clock_minutes") or self.parsed.get("clock_second"):
-            # TIME
-            # 日付が無いとdatetimeを構築できないため、今はFalseにしている
-            # (pendulumでは自動で実行日の日付が付与されるが、さすがに時間表現としては不適切か)
-            return False
+        elif self.type == "TIME":
+            return True
+        elif self.type == "DURATION":
+            return True
         else:
             return False
 
@@ -59,22 +58,49 @@ class TIMEX:
         if not self.is_valid_datetime:
             return None
 
-        # TODO: 補完するときのdefaultの設定をできるようにする
-        # TODO: timezoneを設定できるようにする
-        if self.parsed.get("calendar_year") and self.parsed["calendar_year"] != "XXXX":
-            year = int(self.parsed["calendar_year"])
-        else:
-            year = pendulum.now().year
-        if self.parsed.get("calendar_month") and self.parsed["calendar_month"] != "XX":
-            month = int(self.parsed["calendar_month"])
-        else:
-            month = 1
-        if self.parsed.get("calendar_day") and self.parsed["calendar_day"] != "XX":
-            day = int(self.parsed["calendar_day"])
-        else:
-            day = 1
+        if self.type == "DATE":
+            if self.parsed.get("calendar_year") and self.parsed["calendar_year"] != "XXXX":
+                year = int(self.parsed["calendar_year"])
+            else:
+                year = pendulum.now().year
+            if self.parsed.get("calendar_month") and self.parsed["calendar_month"] != "XX":
+                month = int(self.parsed["calendar_month"])
+            else:
+                month = 1
+            if self.parsed.get("calendar_day") and self.parsed["calendar_day"] != "XX":
+                day = int(self.parsed["calendar_day"])
+            else:
+                day = 1
 
-        return pendulum.datetime(year=year, month=month, day=day, tz="Asia/Tokyo")
+            return pendulum.datetime(year=year, month=month, day=day, tz="Asia/Tokyo")
+        elif self.type == "TIME" and self.reference:
+            day_add = 0
+            if self.parsed.get("clock_hour") and self.parsed["clock_hour"] != "XX":
+                hour = int(self.parsed.get("clock_hour", 0))
+                if hour >= 24:
+                    hour = hour - 24
+                    day_add = 1
+            else:
+                hour = 0
+            if self.parsed.get("clock_minute") and self.parsed["clock_minute"] != "XX":
+                minute = int(self.parsed.get("clock_minute", 0))
+            else:
+                minute = 0
+            if self.parsed.get("clock_second") and self.parsed["clock_second"] != "XX":
+                second = int(self.parsed.get("clock_second", 0))
+            else:
+                second = 0
+            return pendulum.datetime(
+                year=self.reference.year,
+                month=self.reference.month,
+                day=self.reference.day + day_add,
+                hour=hour,
+                minute=minute,
+                second=second,
+                tz=self.reference.tz,
+            )
+        elif self.type == "DURATION":
+            pass
 
     @property
     def is_valid_duration(self) -> bool:

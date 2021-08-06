@@ -1,6 +1,7 @@
 import re
 from collections import defaultdict
-from typing import DefaultDict, Dict, List
+from datetime import datetime
+from typing import DefaultDict, Dict, List, Optional
 
 from ja_timex.number_normalizer import NumberNormalizer
 from ja_timex.tag import TIMEX
@@ -17,6 +18,7 @@ class TimexParser:
         reltime_tagger=ReltimeTagger(),
         set_tagger=SetTagger(),
         custom_tagger=None,
+        reference: Optional[datetime] = None,
     ) -> None:
         self.number_normalizer = number_normalizer
         self.abstime_tagger = abstime_tagger
@@ -24,6 +26,7 @@ class TimexParser:
         self.reltime_tagger = reltime_tagger
         self.set_tagger = set_tagger
         self.custom_tagger = custom_tagger
+        self.reference = reference
 
         self.all_patterns = {}
         self.all_patterns["abstime"] = self.abstime_tagger.patterns
@@ -32,8 +35,6 @@ class TimexParser:
         self.all_patterns["set"] = self.set_tagger.patterns
         if self.custom_tagger:
             self.all_patterns["custom"] = self.custom_tagger.patterns
-
-        # TODO: set default timezone by pendulum
 
     def parse(self, raw_text: str) -> List[TIMEX]:
         # 数の認識/規格化
@@ -100,11 +101,13 @@ class TimexParser:
         return results
 
     def _modify_additional_information(self, timex_tags: List[TIMEX], processed_text: str) -> List[TIMEX]:
-        # update @tid
+        # update @tid and reference
         modified_tags = []
         sorted_timex_tags = sorted(timex_tags, key=lambda x: x.span[0] if x.span else 0)
         for i, timex in enumerate(sorted_timex_tags):
             timex.tid = f"t{i}"
+            if self.reference:
+                timex.reference = self.reference
             modified_tags.append(timex)
 
         return modified_tags
