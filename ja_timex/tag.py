@@ -43,6 +43,13 @@ class TIMEX:
         tag = f"<TIMEX3 {attributes_text}>{self.text}</TIMEX3>"
         return tag
 
+    def fill_target_value(self, target: str, fill_str: str, default_value: int):
+        if self.parsed.get(target) and self.parsed[target] != fill_str:
+            value = int(self.parsed[target])
+        else:
+            value = default_value
+        return value
+
     @property
     def is_valid_datetime(self) -> bool:
         if self.type == "DATE":
@@ -99,8 +106,29 @@ class TIMEX:
                 second=second,
                 tz=self.reference.tz,
             )
-        elif self.type == "DURATION":
-            pass
+        elif self.type == "DURATION" and self.reference:
+            sign = 1
+            if self.mod == "BEFORE":
+                sign = -1
+
+            duration_years = self.fill_target_value(target="year", fill_str="XXXX", default_value=0)
+            duration_months = self.fill_target_value(target="month", fill_str="XX", default_value=0)
+            duration_days = self.fill_target_value(target="day", fill_str="XX", default_value=0)
+            duration_hours = self.fill_target_value(target="hour", fill_str="XX", default_value=0)
+            duration_minutes = self.fill_target_value(target="minutes", fill_str="XX", default_value=0)
+            duration_seconds = self.fill_target_value(target="second", fill_str="XX", default_value=0)
+
+            duration = pendulum.duration(
+                years=duration_years,
+                months=duration_months,
+                days=duration_days,
+                hours=duration_hours,
+                minutes=duration_minutes,
+                seconds=duration_seconds,
+            )
+            return self.reference + sign * duration
+        else:
+            return None
 
     @property
     def is_valid_duration(self) -> bool:
