@@ -23,3 +23,16 @@ template: |
    ## Changes
 
    $CHANGES
+autolabeler:
+  - label: 'chore'
+    branch:
+      - '/chore\/.+/'
+  - label: 'bug'
+    branch:
+      - '/fix\/.+/'
+  - label: 'enhancement'
+    branch:
+      - '/feature\/.+/'
+  - label: 'doc'
+    branch:
+      - '/doc\/.+/'      
