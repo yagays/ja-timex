@@ -21,7 +21,7 @@ class TIMEX:
     parsed: Dict[str, str] = field(default_factory=dict)
     span: Optional[Tuple[int, int]] = None  # 入力文字列中での正規表現が取得したspan
     pattern: Optional[Pattern] = None
-    reference: Optional[pendulum.datetime] = None
+    reference: Optional[pendulum.DateTime] = None
 
     def to_tag(self) -> str:
         """TIMEX3のタグ文字列を生成する

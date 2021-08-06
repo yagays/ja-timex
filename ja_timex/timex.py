@@ -1,7 +1,8 @@
 import re
 from collections import defaultdict
-from datetime import datetime
 from typing import DefaultDict, Dict, List, Optional
+
+import pendulum
 
 from ja_timex.number_normalizer import NumberNormalizer
 from ja_timex.tag import TIMEX
@@ -18,7 +19,7 @@ class TimexParser:
         reltime_tagger=ReltimeTagger(),
         set_tagger=SetTagger(),
         custom_tagger=None,
-        reference: Optional[datetime] = None,
+        reference: Optional[pendulum.DateTime] = None,
     ) -> None:
         self.number_normalizer = number_normalizer
         self.abstime_tagger = abstime_tagger
