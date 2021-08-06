@@ -23,7 +23,7 @@ def t_time():
             "am_prefix": "",
             "pm_prefix": None,
             "clock_hour": "18",
-            "clock_minutes": "20",
+            "clock_minute": "20",
             "am_suffix": None,
             "pm_suffix": None,
             "clock_second": "XX",
@@ -66,8 +66,8 @@ def test_tid():
 def test_is_valid_datetime(t_date, t_time, t_duration, t_set):
 
     assert t_date.is_valid_datetime
-    assert not t_time.is_valid_datetime
-    assert not t_duration.is_valid_datetime
+    assert t_time.is_valid_datetime
+    assert t_duration.is_valid_datetime
     assert not t_set.is_valid_datetime
 
 

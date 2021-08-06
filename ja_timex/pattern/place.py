@@ -43,7 +43,7 @@ class Place:
     ampm_prefix: str = f"({am_prefix}|{pm_prefix})"
     ampm_suffix: str = f"\\s?({am_suffix}|{pm_suffix})"
     clock_hour: str = "(?P<clock_hour>[0-2]?[0-9])"
-    clock_minutes: str = "(?P<clock_minutes>[0-5]?[0-9])"
+    clock_minute: str = "(?P<clock_minute>[0-5]?[0-9])"
     clock_second: str = "(?P<clock_second>[0-5]?[0-9])"
     morning_prefix: str = "(?P<morning_prefix>(今?朝))"
     evening_prefix: str = "(?P<evening_prefix>(今?[夜晩]))"
@@ -61,7 +61,7 @@ class Place:
     century: str = "(?P<century>[1-9]?[0-9]{,2})"
     week: str = "(?P<week>[0-9]+\\.?[0-9]*)"
     hour: str = "(?P<hour>[0-9]+\\.?[0-9]*)"
-    minutes: str = "(?P<minutes>[0-9]+\\.?[0-9]*)"
+    minute: str = "(?P<minute>[0-9]+\\.?[0-9]*)"
     second: str = "(?P<second>[0-9]+\\.?[0-9]*)"
     second_with_ms: str = "(?P<second_with_ms>[0-9]+[秒][0-9]+)"
 

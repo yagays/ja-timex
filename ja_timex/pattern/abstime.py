@@ -154,14 +154,14 @@ def parse_time(re_match: re.Match, pattern: Pattern) -> TIMEX:
     # fill unknown position by "X"
     if "clock_hour" not in args:
         args["clock_hour"] = "XX"
-    if "clock_minutes" not in args:
-        args["clock_minutes"] = "XX"
+    if "clock_minute" not in args:
+        args["clock_minute"] = "XX"
     if "clock_second" not in args:
         args["clock_second"] = "XX"
 
     # zero padding
     hour = args["clock_hour"].zfill(2)
-    minutes = args["clock_minutes"].zfill(2)
+    minute = args["clock_minute"].zfill(2)
     second = args["clock_second"].zfill(2)
 
     # AM/PMを24時間表記に変更する
@@ -178,7 +178,7 @@ def parse_time(re_match: re.Match, pattern: Pattern) -> TIMEX:
 
     return TIMEX(
         type="TIME",
-        value=f"T{hour}-{minutes}-{second}",
+        value=f"T{hour}-{minute}-{second}",
         text=re_match.group(),
         parsed=args,
         span=span,
@@ -280,17 +280,17 @@ patterns += [
 # 時刻
 patterns += [
     Pattern(
-        re_pattern=f"{p.ampm_prefix}?{p.clock_hour}時{p.clock_minutes}分{p.clock_second}秒",
+        re_pattern=f"{p.ampm_prefix}?{p.clock_hour}時{p.clock_minute}分{p.clock_second}秒",
         parse_func=parse_time,
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.ampm_prefix}?{p.clock_hour}時{p.clock_minutes}分{p.ampm_suffix}?",
+        re_pattern=f"{p.ampm_prefix}?{p.clock_hour}時{p.clock_minute}分{p.ampm_suffix}?",
         parse_func=parse_time,
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.clock_minutes}分{p.clock_second}秒",
+        re_pattern=f"{p.clock_minute}分{p.clock_second}秒",
         parse_func=parse_time,
         option={},
     ),
@@ -300,7 +300,7 @@ patterns += [
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.clock_minutes}分",
+        re_pattern=f"{p.clock_minute}分",
         parse_func=parse_time,
         option={},
     ),
@@ -310,27 +310,27 @@ patterns += [
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.ampm_prefix}?{p.clock_hour}:{p.clock_minutes}:{p.clock_second}{p.ampm_suffix}?",
+        re_pattern=f"{p.ampm_prefix}?{p.clock_hour}:{p.clock_minute}:{p.clock_second}{p.ampm_suffix}?",
         parse_func=parse_time,
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.ampm_prefix}?{p.clock_hour}:{p.clock_minutes}{p.ampm_suffix}?",
+        re_pattern=f"{p.ampm_prefix}?{p.clock_hour}:{p.clock_minute}{p.ampm_suffix}?",
         parse_func=parse_time,
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.clock_minutes}:{p.clock_second}",
+        re_pattern=f"{p.clock_minute}:{p.clock_second}",
         parse_func=parse_time,
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.morning_evening_prefix}?{p.clock_hour}時{p.clock_minutes}分{p.clock_second}秒",
+        re_pattern=f"{p.morning_evening_prefix}?{p.clock_hour}時{p.clock_minute}分{p.clock_second}秒",
         parse_func=parse_time,
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.morning_evening_prefix}?{p.clock_hour}時{p.clock_minutes}分",
+        re_pattern=f"{p.morning_evening_prefix}?{p.clock_hour}時{p.clock_minute}分",
         parse_func=parse_time,
         option={},
     ),
