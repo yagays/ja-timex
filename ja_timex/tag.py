@@ -43,7 +43,17 @@ class TIMEX:
         tag = f"<TIMEX3 {attributes_text}>{self.text}</TIMEX3>"
         return tag
 
-    def fill_target_value(self, target: str, fill_str: str, default_value: int):
+    def fill_target_value(self, target: str, fill_str: str, default_value: int) -> int:
+        """正規表現で取得した情報の中からtargetの値を取得する
+
+        Args:
+            target (str): self.parsedのkey文字列
+            fill_str (str): 特定できない場合に入る文字列
+            default_value (int): 値を取得できなかった場合に返却する値
+
+        Returns:
+            int: 取得した値
+        """
         if self.parsed.get(target) and self.parsed[target] != fill_str:
             value = int(self.parsed[target])
         else:
@@ -66,37 +76,23 @@ class TIMEX:
             return None
 
         if self.type == "DATE":
-            if self.parsed.get("calendar_year") and self.parsed["calendar_year"] != "XXXX":
-                year = int(self.parsed["calendar_year"])
-            else:
-                year = pendulum.now().year
-            if self.parsed.get("calendar_month") and self.parsed["calendar_month"] != "XX":
-                month = int(self.parsed["calendar_month"])
-            else:
-                month = 1
-            if self.parsed.get("calendar_day") and self.parsed["calendar_day"] != "XX":
-                day = int(self.parsed["calendar_day"])
-            else:
-                day = 1
+            year = self.fill_target_value(target="calendar_year", fill_str="XXXX", default_value=pendulum.now().year)
+            month = self.fill_target_value(target="calendar_month", fill_str="XX", default_value=1)
+            day = self.fill_target_value(target="calendar_day", fill_str="XX", default_value=1)
 
             return pendulum.datetime(year=year, month=month, day=day, tz="Asia/Tokyo")
         elif self.type == "TIME" and self.reference:
-            day_add = 0
-            if self.parsed.get("clock_hour") and self.parsed["clock_hour"] != "XX":
-                hour = int(self.parsed.get("clock_hour", 0))
-                if hour >= 24:
-                    hour = hour - 24
-                    day_add = 1
+            hour = self.fill_target_value(target="clock_hour", fill_str="XX", default_value=0)
+            minute = self.fill_target_value(target="clock_minute", fill_str="XX", default_value=0)
+            second = self.fill_target_value(target="clock_second", fill_str="XX", default_value=0)
+
+            # 24時を超える表現
+            if hour >= 24:
+                hour = hour - 24
+                day_add = 1
             else:
-                hour = 0
-            if self.parsed.get("clock_minute") and self.parsed["clock_minute"] != "XX":
-                minute = int(self.parsed.get("clock_minute", 0))
-            else:
-                minute = 0
-            if self.parsed.get("clock_second") and self.parsed["clock_second"] != "XX":
-                second = int(self.parsed.get("clock_second", 0))
-            else:
-                second = 0
+                day_add = 0
+
             return pendulum.datetime(
                 year=self.reference.year,
                 month=self.reference.month,
