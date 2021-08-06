@@ -108,6 +108,32 @@ def test_reference_datetime(p_ref):
     assert timexes[0].reference == pendulum.datetime(2021, 7, 18, tz="Asia/Tokyo")
 
 
+def test_reference_datetime_default_year(p):
+    reference_past = pendulum.datetime(2010, 7, 18, tz="Asia/Tokyo")
+
+    timexes = TimexParser(reference=reference_past).parse("2021年12月30日")
+    assert timexes[0].to_datetime() == pendulum.datetime(2021, 12, 30, tz="Asia/Tokyo")
+
+    # 年を補完
+    timexes = TimexParser(reference=reference_past).parse("12月30日")
+    assert timexes[0].to_datetime() == pendulum.datetime(2010, 12, 30, tz="Asia/Tokyo")
+
+    # 年を補完
+    timexes = TimexParser(reference=reference_past).parse("12月")
+    assert timexes[0].to_datetime() == pendulum.datetime(2010, 12, 1, tz="Asia/Tokyo")
+
+    # 年と月を補完
+    timexes = TimexParser(reference=reference_past).parse("30日")
+    assert timexes[0].to_datetime() == pendulum.datetime(2010, 7, 30, tz="Asia/Tokyo")
+
+    # 2021年でもreferenceのmonth/dayとは限らないので、補完しない
+    timexes = TimexParser(reference=reference_past).parse("2021年")
+    assert timexes[0].to_datetime() == pendulum.datetime(2021, 1, 1, tz="Asia/Tokyo")
+
+    timexes = TimexParser(reference=reference_past).parse("12時59分")
+    assert timexes[0].to_datetime() == pendulum.datetime(2010, 7, 18, 12, 59, tz="Asia/Tokyo")
+
+
 def test_reference_datetime_time(p_ref):
     timexes = p_ref.parse("12時59分1秒")
     assert timexes[0].to_datetime() == pendulum.datetime(2021, 7, 18, 12, 59, 1, tz="Asia/Tokyo")
