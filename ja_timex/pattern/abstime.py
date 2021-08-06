@@ -172,6 +172,10 @@ def parse_time(re_match: re.Match, pattern: Pattern) -> TIMEX:
         if hour != "XX" and 1 <= int(hour) <= 11:
             hour = str(int(hour) + 12)
 
+    if args.get("evening_prefix"):
+        if int(hour) <= 12:
+            hour = str(int(hour) + 12)
+
     return TIMEX(
         type="TIME",
         value=f"T{hour}-{minutes}-{second}",
@@ -317,6 +321,21 @@ patterns += [
     ),
     Pattern(
         re_pattern=f"{p.clock_minutes}:{p.clock_second}",
+        parse_func=parse_time,
+        option={},
+    ),
+    Pattern(
+        re_pattern=f"{p.morning_evening_prefix}?{p.clock_hour}時{p.clock_minutes}分{p.clock_second}秒",
+        parse_func=parse_time,
+        option={},
+    ),
+    Pattern(
+        re_pattern=f"{p.morning_evening_prefix}?{p.clock_hour}時{p.clock_minutes}分",
+        parse_func=parse_time,
+        option={},
+    ),
+    Pattern(
+        re_pattern=f"{p.morning_evening_prefix}?{p.clock_hour}時",
         parse_func=parse_time,
         option={},
     ),

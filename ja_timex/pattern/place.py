@@ -45,6 +45,9 @@ class Place:
     clock_hour: str = "(?P<clock_hour>[0-2]?[0-9])"
     clock_minutes: str = "(?P<clock_minutes>[0-5]?[0-9])"
     clock_second: str = "(?P<clock_second>[0-5]?[0-9])"
+    morning_prefix: str = "(?P<morning_prefix>(今?朝))"
+    evening_prefix: str = "(?P<evening_prefix>(今?[夜晩]))"
+    morning_evening_prefix = f"({morning_prefix}|{evening_prefix})"
 
     # 曜日付きの表記
     weekday_without_symbol: str = f"{weekday}(曜日|曜)"
