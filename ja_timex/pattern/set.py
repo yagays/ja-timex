@@ -132,7 +132,7 @@ patterns += [
     ),
 ]
 
-# # 週
+# 週
 patterns += [
     Pattern(
         re_pattern=f"{p.range}?週に{p.count}週",
@@ -195,7 +195,7 @@ patterns += [
     ),
 ]
 
-# # 時間
+# 時間
 patterns += [
     Pattern(
         re_pattern=f"{p.range}?時間に{p.count}時間",
@@ -238,7 +238,7 @@ patterns += [
     ),
 ]
 
-# # 秒
+# 秒
 patterns += [
     Pattern(
         re_pattern=f"{p.range}?秒(間)?に{p.count}秒",
@@ -253,7 +253,7 @@ patterns += [
 ]
 
 
-# # 「年1回」「週1日」とは言うが、「2年1回」や「3週1日」とは言わない
+# 「年1回」「週1日」とは言うが、「2年1回」や「3週1日」とは言わない
 patterns += [
     Pattern(
         re_pattern=f"年に?{p.count}[ヶ|か|カ|ケ|箇]月",
@@ -297,8 +297,8 @@ patterns += [
     ),
 ]
 
-# # 「に」を省略するパターン
-# # 「1日1時間」とは言うが、「日1時間」とは言わない
+# 「に」を省略するパターン
+# 「1日1時間」とは言うが、「日1時間」とは言わない
 patterns += [
     Pattern(
         re_pattern=f"1日{p.count}時間",

@@ -190,7 +190,7 @@ def parse_word(re_match: re.Match, pattern: Pattern) -> TIMEX:
     span = re_match.span()
 
     value = pattern.option["value"]
-    # "半"の数値表現をargsに含める
+    # "半"や単語の数値表現をargsに含める
     for unit in ["century", "year", "month", "week", "day"]:
         if pattern.option.get(unit):
             args[unit] = pattern.option[unit]
