@@ -494,3 +494,37 @@ patterns += [
         option={"value": "P0D", "mod": "NOW"},
     ),
 ]
+
+# 半年や半世紀
+patterns += [
+    Pattern(
+        re_pattern=f"半年{p.around_suffix}?{p.before_suffix}",
+        parse_func=parse_word,
+        option={"value": "P0.5Y", "mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern=f"半年{p.around_suffix}?{p.after_suffix}",
+        parse_func=parse_word,
+        option={"value": "P0.5Y", "mod": "AFTER"},
+    ),
+    Pattern(
+        re_pattern=f"半世紀{p.around_suffix}?{p.before_suffix}",
+        parse_func=parse_word,
+        option={"value": "P50Y", "mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern=f"半世紀{p.around_suffix}?{p.after_suffix}",
+        parse_func=parse_word,
+        option={"value": "P50Y", "mod": "AFTER"},
+    ),
+    Pattern(
+        re_pattern=f"四半世紀{p.around_suffix}?{p.before_suffix}",
+        parse_func=parse_word,
+        option={"value": "P25Y", "mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern=f"四半世紀{p.around_suffix}?{p.after_suffix}",
+        parse_func=parse_word,
+        option={"value": "P25Y", "mod": "AFTER"},
+    ),
+]

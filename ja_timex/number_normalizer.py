@@ -66,6 +66,9 @@ class NumberNormalizer:
                 IgnorePhrase(pattern="一昨々日", relative_position_to_ref=(0, 4)),
                 IgnorePhrase(pattern="一昨昨日", relative_position_to_ref=(0, 4)),
             ],
+            "四": [
+                IgnorePhrase(pattern="四半世紀", relative_position_to_ref=(0, 4)),
+            ],
             "十": [IgnorePhrase(pattern="不十分", relative_position_to_ref=(-1, 2))],
         }
 

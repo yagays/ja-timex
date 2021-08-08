@@ -163,6 +163,8 @@ def test_normalize_kansuji_should_not_normalize(nn):
     assert nn._normalize_kansuji("準備に十分") == "準備に10分"
     assert nn._normalize_kansuji("準備が不十分") == "準備が不十分"
 
+    assert nn.normalize("四半世紀もの間") == "四半世紀もの間"
+
     # 文脈の意味を考慮しないと判定できない例は、今のところ対象としない
     # assert nn._normalize_kansuji("一時をお知らせします")
     # assert nn._normalize_kansuji("一時はどうなることかと")
