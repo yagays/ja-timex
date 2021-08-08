@@ -114,22 +114,12 @@ class TIMEX:
             if self.mod == "BEFORE":
                 sign = -1
 
-            duration_years = self.fill_target_value(target="year", fill_str="XXXX", default_value=0)
-            duration_months = self.fill_target_value(target="month", fill_str="XX", default_value=0)
-            duration_days = self.fill_target_value(target="day", fill_str="XX", default_value=0)
-            duration_hours = self.fill_target_value(target="hour", fill_str="XX", default_value=0)
-            duration_minute = self.fill_target_value(target="minute", fill_str="XX", default_value=0)
-            duration_seconds = self.fill_target_value(target="second", fill_str="XX", default_value=0)
-
-            duration = pendulum.duration(
-                years=duration_years,
-                months=duration_months,
-                days=duration_days,
-                hours=duration_hours,
-                minutes=duration_minute,
-                seconds=duration_seconds,
-            )
-            return self.reference + sign * duration
+            duration = self.to_duration()
+            if duration:
+                return self.reference + sign * duration
+            else:
+                # durationが無い場合はない
+                return self.reference
         else:
             return None
 
