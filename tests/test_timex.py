@@ -98,6 +98,20 @@ def test_duration_with_half_expression(p):
     assert timexes[0].text == "2年半ほど前"
 
 
+def test_duration_with_half_expression_without_number(p):
+    timexes = TimexParser().parse("半年前の記念日")
+    assert len(timexes) == 1
+    assert timexes[0].value == "P0.5Y"
+    assert timexes[0].type == "DURATION"
+    assert timexes[0].text == "半年前"
+
+    timexes = TimexParser().parse("四半世紀の時を経て")
+    assert len(timexes) == 1
+    assert timexes[0].value == "P25Y"
+    assert timexes[0].type == "DURATION"
+    assert timexes[0].text == "四半世紀"
+
+
 def test_reference_datetime_without_reference(p):
     timexes = p.parse("2021年7月18日")
     assert timexes[0].reference is None

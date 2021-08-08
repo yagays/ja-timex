@@ -508,6 +508,26 @@ patterns += [
         option={"value": "P0.5Y", "mod": "AFTER"},
     ),
     Pattern(
+        re_pattern=f"半月{p.around_suffix}?{p.before_suffix}",
+        parse_func=parse_word,
+        option={"value": "P0.5M", "mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern=f"半月{p.around_suffix}?{p.after_suffix}",
+        parse_func=parse_word,
+        option={"value": "P0.5M", "mod": "AFTER"},
+    ),
+    Pattern(
+        re_pattern=f"半日{p.around_suffix}?{p.before_suffix}",
+        parse_func=parse_word,
+        option={"value": "P0.5D", "mod": "BEFORE"},
+    ),
+    Pattern(
+        re_pattern=f"半日{p.around_suffix}?{p.after_suffix}",
+        parse_func=parse_word,
+        option={"value": "P0.5D", "mod": "AFTER"},
+    ),
+    Pattern(
         re_pattern=f"半世紀{p.around_suffix}?{p.before_suffix}",
         parse_func=parse_word,
         option={"value": "P50Y", "mod": "BEFORE"},

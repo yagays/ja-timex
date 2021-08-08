@@ -68,6 +68,21 @@ def parse_pt(re_match: re.Match, pattern: Pattern) -> TIMEX:
     )
 
 
+def parse_word(re_match: re.Match, pattern: Pattern) -> TIMEX:
+    args = re_match.groupdict()
+    span = re_match.span()
+
+    value = pattern.option["value"]
+    return TIMEX(
+        type="DURATION",
+        value=value,
+        text=re_match.group(),
+        parsed=args,
+        span=span,
+        pattern=pattern,
+    )
+
+
 p = Place()
 
 patterns = []
@@ -143,6 +158,7 @@ patterns += [
     ),
 ]
 
+# 1年半などの半分が付与されるケース
 patterns += [
     # P
     Pattern(
@@ -179,5 +195,34 @@ patterns += [
         re_pattern=f"{p.second}秒{p.half_suffix}",
         parse_func=parse_pt,
         option={},
+    ),
+]
+
+# 半年などの"半"のみのケース
+patterns += [
+    Pattern(
+        re_pattern=f"半世紀",
+        parse_func=parse_word,
+        option={"value": "P50Y"},
+    ),
+    Pattern(
+        re_pattern=f"四半世紀",
+        parse_func=parse_word,
+        option={"value": "P25Y"},
+    ),
+    Pattern(
+        re_pattern=f"半年",
+        parse_func=parse_word,
+        option={"value": "P0.5Y"},
+    ),
+    Pattern(
+        re_pattern=f"半月",
+        parse_func=parse_word,
+        option={"value": "P0.5M"},
+    ),
+    Pattern(
+        re_pattern=f"半日",
+        parse_func=parse_word,
+        option={"value": "P0.5D"},
     ),
 ]

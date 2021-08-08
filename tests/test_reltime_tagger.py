@@ -177,6 +177,16 @@ def test_half_suffix_reltime_word(t):
     assert t.parse("半年後").value == "P0.5Y"
     assert t.parse("半年後").mod == "AFTER"
 
+    assert t.parse("半月前").value == "P0.5M"
+    assert t.parse("半月前").mod == "BEFORE"
+    assert t.parse("半月後").value == "P0.5M"
+    assert t.parse("半月後").mod == "AFTER"
+
+    assert t.parse("半日前").value == "P0.5D"
+    assert t.parse("半日前").mod == "BEFORE"
+    assert t.parse("半日後").value == "P0.5D"
+    assert t.parse("半日後").mod == "AFTER"
+
     assert t.parse("半世紀前").value == "P50Y"
     assert t.parse("半世紀前").mod == "BEFORE"
     assert t.parse("半世紀後").value == "P50Y"
