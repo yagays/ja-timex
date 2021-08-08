@@ -90,6 +90,9 @@ class Place:
     # 和暦の元号
     wareki_prefix: str = f"(?P<wareki_prefix>({'|'.join(wareki2year.keys())}))"
 
+    # 半分の表現
+    half_suffix: str = "(?P<half_suffix>半)"
+
     def is_valid(self, target, text):
         # for tests
         re_pattern = getattr(self, target)
