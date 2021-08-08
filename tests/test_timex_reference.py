@@ -119,3 +119,9 @@ def test_reference_datetime_duration(p_ref):
     assert timexes[0].to_datetime() == pendulum.datetime(2021, 7, 3, 0, 0, 0, tz="Asia/Tokyo")
     timexes = p_ref.parse("半日前")
     assert timexes[0].to_datetime() == pendulum.datetime(2021, 7, 17, 12, 0, 0, tz="Asia/Tokyo")
+
+    timexes = p_ref.parse("昨日の雨はひどかった")
+    assert timexes[0].to_datetime() == pendulum.datetime(2021, 7, 17, 0, 0, 0, tz="Asia/Tokyo")
+
+    timexes = p_ref.parse("明後日には完成するでしょう")
+    assert timexes[0].to_datetime() == pendulum.datetime(2021, 7, 20, 0, 0, 0, tz="Asia/Tokyo")
