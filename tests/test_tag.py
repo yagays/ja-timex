@@ -164,3 +164,21 @@ def test_to_duration_half():
     assert it.minutes == 30
 
     assert it.seconds == 5400  # 90*60
+
+
+def test_to_duration_half_expression_without_number():
+    it = TIMEX(type="DURATION", value="P50Y", text="半世紀", parsed={"year": "50"}).to_duration()
+    assert it.years == 50
+
+    it = TIMEX(type="DURATION", value="P25Y", text="半世紀", parsed={"year": "25"}).to_duration()
+    assert it.years == 25
+
+    it = TIMEX(type="DURATION", value="P0.5Y", text="半年", parsed={"month": "6"}).to_duration()
+    assert it.months == 6
+
+    it = TIMEX(type="DURATION", value="P0.5M", text="半月", parsed={"day": "15"}).to_duration()
+    assert it.days == 15
+
+    it = TIMEX(type="DURATION", value="P0.5D", text="半日", parsed={"day": "0.5"}).to_duration()
+    assert it.days == 0
+    assert it.hours == 12
