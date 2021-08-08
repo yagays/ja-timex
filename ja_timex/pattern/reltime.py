@@ -190,6 +190,11 @@ def parse_word(re_match: re.Match, pattern: Pattern) -> TIMEX:
     span = re_match.span()
 
     value = pattern.option["value"]
+    # "半"や単語の数値表現をargsに含める
+    for unit in ["century", "year", "month", "week", "day"]:
+        if pattern.option.get(unit):
+            args[unit] = pattern.option[unit]
+
     return TIMEX(
         type="DURATION",
         value=value,
@@ -365,32 +370,32 @@ patterns += [
     Pattern(
         re_pattern="[先前昨]日",
         parse_func=parse_word,
-        option={"value": "P1D", "mod": "BEFORE"},
+        option={"value": "P1D", "mod": "BEFORE", "day": "1"},
     ),
     Pattern(
         re_pattern="一昨日",
         parse_func=parse_word,
-        option={"value": "P2D", "mod": "BEFORE"},
+        option={"value": "P2D", "mod": "BEFORE", "day": "2"},
     ),
     Pattern(
         re_pattern="一昨[昨々]日",
         parse_func=parse_word,
-        option={"value": "P3D", "mod": "BEFORE"},
+        option={"value": "P3D", "mod": "BEFORE", "day": "3"},
     ),
     Pattern(
         re_pattern="[翌明]日",
         parse_func=parse_word,
-        option={"value": "P1D", "mod": "AFTER"},
+        option={"value": "P1D", "mod": "AFTER", "day": "1"},
     ),
     Pattern(
         re_pattern="(翌々|明後)日",
         parse_func=parse_word,
-        option={"value": "P2D", "mod": "AFTER"},
+        option={"value": "P2D", "mod": "AFTER", "day": "2"},
     ),
     Pattern(
         re_pattern="明[昨々]後日",
         parse_func=parse_word,
-        option={"value": "P3D", "mod": "AFTER"},
+        option={"value": "P3D", "mod": "AFTER", "day": "3"},
     ),
 ]
 
@@ -399,22 +404,22 @@ patterns += [
     Pattern(
         re_pattern="[先前昨]週",
         parse_func=parse_word,
-        option={"value": "P1W", "mod": "BEFORE"},
+        option={"value": "P1W", "mod": "BEFORE", "week": "1"},
     ),
     Pattern(
         re_pattern="先々週",
         parse_func=parse_word,
-        option={"value": "P2W", "mod": "BEFORE"},
+        option={"value": "P2W", "mod": "BEFORE", "week": "2"},
     ),
     Pattern(
         re_pattern="[来翌]週",
         parse_func=parse_word,
-        option={"value": "P1W", "mod": "AFTER"},
+        option={"value": "P1W", "mod": "AFTER", "week": "1"},
     ),
     Pattern(
         re_pattern="(再来|翌々)週",
         parse_func=parse_word,
-        option={"value": "P2W", "mod": "AFTER"},
+        option={"value": "P2W", "mod": "AFTER", "week": "2"},
     ),
 ]
 
@@ -423,46 +428,46 @@ patterns += [
     Pattern(
         re_pattern="[先前昨]月",
         parse_func=parse_word,
-        option={"value": "P1M", "mod": "BEFORE"},
+        option={"value": "P1M", "mod": "BEFORE", "month": "1"},
     ),
     Pattern(
         re_pattern="先々月",
         parse_func=parse_word,
-        option={"value": "P2M", "mod": "BEFORE"},
+        option={"value": "P2M", "mod": "BEFORE", "month": "2"},
     ),
     Pattern(
         re_pattern="[来翌]月",
         parse_func=parse_word,
-        option={"value": "P1M", "mod": "AFTER"},
+        option={"value": "P1M", "mod": "AFTER", "month": "1"},
     ),
     Pattern(
         re_pattern="(再来|翌々)月",
         parse_func=parse_word,
-        option={"value": "P2M", "mod": "AFTER"},
+        option={"value": "P2M", "mod": "AFTER", "month": "2"},
     ),
 ]
 
 # 年
 patterns += [
     Pattern(
-        re_pattern="(一昨年|おととし)",
-        parse_func=parse_word,
-        option={"value": "P2Y", "mod": "BEFORE"},
-    ),
-    Pattern(
         re_pattern="[去前昨]年",
         parse_func=parse_word,
-        option={"value": "P1Y", "mod": "BEFORE"},
+        option={"value": "P1Y", "mod": "BEFORE", "year": "1"},
+    ),
+    Pattern(
+        re_pattern="(一昨年|おととし)",
+        parse_func=parse_word,
+        option={"value": "P2Y", "mod": "BEFORE", "year": "2"},
     ),
     Pattern(
         re_pattern="[来翌]年",
         parse_func=parse_word,
-        option={"value": "P1Y", "mod": "AFTER"},
+        option={"value": "P1Y", "mod": "AFTER", "year": "1"},
     ),
     Pattern(
         re_pattern="(再来|翌々)年",
         parse_func=parse_word,
-        option={"value": "P2Y", "mod": "AFTER"},
+        option={"value": "P2Y", "mod": "AFTER", "year": "2"},
     ),
 ]
 
@@ -471,27 +476,22 @@ patterns += [
     Pattern(
         re_pattern="[今本]日",
         parse_func=parse_word,
-        option={"value": "P0D", "mod": "NOW"},
+        option={"value": "P0D", "mod": "NOW", "day": "0"},
     ),
     Pattern(
         re_pattern="今週",
         parse_func=parse_word,
-        option={"value": "P0W", "mod": "NOW"},
+        option={"value": "P0W", "mod": "NOW", "week": "0"},
     ),
     Pattern(
         re_pattern="今月",
         parse_func=parse_word,
-        option={"value": "P0M", "mod": "NOW"},
+        option={"value": "P0M", "mod": "NOW", "month": "0"},
     ),
     Pattern(
         re_pattern="今年",
         parse_func=parse_word,
-        option={"value": "P0Y", "mod": "NOW"},
-    ),
-    Pattern(
-        re_pattern="[今本]日",
-        parse_func=parse_word,
-        option={"value": "P0D", "mod": "NOW"},
+        option={"value": "P0Y", "mod": "NOW", "year": "0"},
     ),
 ]
 
@@ -500,51 +500,51 @@ patterns += [
     Pattern(
         re_pattern=f"半年{p.around_suffix}?{p.before_suffix}",
         parse_func=parse_word,
-        option={"value": "P0.5Y", "mod": "BEFORE"},
+        option={"value": "P0.5Y", "mod": "BEFORE", "month": "6"},
     ),
     Pattern(
         re_pattern=f"半年{p.around_suffix}?{p.after_suffix}",
         parse_func=parse_word,
-        option={"value": "P0.5Y", "mod": "AFTER"},
+        option={"value": "P0.5Y", "mod": "AFTER", "month": "6"},
     ),
     Pattern(
         re_pattern=f"半月{p.around_suffix}?{p.before_suffix}",
         parse_func=parse_word,
-        option={"value": "P0.5M", "mod": "BEFORE"},
+        option={"value": "P0.5M", "mod": "BEFORE", "day": "15"},
     ),
     Pattern(
         re_pattern=f"半月{p.around_suffix}?{p.after_suffix}",
         parse_func=parse_word,
-        option={"value": "P0.5M", "mod": "AFTER"},
+        option={"value": "P0.5M", "mod": "AFTER", "day": "15"},
     ),
     Pattern(
         re_pattern=f"半日{p.around_suffix}?{p.before_suffix}",
         parse_func=parse_word,
-        option={"value": "P0.5D", "mod": "BEFORE"},
+        option={"value": "P0.5D", "mod": "BEFORE", "day": "0.5"},
     ),
     Pattern(
         re_pattern=f"半日{p.around_suffix}?{p.after_suffix}",
         parse_func=parse_word,
-        option={"value": "P0.5D", "mod": "AFTER"},
+        option={"value": "P0.5D", "mod": "AFTER", "day": "0.5"},
     ),
     Pattern(
         re_pattern=f"半世紀{p.around_suffix}?{p.before_suffix}",
         parse_func=parse_word,
-        option={"value": "P50Y", "mod": "BEFORE"},
+        option={"value": "P50Y", "mod": "BEFORE", "year": "50"},
     ),
     Pattern(
         re_pattern=f"半世紀{p.around_suffix}?{p.after_suffix}",
         parse_func=parse_word,
-        option={"value": "P50Y", "mod": "AFTER"},
+        option={"value": "P50Y", "mod": "AFTER", "year": "50"},
     ),
     Pattern(
         re_pattern=f"四半世紀{p.around_suffix}?{p.before_suffix}",
         parse_func=parse_word,
-        option={"value": "P25Y", "mod": "BEFORE"},
+        option={"value": "P25Y", "mod": "BEFORE", "year": "25"},
     ),
     Pattern(
         re_pattern=f"四半世紀{p.around_suffix}?{p.after_suffix}",
         parse_func=parse_word,
-        option={"value": "P25Y", "mod": "AFTER"},
+        option={"value": "P25Y", "mod": "AFTER", "year": "25"},
     ),
 ]

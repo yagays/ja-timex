@@ -68,11 +68,16 @@ def parse_pt(re_match: re.Match, pattern: Pattern) -> TIMEX:
     )
 
 
-def parse_word(re_match: re.Match, pattern: Pattern) -> TIMEX:
+def parse_word_half(re_match: re.Match, pattern: Pattern) -> TIMEX:
     args = re_match.groupdict()
     span = re_match.span()
 
     value = pattern.option["value"]
+    # "半"の数値表現をargsに含める
+    for unit in ["century", "year", "month", "day"]:
+        if pattern.option.get(unit):
+            args[unit] = pattern.option[unit]
+
     return TIMEX(
         type="DURATION",
         value=value,
@@ -199,30 +204,32 @@ patterns += [
 ]
 
 # 半年などの"半"のみのケース
+# parsedに"半"を変換した値を含めるため、あらかじめ計算した値をoptionで指定している
+# yearとmonthはpendulumでintのみしか扱うことができないので、一つ下の単位に変換している
 patterns += [
     Pattern(
         re_pattern="半世紀",
-        parse_func=parse_word,
-        option={"value": "P50Y"},
+        parse_func=parse_word_half,
+        option={"value": "P50Y", "year": "50"},
     ),
     Pattern(
         re_pattern="四半世紀",
-        parse_func=parse_word,
-        option={"value": "P25Y"},
+        parse_func=parse_word_half,
+        option={"value": "P25Y", "year": "25"},
     ),
     Pattern(
         re_pattern="半年",
-        parse_func=parse_word,
-        option={"value": "P0.5Y"},
+        parse_func=parse_word_half,
+        option={"value": "P0.5Y", "month": "6"},
     ),
     Pattern(
         re_pattern="半月",
-        parse_func=parse_word,
-        option={"value": "P0.5M"},
+        parse_func=parse_word_half,
+        option={"value": "P0.5M", "day": "15"},
     ),
     Pattern(
         re_pattern="半日",
-        parse_func=parse_word,
-        option={"value": "P0.5D"},
+        parse_func=parse_word_half,
+        option={"value": "P0.5D", "day": "0.5"},
     ),
 ]

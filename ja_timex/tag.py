@@ -114,22 +114,9 @@ class TIMEX:
             if self.mod == "BEFORE":
                 sign = -1
 
-            duration_years = self.fill_target_value(target="year", fill_str="XXXX", default_value=0)
-            duration_months = self.fill_target_value(target="month", fill_str="XX", default_value=0)
-            duration_days = self.fill_target_value(target="day", fill_str="XX", default_value=0)
-            duration_hours = self.fill_target_value(target="hour", fill_str="XX", default_value=0)
-            duration_minute = self.fill_target_value(target="minute", fill_str="XX", default_value=0)
-            duration_seconds = self.fill_target_value(target="second", fill_str="XX", default_value=0)
-
-            duration = pendulum.duration(
-                years=duration_years,
-                months=duration_months,
-                days=duration_days,
-                hours=duration_hours,
-                minutes=duration_minute,
-                seconds=duration_seconds,
-            )
+            duration = self.to_duration()
             return self.reference + sign * duration
+
         else:
             return None
 
@@ -141,21 +128,31 @@ class TIMEX:
         else:
             return False
 
-    def to_duration(self) -> Optional[timedelta]:
-        if not self.is_valid_duration:
-            return None
+    def to_duration(self) -> timedelta:
 
         # pendulum: Float year and months are not supported
-        return pendulum.duration(
-            years=int(self.parsed.get("year", 0)),
-            months=int(self.parsed.get("month", 0)),
-            weeks=float(self.parsed.get("week", 0)),
-            days=float(self.parsed.get("day", 0)),
-            hours=float(self.parsed.get("hour", 0)),
-            minutes=float(self.parsed.get("minute", 0)),
-            seconds=float(self.parsed.get("second", 0)),
-            microseconds=float(self.parsed.get("micorsecond", 0)),
-        )
+        unit_args = {
+            "years": int(self.parsed.get("year", 0)),
+            "months": int(self.parsed.get("month", 0)),
+            "weeks": float(self.parsed.get("week", 0)),
+            "days": float(self.parsed.get("day", 0)),
+            "hours": float(self.parsed.get("hour", 0)),
+            "minutes": float(self.parsed.get("minute", 0)),
+            "seconds": float(self.parsed.get("second", 0)),
+            "microseconds": float(self.parsed.get("micorsecond", 0)),
+        }
+
+        if self.parsed.get("half_suffix"):
+            for unit in ["week", "day", "hour", "minute", "sescond"]:
+                if self.parsed.get(unit):
+                    unit_args[unit + "s"] += 0.5
+            if self.parsed.get("year"):
+                unit_args["months"] += 6
+            if self.parsed.get("month"):
+                # 半月という期間は月によって異なるが、pendulumの1ヶ月は30日として計算されるため、ここでは一律で15日の期間とする
+                unit_args["days"] += 15
+
+        return pendulum.duration(**unit_args)
 
     def __repr__(self) -> str:
         attributes = []
