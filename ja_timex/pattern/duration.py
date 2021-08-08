@@ -201,27 +201,27 @@ patterns += [
 # 半年などの"半"のみのケース
 patterns += [
     Pattern(
-        re_pattern=f"半世紀",
+        re_pattern="半世紀",
         parse_func=parse_word,
         option={"value": "P50Y"},
     ),
     Pattern(
-        re_pattern=f"四半世紀",
+        re_pattern="四半世紀",
         parse_func=parse_word,
         option={"value": "P25Y"},
     ),
     Pattern(
-        re_pattern=f"半年",
+        re_pattern="半年",
         parse_func=parse_word,
         option={"value": "P0.5Y"},
     ),
     Pattern(
-        re_pattern=f"半月",
+        re_pattern="半月",
         parse_func=parse_word,
         option={"value": "P0.5M"},
     ),
     Pattern(
-        re_pattern=f"半日",
+        re_pattern="半日",
         parse_func=parse_word,
         option={"value": "P0.5D"},
     ),
