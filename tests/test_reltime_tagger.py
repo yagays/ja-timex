@@ -152,3 +152,47 @@ def test_word_now(t):
 
     assert t.parse("今年").value == "P0Y"
     assert t.parse("今年").mod == "NOW"
+
+
+def test_half_suffix_reltime(t):
+    assert t.parse("1時間半後").value == "PT1.5H"
+    assert t.parse("1時間半後").mod == "AFTER"
+    assert t.parse("1分半後").value == "PT1.5M"
+    assert t.parse("1秒半後").value == "PT1.5S"
+
+    assert t.parse("1年半後").value == "P1.5Y"
+    assert t.parse("1ヶ月半後").value == "P1.5M"
+    assert t.parse("1週間半後").value == "P1.5W"
+    assert t.parse("1週半後").value == "P1.5W"
+    assert t.parse("1日半後").value == "P1.5D"
+
+    assert t.parse("1時間半ほど後").value == "PT1.5H"
+    assert t.parse("1時間半くらい後").value == "PT1.5H"
+    assert t.parse("1時間半近く後").value == "PT1.5H"
+
+
+def test_half_suffix_reltime_word(t):
+    assert t.parse("半年前").value == "P0.5Y"
+    assert t.parse("半年前").mod == "BEFORE"
+    assert t.parse("半年後").value == "P0.5Y"
+    assert t.parse("半年後").mod == "AFTER"
+
+    assert t.parse("半月前").value == "P0.5M"
+    assert t.parse("半月前").mod == "BEFORE"
+    assert t.parse("半月後").value == "P0.5M"
+    assert t.parse("半月後").mod == "AFTER"
+
+    assert t.parse("半日前").value == "P0.5D"
+    assert t.parse("半日前").mod == "BEFORE"
+    assert t.parse("半日後").value == "P0.5D"
+    assert t.parse("半日後").mod == "AFTER"
+
+    assert t.parse("半世紀前").value == "P50Y"
+    assert t.parse("半世紀前").mod == "BEFORE"
+    assert t.parse("半世紀後").value == "P50Y"
+    assert t.parse("半世紀後").mod == "AFTER"
+
+    assert t.parse("四半世紀前").value == "P25Y"
+    assert t.parse("四半世紀前").mod == "BEFORE"
+    assert t.parse("四半世紀ほど前").value == "P25Y"
+    assert t.parse("四半世紀近く前").value == "P25Y"

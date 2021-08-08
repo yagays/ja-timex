@@ -99,3 +99,12 @@ def test_half_suffix(t):
     assert t.parse("2週半").value == "P2.5W"
     assert t.parse("1日半").value == "P1.5D"
     assert t.parse("1日半").text == "1日半"
+
+
+def test_only_half(t):
+    # 数字がなく単に"半"だけの場合
+    assert t.parse("半世紀").value == "P50Y"
+    assert t.parse("四半世紀").value == "P25Y"
+    assert t.parse("半年").value == "P0.5Y"
+    assert t.parse("半月").value == "P0.5M"
+    assert t.parse("半日").value == "P0.5D"
