@@ -146,16 +146,28 @@ class TIMEX:
             return None
 
         # pendulum: Float year and months are not supported
-        return pendulum.duration(
-            years=int(self.parsed.get("year", 0)),
-            months=int(self.parsed.get("month", 0)),
-            weeks=float(self.parsed.get("week", 0)),
-            days=float(self.parsed.get("day", 0)),
-            hours=float(self.parsed.get("hour", 0)),
-            minutes=float(self.parsed.get("minute", 0)),
-            seconds=float(self.parsed.get("second", 0)),
-            microseconds=float(self.parsed.get("micorsecond", 0)),
-        )
+        unit_args = {
+            "years": int(self.parsed.get("year", 0)),
+            "months": int(self.parsed.get("month", 0)),
+            "weeks": float(self.parsed.get("week", 0)),
+            "days": float(self.parsed.get("day", 0)),
+            "hours": float(self.parsed.get("hour", 0)),
+            "minutes": float(self.parsed.get("minute", 0)),
+            "seconds": float(self.parsed.get("second", 0)),
+            "microseconds": float(self.parsed.get("micorsecond", 0)),
+        }
+
+        if self.parsed.get("half_suffix"):
+            for unit in ["week", "day", "hour", "minute", "sescond"]:
+                if self.parsed.get(unit):
+                    unit_args[unit + "s"] += 0.5
+            if self.parsed.get("year"):
+                unit_args["months"] += 6
+            if self.parsed.get("month"):
+                # 半月という期間は月によって異なるが、pendulumの1ヶ月は30日として計算されるため、ここでは一律で15日の期間とする
+                unit_args["days"] += 15
+
+        return pendulum.duration(**unit_args)
 
     def __repr__(self) -> str:
         attributes = []

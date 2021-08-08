@@ -137,3 +137,30 @@ def test_to_duration():
     assert it.minutes == 0
     assert it.seconds == 1
     assert it.microseconds == 500000  # マイクロ秒
+
+
+def test_to_duration_half():
+    it = TIMEX(
+        type="DURATION", value="P1.5Y", text="1年半後", parsed={"year": "1", "half_suffix": "半", "after_suffix": "後"}
+    ).to_duration()
+    assert it.years == 1
+    assert it.months == 6
+
+    assert it.days == 545  # 365 + 30 * 6
+    # pendulumは一律で1ヶ月を30日として計算する
+
+    it = TIMEX(
+        type="DURATION", value="P1.5M", text="1ヶ月半後", parsed={"month": "1", "half_suffix": "半", "after_suffix": "後"}
+    ).to_duration()
+    assert it.years == 0
+    assert it.months == 1
+
+    assert it.days == 45  # 30 + 15
+
+    it = TIMEX(
+        type="DURATION", value="PT1.5H", text="1時間半後", parsed={"hour": "1", "half_suffix": "半", "after_suffix": "後"}
+    ).to_duration()
+    assert it.hours == 1
+    assert it.minutes == 30
+
+    assert it.seconds == 5400  # 90*60
