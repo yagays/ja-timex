@@ -31,9 +31,9 @@ class Place:
     season: str = "(?P<season>(春|夏|秋|冬))"
     quarter: str = "(?P<quarter>[1-4])"
     fiscal_year: str = "(?P<fiscal_year>[0-9]{4})"
-    ac_century: str = "(?P<ac_century>[1-9]?[0-9]{,2})"
-    bc_year: str = "(?P<bc_year>[0-9]{,4})"
-    bc_century: str = "(?P<bc_century>[1-9]?[0-9]{,2})"
+    ac_century: str = "(?P<ac_century>[1-9]?[0-9]{1,2})"
+    bc_year: str = "(?P<bc_year>[0-9]{1,4})"
+    bc_century: str = "(?P<bc_century>[1-9]?[0-9]{1,2})"
 
     # abstime: 時刻表現
     am_prefix: str = "(?P<am_prefix>(午前|am|AM|))"
@@ -58,7 +58,7 @@ class Place:
     year: str = "(?P<year>[0-9]{1,4})"
     month: str = "(?P<month>[0-9]+)"  # 日付における月とは異なり、18ヶ月など任意の数字を取れる
     day: str = "(?P<day>[0-9]+\\.?[0-9]*)"
-    century: str = "(?P<century>[1-9]?[0-9]{,2})"
+    century: str = "(?P<century>[1-9]?[0-9]{1,2})"
     week: str = "(?P<week>[0-9]+\\.?[0-9]*)"
     hour: str = "(?P<hour>[0-9]+\\.?[0-9]*)"
     minute: str = "(?P<minute>[0-9]+\\.?[0-9]*)"
