@@ -115,11 +115,8 @@ class TIMEX:
                 sign = -1
 
             duration = self.to_duration()
-            if duration:
-                return self.reference + sign * duration
-            else:
-                # durationが無い場合はない
-                return self.reference
+            return self.reference + sign * duration
+
         else:
             return None
 
@@ -131,9 +128,7 @@ class TIMEX:
         else:
             return False
 
-    def to_duration(self) -> Optional[timedelta]:
-        if not self.is_valid_duration:
-            return None
+    def to_duration(self) -> timedelta:
 
         # pendulum: Float year and months are not supported
         unit_args = {

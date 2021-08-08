@@ -208,27 +208,27 @@ patterns += [
 # yearとmonthはpendulumでintのみしか扱うことができないので、一つ下の単位に変換している
 patterns += [
     Pattern(
-        re_pattern=f"半世紀",
+        re_pattern="半世紀",
         parse_func=parse_word_half,
         option={"value": "P50Y", "year": "50"},
     ),
     Pattern(
-        re_pattern=f"四半世紀",
+        re_pattern="四半世紀",
         parse_func=parse_word_half,
         option={"value": "P25Y", "year": "25"},
     ),
     Pattern(
-        re_pattern=f"半年",
+        re_pattern="半年",
         parse_func=parse_word_half,
         option={"value": "P0.5Y", "month": "6"},
     ),
     Pattern(
-        re_pattern=f"半月",
+        re_pattern="半月",
         parse_func=parse_word_half,
         option={"value": "P0.5M", "day": "15"},
     ),
     Pattern(
-        re_pattern=f"半日",
+        re_pattern="半日",
         parse_func=parse_word_half,
         option={"value": "P0.5D", "day": "0.5"},
     ),
