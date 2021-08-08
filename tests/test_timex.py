@@ -84,6 +84,20 @@ def test_morning_evening(p):
     assert timexes[0].text == "今夜9時"
 
 
+def test_duration_with_half_expression(p):
+    timexes = TimexParser().parse("今から1時間半後に始めます")
+    assert len(timexes) == 1
+    assert timexes[0].value == "PT1.5H"
+    assert timexes[0].type == "DURATION"
+    assert timexes[0].text == "1時間半後"
+
+    timexes = TimexParser().parse("今から2年半ほど前の話")
+    assert len(timexes) == 1
+    assert timexes[0].value == "P2.5Y"
+    assert timexes[0].type == "DURATION"
+    assert timexes[0].text == "2年半ほど前"
+
+
 def test_reference_datetime_without_reference(p):
     timexes = p.parse("2021年7月18日")
     assert timexes[0].reference is None
