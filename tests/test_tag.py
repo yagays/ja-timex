@@ -119,24 +119,51 @@ def test_is_valid_duration(t_date, t_time, t_duration, t_set):
 
 
 def test_to_duration():
-    it = TIMEX(type="DURATION", value="P1Y", text="1年間", parsed={"year": 1}).to_duration()
+    it = TIMEX(type="DURATION", value="P1Y", text="1年間", parsed={"year": "1"}).to_duration()
     assert it.years == 1
     assert it.months == 0
     assert it.days == 365  # 日付換算
 
-    it = TIMEX(type="DURATION", value="P1W", text="1週間", parsed={"week": 1}).to_duration()
+    it = TIMEX(type="DURATION", value="P1W", text="1週間", parsed={"week": "1"}).to_duration()
     assert it.weeks == 1
     assert it.days == 7  # 日付換算
 
-    it = TIMEX(type="DURATION", value="PT1H", text="1時間", parsed={"hour": 1}).to_duration()
+    it = TIMEX(type="DURATION", value="PT1H", text="1時間", parsed={"hour": "1"}).to_duration()
     assert it.hours == 1
     assert it.minutes == 0
     assert it.seconds == 3600  # 秒換算
 
-    it = TIMEX(type="DURATION", value="PT1.5S", text="1.5秒", parsed={"second": 1.5}).to_duration()
+    it = TIMEX(type="DURATION", value="PT1.5S", text="1.5秒", parsed={"second": "1.5"}).to_duration()
     assert it.minutes == 0
     assert it.seconds == 1
     assert it.microseconds == 500000  # マイクロ秒
+
+
+def test_reltime_to_duration_word():
+    # 昨年や先週などの単語表現
+    it = TIMEX(type="DURATION", value="P1Y", text="昨年", parsed={"year": "1"}).to_duration()
+    assert it.years == 1
+
+    it = TIMEX(type="DURATION", value="P2M", text="先々月", parsed={"month": "2"}).to_duration()
+    assert it.months == 2
+
+    it = TIMEX(type="DURATION", value="P1W", text="先週", parsed={"week": "1"}).to_duration()
+    assert it.weeks == 1
+
+
+def test_reltime_to_duration_word_today():
+    # 今日/今週/今月/今年といった今の表現はDuration()となり、すべて0になる
+    it = TIMEX(type="DURATION", value="P0D", text="今日", parsed={"day": "0"}).to_duration()
+    assert it.days == 0
+
+    it = TIMEX(type="DURATION", value="P0W", text="今週", parsed={"week": "0"}).to_duration()
+    assert it.weeks == 0
+
+    it = TIMEX(type="DURATION", value="P0M", text="今月", parsed={"month": "0"}).to_duration()
+    assert it.months == 0
+
+    it = TIMEX(type="DURATION", value="P0Y", text="今月", parsed={"year": "0"}).to_duration()
+    assert it.years == 0
 
 
 def test_to_duration_half():
