@@ -80,3 +80,22 @@ def test_invalid_duration(t):
     assert t.parse("強化月間") is None
     assert t.parse("週またぎの行事") is None
     assert t.parse("日が変わる") is None
+
+
+def test_half_suffix(t):
+    # 半分を表す表記
+    assert t.parse("1.5時間").value == "PT1.5H"
+    assert t.parse("1時間半").value == "PT1.5H"
+    assert t.parse("1時間半").text == "1時間半"
+
+    # PT
+    assert t.parse("10分半").value == "PT10.5M"
+    assert t.parse("1秒半").value == "PT1.5S"
+
+    # P
+    assert t.parse("1年半").value == "P1.5Y"
+    assert t.parse("5ヶ月半").value == "P5.5M"
+    assert t.parse("2週間半").value == "P2.5W"  # 週だけは"間"を含むこともある
+    assert t.parse("2週半").value == "P2.5W"
+    assert t.parse("1日半").value == "P1.5D"
+    assert t.parse("1日半").text == "1日半"
