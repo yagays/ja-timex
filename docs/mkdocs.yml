@@ -43,7 +43,7 @@ nav:
       - installation.md
       - quick_start.md
       - examples.md
-      - reference_datetime.md
+      - to_datetime.md
     - "Documentation":
       - timex3.md
       - FAQ.md
