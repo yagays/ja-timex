@@ -1,10 +1,12 @@
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from typing import Dict, Optional, Tuple
+from typing import Dict, Optional, Tuple, Union
 
 import pendulum
+from pendulum.tz.timezone import Timezone
 
 from ja_timex.pattern.place import Pattern
+from ja_timex.util import set_timezone
 
 
 @dataclass
@@ -71,9 +73,11 @@ class TIMEX:
         else:
             return False
 
-    def to_datetime(self) -> Optional[datetime]:
+    def to_datetime(self, tz: Union[str, Timezone] = "Asia/Tokyo") -> Optional[datetime]:
         if not self.is_valid_datetime:
             return None
+
+        default_timezone = set_timezone(tz)
 
         if self.type == "DATE":
             year = self.fill_target_value(target="calendar_year", fill_str="XXXX", default_value=pendulum.now().year)
@@ -87,7 +91,7 @@ class TIMEX:
                     if self.parsed["calendar_month"] == "XX":
                         month = self.reference.month
 
-            return pendulum.datetime(year=year, month=month, day=day, tz="Asia/Tokyo")
+            return pendulum.datetime(year=year, month=month, day=day, tz=default_timezone)
         elif self.type == "TIME" and self.reference:
             hour = self.fill_target_value(target="clock_hour", fill_str="XX", default_value=0)
             minute = self.fill_target_value(target="clock_minute", fill_str="XX", default_value=0)
