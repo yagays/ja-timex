@@ -55,7 +55,7 @@ Out[]: '週に3回'
 仕様の詳細は[TIMEX3タグの仕様](timex3.md)を参照ください。
 
 ## Pythonのdatetimeに変換する
-日付表現は、`TIMEX`クラスからPythonのdatetime形式に変換することができます。
+日付表現は、`TIMEX`クラスからPythonのdatetimeオブジェクトに変換することができます。
 
 ```python
 In []: timex = timexes[0]
@@ -65,14 +65,8 @@ In []: timex.to_datetime()
 Out[]: DateTime(2008, 4, 1, 0, 0, 0, tzinfo=Timezone('Asia/Tokyo'))
 ```
 
-!!!Warning
-    日付表現で不足している情報があった場合、`year`は実行時の年、`month`および`day`は`1`が補完されます。
-
-!!!Tips
-    ja-timexでは[`pendulum`](https://pendulum.eustace.io/)というdatetimeの扱いを容易するパッケージを利用しています。`pendulum`は基本的にPythonのdatetime/timedeltaを継承して実装されており、互換性があります。
-
 ## Pythonのtimedeltaに変換する
-持続時間表現は、`TIMEX`クラスからPythonのtimedelta形式に変換することができます。
+持続時間表現は、`TIMEX`クラスからPythonのtimedeltaオブジェクトに変換することができます。
 
 ```python
 In []: timex = timexes[2]
