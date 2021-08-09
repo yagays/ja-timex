@@ -1,3 +1,4 @@
+import pendulum
 import pytest
 
 from ja_timex.tag import TIMEX
@@ -237,3 +238,28 @@ def test_reltime_to_duration_half_expression_without_number():
     ).to_duration()
     assert it.days == 0
     assert it.hours == 12
+
+
+def test_default_timezone():
+    timex = TIMEX(
+        type="DATE",
+        value="2021-07-18",
+        text="2021年07月18日",
+        parsed={"calendar_year": "2021", "calendar_month": "07", "calendar_day": "18"},
+    )
+
+    # default
+    assert timex.to_datetime().timezone == pendulum.timezone("Asia/Tokyo")
+
+    # specify timezone
+    assert timex.to_datetime(tz="UTC").timezone == pendulum.timezone("UTC")
+    assert timex.to_datetime(tz="Europe/Paris").timezone == pendulum.timezone("Europe/Paris")
+    assert timex.to_datetime(tz="Asia/Tokyo").timezone == pendulum.timezone("Asia/Tokyo")
+
+    assert timex.to_datetime(tz=pendulum.timezone("UTC")).timezone == pendulum.timezone("UTC")
+    assert timex.to_datetime(tz=pendulum.timezone("Asia/Tokyo")).timezone == pendulum.timezone("Asia/Tokyo")
+
+    with pytest.raises(TypeError):
+        timex.to_datetime(tz=None)
+    with pytest.raises(TypeError):
+        timex.to_datetime(tz=10)

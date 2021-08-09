@@ -1,5 +1,5 @@
-import pytest
 import pendulum
+import pytest
 
 from ja_timex.timex import TimexParser
 
