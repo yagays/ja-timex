@@ -228,6 +228,7 @@ patterns += [
         parse_func=parse_year,
         option={"mod": "APPROX"},
     ),
+    Pattern(re_pattern=f"{p.year}年{p.half_suffix}?{p.just_suffix}", parse_func=parse_year, option={"mod": "JUST"}),
 ]
 
 # 月
@@ -246,6 +247,11 @@ patterns += [
         re_pattern=f"{p.month}[ヶ|か|カ|ケ|箇]月{p.half_suffix}?{p.approx_suffix}",
         parse_func=parse_month,
         option={"mod": "APPROX"},
+    ),
+    Pattern(
+        re_pattern=f"{p.month}[ヶ|か|カ|ケ|箇]月{p.half_suffix}?{p.just_suffix}",
+        parse_func=parse_month,
+        option={"mod": "JUST"},
     ),
 ]
 
@@ -267,6 +273,7 @@ patterns += [
         parse_func=parse_day,
         option={"mod": "APPROX"},
     ),
+    Pattern(re_pattern=f"{p.day}日{p.half_suffix}?{p.just_suffix}", parse_func=parse_day, option={"mod": "JUST"}),
 ]
 
 # 世紀
@@ -286,6 +293,7 @@ patterns += [
         parse_func=parse_ac_century,
         option={"mod": "APPROX"},
     ),
+    Pattern(re_pattern=f"{p.ac_century}世紀{p.just_suffix}", parse_func=parse_ac_century, option={"mod": "JUST"}),
 ]
 
 # 週
@@ -305,6 +313,7 @@ patterns += [
         parse_func=parse_week,
         option={"mod": "APPROX"},
     ),
+    Pattern(re_pattern=f"{p.week}週(間)?{p.half_suffix}?{p.just_suffix}", parse_func=parse_week, option={"mod": "JUST"}),
 ]
 
 # 時間

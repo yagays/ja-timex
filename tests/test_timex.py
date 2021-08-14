@@ -95,3 +95,11 @@ def test_duration_with_half_expression_without_number(p):
     assert timexes[0].value == "P25Y"
     assert timexes[0].type == "DURATION"
     assert timexes[0].text == "四半世紀"
+
+
+def test_just_suffix_reltime(p):
+    # 8日というDATEではなく、8日目というDURATION
+    timexes = p.parse("8日目の蝉")
+    assert timexes[0].value == "P8D"
+    assert timexes[0].type == "DURATION"
+    assert timexes[0].mod == "JUST"

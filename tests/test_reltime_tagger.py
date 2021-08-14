@@ -196,3 +196,21 @@ def test_half_suffix_reltime_word(t):
     assert t.parse("四半世紀前").mod == "BEFORE"
     assert t.parse("四半世紀ほど前").value == "P25Y"
     assert t.parse("四半世紀近く前").value == "P25Y"
+
+
+def test_just_suffix(t):
+    assert t.parse("5年目").value == "P5Y"
+    assert t.parse("5年目").mod == "JUST"
+
+    assert t.parse("3ヶ月目").value == "P3M"
+    assert t.parse("8日目").value == "P8D"
+    assert t.parse("1世紀目").value == "00XX"
+    assert t.parse("3週目").value == "P3W"
+
+    # 時間/分/秒表現に目は使わない
+    assert t.parse("1時間目") is None
+    assert t.parse("1分目") is None
+    assert t.parse("1秒目") is None
+
+    assert t.parse("5年もの間").value == "P5Y"
+    assert t.parse("5年もの間").mod == "JUST"
