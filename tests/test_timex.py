@@ -116,3 +116,9 @@ def test_just_suffix_reltime(p):
     assert timexes[0].type == "DURATION"
     assert timexes[0].mod == "JUST"
     assert timexes[0].text == "15年ぶり"
+
+
+def test_ampm_suffix_with_space(p):
+    timexes = p.parse("18:00　（予定）")
+    assert timexes[0].value == "T18-00-XX"
+    assert timexes[0].text == "18:00"

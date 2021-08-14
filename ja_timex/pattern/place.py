@@ -41,7 +41,7 @@ class Place:
     pm_prefix: str = "(?P<pm_prefix>(午後|pm|PM))"
     pm_suffix: str = "(?P<pm_suffix>(pm|PM))"
     ampm_prefix: str = f"({am_prefix}|{pm_prefix})"
-    ampm_suffix: str = f"\\s?({am_suffix}|{pm_suffix})"
+    ampm_suffix: str = f"(\\s?({am_suffix}|{pm_suffix}))"
     clock_hour: str = "(?P<clock_hour>[0-2]?[0-9])"
     clock_minute: str = "(?P<clock_minute>[0-5]?[0-9])"
     clock_second: str = "(?P<clock_second>[0-5]?[0-9])"

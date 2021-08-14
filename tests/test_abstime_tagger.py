@@ -222,6 +222,10 @@ def test_time_ampm(t):
     assert t.parse("午前0時").value == "T00-XX-XX"
     assert t.parse("00:10 AM").value == "T00-10-XX"
 
+    # text
+    assert t.parse("12:10 ").value == "T12-10-XX"
+    assert t.parse("12:10 ").text == "12:10"
+
 
 def test_time_morning_evening(t):
     assert t.parse("朝6時").value == "T06-XX-XX"
