@@ -176,6 +176,10 @@ def parse_time(re_match: re.Match, pattern: Pattern) -> TIMEX:
         if int(hour) <= 12:
             hour = str(int(hour) + 12)
 
+    # 半
+    if args.get("half_suffix"):
+        minute = "30"
+
     return TIMEX(
         type="TIME",
         value=f"T{hour}-{minute}-{second}",
@@ -295,7 +299,7 @@ patterns += [
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.ampm_prefix}?{p.clock_hour}時{p.ampm_suffix}?",
+        re_pattern=f"{p.ampm_prefix}?{p.clock_hour}時{p.half_suffix}?{p.ampm_suffix}?",
         parse_func=parse_time,
         option={},
     ),
@@ -335,7 +339,7 @@ patterns += [
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.times_of_day_prefix}?{p.clock_hour}時",
+        re_pattern=f"{p.times_of_day_prefix}?{p.clock_hour}時{p.half_suffix}?",
         parse_func=parse_time,
         option={},
     ),

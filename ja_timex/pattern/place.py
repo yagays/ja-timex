@@ -45,7 +45,7 @@ class Place:
     clock_hour: str = "(?P<clock_hour>[0-2]?[0-9])"
     clock_minute: str = "(?P<clock_minute>[0-5]?[0-9])"
     clock_second: str = "(?P<clock_second>[0-5]?[0-9])"
-    morning_prefix: str = "(?P<morning_prefix>(今?朝))"
+    morning_prefix: str = "(?P<morning_prefix>([今|早]?朝))"
     evening_prefix: str = "(?P<evening_prefix>(今?[夜晩]))"
     midnight_prefix: str = "(?P<midnight_prefix>(深夜))"
     times_of_day_prefix = f"({morning_prefix}|{evening_prefix}|{midnight_prefix})"
