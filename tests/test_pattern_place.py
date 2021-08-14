@@ -223,3 +223,25 @@ def test_ampm_prefix_suffix(place):
     # スペースのみは許容しない
     assert not place.is_valid("ampm_suffix", " ")
     assert not place.is_valid("ampm_suffix", "　")
+
+
+def test_prefix_suffix(place):
+    assert place.is_valid("start_suffix", "初め")
+    assert place.is_valid("start_suffix", "はじめ")
+    assert place.is_valid("start_suffix", "初頭")
+    assert place.is_valid("start_suffix", "初旬")
+    assert place.is_valid("start_suffix", "前期")
+    assert place.is_valid("start_suffix", "頭")
+
+    assert place.is_valid("mid_suffix", "なかば")
+    assert place.is_valid("mid_suffix", "半ば")
+    assert place.is_valid("mid_suffix", "中ごろ")
+    assert place.is_valid("mid_suffix", "中盤")
+    assert place.is_valid("mid_suffix", "中旬")
+
+    assert place.is_valid("end_suffix", "後半")
+    assert place.is_valid("end_suffix", "終盤")
+    assert place.is_valid("end_suffix", "おわり")
+    assert place.is_valid("end_suffix", "終わり")
+    assert place.is_valid("end_suffix", "末")
+    assert place.is_valid("end_suffix", "末日")

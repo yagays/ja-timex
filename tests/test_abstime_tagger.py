@@ -317,6 +317,8 @@ def test_mod_mid(t):
 def test_mod_end(t):
     assert t.parse("2021年7月末").mod == "END"
     assert t.parse("2021年7月末").text == "2021年7月末"
+    assert t.parse("2021年7月末日").mod == "END"
+    assert t.parse("2021年7月末日").text == "2021年7月末日"
     assert t.parse("2021年後半").mod == "END"
     assert t.parse("2021年後半").text == "2021年後半"
     assert t.parse("7月終わり").mod == "END"
