@@ -20,6 +20,7 @@ class TimexParser:
         set_tagger=SetTagger(),
         custom_tagger=None,
         reference: Optional[pendulum.DateTime] = None,
+        ignore_kansuji: bool = False,
     ) -> None:
         self.number_normalizer = number_normalizer
         self.abstime_tagger = abstime_tagger
@@ -28,6 +29,8 @@ class TimexParser:
         self.set_tagger = set_tagger
         self.custom_tagger = custom_tagger
         self.reference = reference
+
+        self.number_normalizer.set_ignore_kansuji(ignore_kansuji)
 
         self.all_patterns = {}
         self.all_patterns["abstime"] = self.abstime_tagger.patterns
