@@ -81,10 +81,20 @@ class NumberNormalizer:
                 IgnorePhrase(pattern="千冬", relative_position_to_ref=(0, 2)),
             ],
         }
+        self.ignore_kansuji = False
+
+    def set_ignore_kansuji(self, ignore_kansuji: bool) -> None:
+        """漢数字を変換しないかのパラメータをセットする
+
+        Args:
+            ignore_kansuji (bool): 漢数字の変換を無視する場合はTrue
+        """
+        self.ignore_kansuji = ignore_kansuji
 
     def normalize(self, text: str) -> str:
         text = self._normalize_zen_to_han(text)
-        text = self._normalize_kansuji(text)
+        if not self.ignore_kansuji:
+            text = self._normalize_kansuji(text)
         text = self._remove_comma_inside_digits(text)
 
         return text

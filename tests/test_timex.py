@@ -33,7 +33,6 @@ def test_ignore_number_normalize(p):
     # 一を1と変換しない。可読性のために、reltimeのPatternでも漢数字で扱う
     timexes = p.parse("一昨年と一昨日は言うのに一昨月とは言わないのは何故か")
 
-    assert len(timexes) == 2
     assert timexes[0].value == "P2Y"
     assert timexes[1].value == "P2D"
 

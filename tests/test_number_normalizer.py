@@ -161,6 +161,8 @@ def test_normalize_kansuji(nn):
 
 
 def test_normalize_kansuji_should_not_normalize(nn):
+    nn.set_ignore_kansuji(ignore_kansuji=False)
+
     assert nn._normalize_kansuji("一時をお知らせします") == "1時をお知らせします"
     assert nn._normalize_kansuji("一時的なお知らせ") == "一時的なお知らせ"
 
@@ -185,10 +187,31 @@ def test_normalize_kansuji_should_not_normalize(nn):
 
 
 def test_normalize_phrase_contains_number(nn):
-    # 慣用句として本来は漢数字から数字に置換すべきではないが、時間表現とは関係ないので許容しているケース
+    # 慣用句として本来は漢数字から数字に置換すべきではないケース
 
+    nn.set_ignore_kansuji(ignore_kansuji=False)
     # 青空文庫「魔都」 久生十蘭
-    assert nn._normalize_kansuji("噴水が歌を唄うということですが一体それは真実でしょうか") == "噴水が歌を唄うということですが1体それは真実でしょうか"
-
+    assert nn.normalize("噴水が歌を唄うということですが一体それは真実でしょうか") == "噴水が歌を唄うということですが1体それは真実でしょうか"
     # 「三国志 05 臣道の巻」 吉川英治
-    assert nn._normalize_kansuji("三人の血はひとつだ。三人は一心同体だと") == "3人の血はひとつだ。3人は1心同体だと"
+    assert nn.normalize("三人の血はひとつだ。三人は一心同体だと") == "3人の血はひとつだ。3人は1心同体だと"
+
+    # 上記の、漢数字を無視するパターン
+    nn.set_ignore_kansuji(ignore_kansuji=True)
+    assert nn.normalize("噴水が歌を唄うということですが一体それは真実でしょうか") == "噴水が歌を唄うということですが一体それは真実でしょうか"
+    assert nn.normalize("三人の血はひとつだ。三人は一心同体だと") == "三人の血はひとつだ。三人は一心同体だと"
+
+
+def test_normalize_ignore_kansuji(nn):
+    # 漢数字を無視する
+    nn.set_ignore_kansuji(ignore_kansuji=True)
+
+    assert nn.normalize("一時をお知らせします") == "一時をお知らせします"
+    assert nn.normalize("一時的なお知らせ") == "一時的なお知らせ"
+    assert nn.normalize("一昨日から体調が悪い") == "一昨日から体調が悪い"
+    assert nn.normalize("打率は二分五厘") == "打率は二分五厘"
+    assert nn.normalize("九時五分") == "九時五分"
+    assert nn.normalize("明治二十六年") == "明治二十六年"
+    assert nn.normalize("一九六〇年代") == "一九六〇年代"
+
+    # コンマの削除は行う
+    assert nn.normalize("3,000時間") == "3000時間"

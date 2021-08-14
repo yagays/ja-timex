@@ -22,8 +22,6 @@ def test_phrase_contains_temporal_expression(p):
 
 
 # 取得すべきではないが、ルールベースでは取得せざるを得ないケース
-
-
 def test_abstime_partial_pattern_of_number_expression(p):
     # 部分的な表現はなるべく取得しない
 
@@ -31,3 +29,15 @@ def test_abstime_partial_pattern_of_number_expression(p):
     assert len(timexes) == 1
     # 3/13を取得しないが、13/1は取得されてしまう
     # 「今月8日」といった直後に続く数字があるため
+
+
+def test_ignore_kansuji():
+    p = TimexParser(ignore_kansuji=True)
+
+    # 一昨日とかは漢数字のままパターン化している
+    assert len(p.parse("一昨日のことは覚えていない")) == 1
+
+    # 漢数字の表現は読み取ることができない
+    assert p.parse("十分のインターバル") == []
+    assert p.parse("ここから三時間はかかる") == []
+    assert p.parse("週三回の運動") == []
