@@ -103,3 +103,8 @@ def test_just_suffix_reltime(p):
     assert timexes[0].value == "P8D"
     assert timexes[0].type == "DURATION"
     assert timexes[0].mod == "JUST"
+
+    timexes = p.parse("30年もの間")
+    assert timexes[0].value == "P30Y"
+    assert timexes[0].type == "DURATION"
+    assert timexes[0].mod == "JUST"
