@@ -150,10 +150,10 @@ class NumberNormalizer:
         Returns:
             str: カンマを削除した文字列
         """
-        re_match = re.search("(([0-9]{1,3}(,[0-9]{3})*)(?![0-9]))", text)
-        if re_match:
+        re_matches = list(re.finditer("(([0-9]{1,3}(,[0-9]{3})*)(?![0-9]))", text))
+        for re_match in reversed(re_matches):
             number_start_i, number_end_i = re_match.span()
             replaced_text = re_match.group().replace(",", "")
-            return text[:number_start_i] + replaced_text + text[number_end_i:]
+            text = text[:number_start_i] + replaced_text + text[number_end_i:]
         else:
             return text

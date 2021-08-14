@@ -45,6 +45,10 @@ def test_remove_comma_inside_digits(nn):
     # 桁が増えても同様
     assert nn._remove_comma_inside_digits("12,345,678,9") == "12345678,9"
 
+    # 複数の数字の場合
+    assert nn._remove_comma_inside_digits("14億1,983万") == "14億1983万"
+    assert nn._remove_comma_inside_digits("10ヶ月と2,000時間") == "10ヶ月と2000時間"
+
 
 def test_remove_comma_inside_digits_only_str(nn):
     assert nn._remove_comma_inside_digits("こんにちは") == "こんにちは"
