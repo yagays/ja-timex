@@ -290,34 +290,62 @@ def test_mod(t):
     assert t.parse("2021年7月末").value == "2021-07-XX"
 
     # type
-    assert t.parse("2021年7月頭").mod == "START"
-    assert t.parse("2021年7月中旬").mod == "MID"
-    assert t.parse("2021年7月末").mod == "END"
-    assert t.parse("2021年7月前後").mod == "APPROX"
 
 
 def test_mod_start(t):
+    assert t.parse("2021年7月頭").mod == "START"
+    assert t.parse("2021年7月頭").text == "2021年7月頭"
     assert t.parse("2021年始め").mod == "START"
+    assert t.parse("2021年始め").text == "2021年始め"
     assert t.parse("2021年初頭").mod == "START"
+    assert t.parse("2021年初頭").text == "2021年初頭"
     assert t.parse("2021年前半").mod == "START"
+    assert t.parse("2021年前半").text == "2021年前半"
 
 
 def test_mod_mid(t):
+    assert t.parse("2021年7月中旬").mod == "MID"
+    assert t.parse("2021年7月中旬").text == "2021年7月中旬"
     assert t.parse("2021年半ば").mod == "MID"
+    assert t.parse("2021年半ば").text == "2021年半ば"
     assert t.parse("2021年なかば").mod == "MID"
+    assert t.parse("2021年なかば").text == "2021年なかば"
     assert t.parse("2021年中旬").mod == "MID"
+    assert t.parse("2021年中旬").text == "2021年中旬"
 
 
 def test_mod_end(t):
+    assert t.parse("2021年7月末").mod == "END"
+    assert t.parse("2021年7月末").text == "2021年7月末"
     assert t.parse("2021年後半").mod == "END"
+    assert t.parse("2021年後半").text == "2021年後半"
     assert t.parse("7月終わり").mod == "END"
+    assert t.parse("7月終わり").text == "7月終わり"
     assert t.parse("令和2年おわり").mod == "END"
+    assert t.parse("令和2年おわり").text == "令和2年おわり"
 
 
 def test_mod_on_or_before(t):
     assert t.parse("2021年以前").mod == "ON_OR_BEFORE"
+    assert t.parse("2021年以前").text == "2021年以前"
+    assert t.parse("19世紀以前").mod == "ON_OR_BEFORE"
+    assert t.parse("19世紀以前").text == "19世紀以前"
 
 
 def test_mod_on_or_after(t):
     assert t.parse("2021年以降").mod == "ON_OR_AFTER"
+    assert t.parse("2021年以降").text == "2021年以降"
     assert t.parse("7月以来").mod == "ON_OR_AFTER"
+    assert t.parse("7月以来").text == "7月以来"
+
+
+def test_mod_about(t):
+    assert t.parse("2021年7月前後").mod == "APPROX"
+    assert t.parse("2021年7月前後").text == "2021年7月前後"
+    assert t.parse("2000年近く").mod == "APPROX"
+    assert t.parse("2000年近く").text == "2000年近く"
+
+    assert t.parse("16世紀頃").mod == "APPROX"
+    assert t.parse("16世紀頃").text == "16世紀頃"
+    assert t.parse("紀元前3世紀ごろ").mod == "APPROX"
+    assert t.parse("紀元前3世紀ごろ").text == "紀元前3世紀ごろ"

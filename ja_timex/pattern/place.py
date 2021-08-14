@@ -79,7 +79,7 @@ class Place:
     start_suffix: str = "(?P<start_suffix>((はじ|初|始)め|初[頭期]|前[半記]|頭))"
     mid_suffix: str = "(?P<mid_suffix>((なか|半)ば|中(ごろ|頃|盤|旬|期)))"
     end_suffix: str = "(?P<end_suffix>(後[半期]|終盤|[終お]わり|末))"
-    abstime_approx_suffix: str = "(?P<abstime_approx_suffix>(近く|前後|くらい))"
+    abstime_approx_suffix: str = "(?P<abstime_approx_suffix>(近く|前後|くらい|頃|ごろ))"
     on_or_before_suffix: str = "(?P<on_or_before_suffix>(以前))"
     on_or_after_suffix: str = "(?P<on_or_after_suffix>(以[来降後]))"
 
