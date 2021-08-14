@@ -215,3 +215,9 @@ def test_morning_evening_prefix(place):
     assert place.is_valid("morning_prefix", "今朝")
     assert place.is_valid("evening_prefix", "今夜")
     assert place.is_valid("evening_prefix", "今晩")
+
+
+def test_ampm_prefix_suffix(place):
+    # スペースのみは許容しない
+    assert not place.is_valid("ampm_suffix", " ")
+    assert not place.is_valid("ampm_suffix", "　")
