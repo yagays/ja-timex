@@ -66,10 +66,20 @@ class NumberNormalizer:
                 IgnorePhrase(pattern="一昨々日", relative_position_to_ref=(0, 4)),
                 IgnorePhrase(pattern="一昨昨日", relative_position_to_ref=(0, 4)),
             ],
+            "三": [
+                IgnorePhrase(pattern="三春", relative_position_to_ref=(0, 2)),
+            ],
             "四": [
                 IgnorePhrase(pattern="四半世紀", relative_position_to_ref=(0, 4)),
             ],
             "十": [IgnorePhrase(pattern="不十分", relative_position_to_ref=(-1, 2))],
+            "千": [
+                IgnorePhrase(pattern="千代", relative_position_to_ref=(0, 2)),  # 千代田区
+                IgnorePhrase(pattern="千春", relative_position_to_ref=(0, 2)),
+                IgnorePhrase(pattern="千夏", relative_position_to_ref=(0, 2)),
+                IgnorePhrase(pattern="千秋", relative_position_to_ref=(0, 2)),
+                IgnorePhrase(pattern="千冬", relative_position_to_ref=(0, 2)),
+            ],
         }
 
     def normalize(self, text: str) -> str:
@@ -122,6 +132,10 @@ class NumberNormalizer:
                     text_end_i = start_i + ignore_phrase.relative_position_to_ref[1]
                     if text[text_start_i:text_end_i] == ignore_phrase.pattern:
                         should_ignore = True
+
+            # 単体での利用ができない表現を除外
+            if re_iter.group() in ("万", "億", "兆", "京", "垓"):
+                should_ignore = True
 
             if not should_ignore:
                 text = text[:start_i] + replace_text + text[end_i:]
