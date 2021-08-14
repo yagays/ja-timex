@@ -325,17 +325,27 @@ patterns += [
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.morning_evening_prefix}?{p.clock_hour}時{p.clock_minute}分{p.clock_second}秒",
+        re_pattern=f"{p.times_of_day_prefix}?{p.clock_hour}時{p.clock_minute}分{p.clock_second}秒",
         parse_func=parse_time,
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.morning_evening_prefix}?{p.clock_hour}時{p.clock_minute}分",
+        re_pattern=f"{p.times_of_day_prefix}?{p.clock_hour}時{p.clock_minute}分",
         parse_func=parse_time,
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.morning_evening_prefix}?{p.clock_hour}時",
+        re_pattern=f"{p.times_of_day_prefix}?{p.clock_hour}時",
+        parse_func=parse_time,
+        option={},
+    ),
+    Pattern(
+        re_pattern=f"{p.times_of_day_prefix}?{p.clock_hour}[:：]{p.clock_minute}[:：]{p.clock_second}{p.ampm_suffix}?",
+        parse_func=parse_time,
+        option={},
+    ),
+    Pattern(
+        re_pattern=f"{p.times_of_day_prefix}?{p.clock_hour}[:：]{p.clock_minute}{p.ampm_suffix}?",
         parse_func=parse_time,
         option={},
     ),
