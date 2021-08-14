@@ -27,7 +27,7 @@
 ```xml
 <TIMEX3 tid="t0" type="DATE" value="1963-XX-XX" text="1963年">
 <TIMEX3 tid="t1" type="DATE" value="1963-01-XX" text="昭和38年1月">
-<TIMEX3 tid="t2" type="DATE" value="0043-XX-XX" text="43年">
+<TIMEX3 tid="t2" type="DURATION" value="P43Y" text="43年ぶり">
 ```
 
 [今冬の大雪は『平成18年豪雪』、死者数は戦後2番目に \- ウィキニュース](https://ja.wikinews.org/wiki/%E4%BB%8A%E5%86%AC%E3%81%AE%E5%A4%A7%E9%9B%AA%E3%81%AF%E3%80%8E%E5%B9%B3%E6%88%9018%E5%B9%B4%E8%B1%AA%E9%9B%AA%E3%80%8F%E3%80%81%E6%AD%BB%E8%80%85%E6%95%B0%E3%81%AF%E6%88%A6%E5%BE%8C2%E7%95%AA%E7%9B%AE%E3%81%AB)
