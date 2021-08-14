@@ -200,7 +200,7 @@ def test_half_suffix_reltime_word(t):
 
 def test_just_suffix(t):
     assert t.parse("5年目").value == "P5Y"
-    assert t.parse("5年目").mod == "JUST"
+    assert t.parse("5年目").mod is None
 
     assert t.parse("3ヶ月目").value == "P3M"
     assert t.parse("8日目").value == "P8D"
@@ -213,7 +213,7 @@ def test_just_suffix(t):
     assert t.parse("1秒目") is None
 
     assert t.parse("5年もの間").value == "P5Y"
-    assert t.parse("5年もの間").mod == "JUST"
+    assert t.parse("5年もの間").mod is None
 
     assert t.parse("5年ぶり").value == "P5Y"
-    assert t.parse("5年ぶり").mod == "JUST"
+    assert t.parse("5年ぶり").mod is None

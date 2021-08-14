@@ -102,19 +102,19 @@ def test_just_suffix_reltime(p):
     timexes = p.parse("8日目の蝉")
     assert timexes[0].value == "P8D"
     assert timexes[0].type == "DURATION"
-    assert timexes[0].mod == "JUST"
+    assert timexes[0].mod is None
     assert timexes[0].text == "8日目"
 
     timexes = p.parse("30年もの間")
     assert timexes[0].value == "P30Y"
     assert timexes[0].type == "DURATION"
-    assert timexes[0].mod == "JUST"
+    assert timexes[0].mod is None
     assert timexes[0].text == "30年もの間"
 
     timexes = p.parse("15年ぶりに再会した")
     assert timexes[0].value == "P15Y"
     assert timexes[0].type == "DURATION"
-    assert timexes[0].mod == "JUST"
+    assert timexes[0].mod is None
     assert timexes[0].text == "15年ぶり"
 
 
