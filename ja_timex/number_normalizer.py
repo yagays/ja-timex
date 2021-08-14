@@ -63,6 +63,7 @@ class NumberNormalizer:
                 IgnorePhrase(pattern="一時的", relative_position_to_ref=(0, 3)),
                 IgnorePhrase(pattern="一昨年", relative_position_to_ref=(0, 3)),
                 IgnorePhrase(pattern="一昨日", relative_position_to_ref=(0, 3)),
+                IgnorePhrase(pattern="一時代", relative_position_to_ref=(0, 3)),
                 IgnorePhrase(pattern="一昨々日", relative_position_to_ref=(0, 4)),
                 IgnorePhrase(pattern="一昨昨日", relative_position_to_ref=(0, 4)),
             ],
@@ -71,6 +72,9 @@ class NumberNormalizer:
             ],
             "四": [
                 IgnorePhrase(pattern="四半世紀", relative_position_to_ref=(0, 4)),
+            ],
+            "六": [
+                IgnorePhrase(pattern="六本木", relative_position_to_ref=(0, 3)),
             ],
             "十": [IgnorePhrase(pattern="不十分", relative_position_to_ref=(-1, 2))],
             "千": [
