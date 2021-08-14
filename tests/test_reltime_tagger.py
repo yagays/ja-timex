@@ -214,3 +214,6 @@ def test_just_suffix(t):
 
     assert t.parse("5年もの間").value == "P5Y"
     assert t.parse("5年もの間").mod == "JUST"
+
+    assert t.parse("5年ぶり").value == "P5Y"
+    assert t.parse("5年ぶり").mod == "JUST"
