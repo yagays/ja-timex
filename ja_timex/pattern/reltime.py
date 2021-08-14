@@ -15,7 +15,7 @@ def parse_ac_century(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="DURATION",
         value=value,
         text=re_match.group(),
-        mod=pattern.option["mod"],
+        mod=pattern.option.get("mod"),
         parsed=args,
         span=span,
         pattern=pattern,
@@ -36,7 +36,7 @@ def parse_year(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="DURATION",
         value=f"P{value}Y",
         text=re_match.group(),
-        mod=pattern.option["mod"],
+        mod=pattern.option.get("mod"),
         parsed=args,
         span=span,
         pattern=pattern,
@@ -57,7 +57,7 @@ def parse_month(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="DURATION",
         value=f"P{value}M",
         text=re_match.group(),
-        mod=pattern.option["mod"],
+        mod=pattern.option.get("mod"),
         parsed=args,
         span=span,
         pattern=pattern,
@@ -78,7 +78,7 @@ def parse_day(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="DURATION",
         value=f"P{value}D",
         text=re_match.group(),
-        mod=pattern.option["mod"],
+        mod=pattern.option.get("mod"),
         parsed=args,
         span=span,
         pattern=pattern,
@@ -99,7 +99,7 @@ def parse_hour(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="DURATION",
         value=f"PT{value}H",
         text=re_match.group(),
-        mod=pattern.option["mod"],
+        mod=pattern.option.get("mod"),
         parsed=args,
         span=span,
         pattern=pattern,
@@ -120,7 +120,7 @@ def parse_minute(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="DURATION",
         value=f"PT{value}M",
         text=re_match.group(),
-        mod=pattern.option["mod"],
+        mod=pattern.option.get("mod"),
         parsed=args,
         span=span,
         pattern=pattern,
@@ -141,7 +141,7 @@ def parse_second(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="DURATION",
         value=f"PT{value}S",
         text=re_match.group(),
-        mod=pattern.option["mod"],
+        mod=pattern.option.get("mod"),
         parsed=args,
         span=span,
         pattern=pattern,
@@ -157,7 +157,7 @@ def parse_second_with_ms(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="DURATION",
         value=f"PT{value}S",
         text=re_match.group(),
-        mod=pattern.option["mod"],
+        mod=pattern.option.get("mod"),
         parsed=args,
         span=span,
         pattern=pattern,
@@ -178,7 +178,7 @@ def parse_week(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="DURATION",
         value=f"P{value}W",
         text=re_match.group(),
-        mod=pattern.option["mod"],
+        mod=pattern.option.get("mod"),
         parsed=args,
         span=span,
         pattern=pattern,
@@ -199,7 +199,7 @@ def parse_word(re_match: re.Match, pattern: Pattern) -> TIMEX:
         type="DURATION",
         value=value,
         text=re_match.group(),
-        mod=pattern.option["mod"],
+        mod=pattern.option.get("mod"),
         parsed=args,
         span=span,
         pattern=pattern,
@@ -228,7 +228,7 @@ patterns += [
         parse_func=parse_year,
         option={"mod": "APPROX"},
     ),
-    Pattern(re_pattern=f"{p.year}年{p.half_suffix}?{p.just_suffix}", parse_func=parse_year, option={"mod": "JUST"}),
+    Pattern(re_pattern=f"{p.year}年{p.half_suffix}?{p.just_suffix}", parse_func=parse_year, option={}),
 ]
 
 # 月
@@ -251,7 +251,7 @@ patterns += [
     Pattern(
         re_pattern=f"{p.month}[ヶ|か|カ|ケ|箇]月{p.half_suffix}?{p.just_suffix}",
         parse_func=parse_month,
-        option={"mod": "JUST"},
+        option={},
     ),
 ]
 
@@ -273,7 +273,7 @@ patterns += [
         parse_func=parse_day,
         option={"mod": "APPROX"},
     ),
-    Pattern(re_pattern=f"{p.day}日{p.half_suffix}?{p.just_suffix}", parse_func=parse_day, option={"mod": "JUST"}),
+    Pattern(re_pattern=f"{p.day}日{p.half_suffix}?{p.just_suffix}", parse_func=parse_day, option={}),
 ]
 
 # 世紀
@@ -293,7 +293,7 @@ patterns += [
         parse_func=parse_ac_century,
         option={"mod": "APPROX"},
     ),
-    Pattern(re_pattern=f"{p.ac_century}世紀{p.just_suffix}", parse_func=parse_ac_century, option={"mod": "JUST"}),
+    Pattern(re_pattern=f"{p.ac_century}世紀{p.just_suffix}", parse_func=parse_ac_century, option={}),
 ]
 
 # 週
@@ -313,7 +313,7 @@ patterns += [
         parse_func=parse_week,
         option={"mod": "APPROX"},
     ),
-    Pattern(re_pattern=f"{p.week}週(間)?{p.half_suffix}?{p.just_suffix}", parse_func=parse_week, option={"mod": "JUST"}),
+    Pattern(re_pattern=f"{p.week}週(間)?{p.half_suffix}?{p.just_suffix}", parse_func=parse_week, option={}),
 ]
 
 # 時間
