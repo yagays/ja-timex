@@ -122,3 +122,19 @@ def test_ampm_suffix_with_space(p):
     timexes = p.parse("18:00　（予定）")
     assert timexes[0].value == "T18-00-XX"
     assert timexes[0].text == "18:00"
+
+
+def test_ambiguous_phrase(p):
+    timexes = p.parse("翌週28日")
+
+    # "週28日"ではなく、"翌週","28日"と取得される
+    assert timexes[0].value == "P1W"
+    assert timexes[0].text == "翌週"
+    assert timexes[1].value == "XXXX-XX-28"
+    assert timexes[1].text == "28日"
+
+    # DATEの28日とDURATIONの28日があるがabsdateの方が優先される
+    timexes = p.parse("28日")
+    assert timexes[0].value == "XXXX-XX-28"
+    assert timexes[0].type == "DATE"
+    assert timexes[0].text == "28日"

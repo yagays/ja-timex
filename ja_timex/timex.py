@@ -73,8 +73,11 @@ class TimexParser:
         type2extracts = defaultdict(list)
         text_coverage_flag = [False] * len(processed_text)
 
-        long_order_extracts = sorted(all_extracts, key=lambda x: len(x["re_match"].group()), reverse=True)
-        for target_extract in long_order_extracts:
+        # 開始位置の小さい順 → 文字列の長い順 → type_nameの降順(abstime→duration→reltime→set)
+        ordered_extracts = sorted(
+            all_extracts, key=lambda x: (x["re_match"].span()[0], -len(x["re_match"].group()), x["type_name"])
+        )
+        for target_extract in ordered_extracts:
             start_i, end_i = target_extract["re_match"].span()
 
             # すべてがまだ未使用のcharだった場合に候補に加える
