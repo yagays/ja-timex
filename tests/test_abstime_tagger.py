@@ -230,16 +230,38 @@ def test_time_ampm(t):
     assert t.parse("12:10 ").text == "12:10"
 
 
-def test_time_morning_evening(t):
+def test_times_of_day_prefix(t):
+    # morning
     assert t.parse("朝6時").value == "T06-XX-XX"
+    assert t.parse("朝6時").text == "朝6時"
     assert t.parse("今朝6時").value == "T06-XX-XX"
+    assert t.parse("今朝6時").text == "今朝6時"
+
+    # evening
     assert t.parse("夜6時").value == "T18-XX-XX"
+    assert t.parse("夜6時").text == "夜6時"
     assert t.parse("今夜6時").value == "T18-XX-XX"
+    assert t.parse("今夜6時").text == "今夜6時"
 
     assert t.parse("夜11時").value == "T23-XX-XX"
     assert t.parse("夜12時").value == "T24-XX-XX"
     # 夜13時とは言わない。もし取得してしまった場合も+12しない
     assert t.parse("夜13時").value == "T13-XX-XX"
+
+    # midnight
+    assert t.parse("深夜23時").value == "T23-XX-XX"
+    assert t.parse("深夜23時").text == "深夜23時"
+
+    assert t.parse("深夜0時").value == "T00-XX-XX"
+    assert t.parse("深夜2時").value == "T02-XX-XX"
+    assert t.parse("深夜25時50分").value == "T25-50-XX"
+    assert t.parse("深夜24:00").value == "T24-00-XX"
+    assert t.parse("深夜24:00:00").value == "T24-00-00"
+
+    # prefixのみ
+    assert t.parse("今朝") is None
+    assert t.parse("今晩") is None
+    assert t.parse("深夜") is None
 
 
 def test_timex_type(t):

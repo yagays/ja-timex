@@ -210,11 +210,13 @@ def test_place_day_range(place):
     assert place.is_valid("day_range", "100")
 
 
-def test_morning_evening_prefix(place):
+def test_times_of_day_prefix(place):
     assert place.is_valid("morning_prefix", "朝")
     assert place.is_valid("morning_prefix", "今朝")
     assert place.is_valid("evening_prefix", "今夜")
     assert place.is_valid("evening_prefix", "今晩")
+
+    assert place.is_valid("midnight_prefix", "深夜")
 
 
 def test_ampm_prefix_suffix(place):
