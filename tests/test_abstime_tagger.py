@@ -100,6 +100,8 @@ def test_weekday(t):
     assert t.parse("月曜").value == "XXXX-WXX-1"
     assert t.parse("(月曜日)").value == "XXXX-WXX-1"
     assert t.parse("(月)").value == "XXXX-WXX-1"
+    assert t.parse("（月曜日）").value == "XXXX-WXX-1"
+    assert t.parse("（月）").value == "XXXX-WXX-1"
     assert t.parse("月") is None
 
 
