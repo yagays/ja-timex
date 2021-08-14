@@ -86,7 +86,7 @@ class Place:
 
     # reltime: 相対的な時間におけるsuffix
     around_suffix: str = "([くぐ]らい|ほど|程度|ばかり|近く|より(も)?)"
-    just_suffix: str = "(?P<just_suffix>(目|もの間))"
+    just_suffix: str = "(?P<just_suffix>(目|もの間|ぶり))"
 
     # 和暦の元号
     wareki_prefix: str = f"(?P<wareki_prefix>({'|'.join(wareki2year.keys())}))"
