@@ -310,17 +310,17 @@ patterns += [
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.ampm_prefix}?{p.clock_hour}:{p.clock_minute}:{p.clock_second}{p.ampm_suffix}?",
+        re_pattern=f"{p.ampm_prefix}?{p.clock_hour}[:：]{p.clock_minute}[:：]{p.clock_second}{p.ampm_suffix}?",
         parse_func=parse_time,
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.ampm_prefix}?{p.clock_hour}:{p.clock_minute}{p.ampm_suffix}?",
+        re_pattern=f"{p.ampm_prefix}?{p.clock_hour}[:：]{p.clock_minute}{p.ampm_suffix}?",
         parse_func=parse_time,
         option={},
     ),
     Pattern(
-        re_pattern=f"{p.clock_minute}:{p.clock_second}",
+        re_pattern=f"{p.clock_minute}[:：]{p.clock_second}",
         parse_func=parse_time,
         option={},
     ),

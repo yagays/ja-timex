@@ -185,6 +185,9 @@ def test_time(t):
     assert t.parse("23:59").value == "T23-59-XX"
     assert t.parse("59:59").value == "TXX-59-59"  # 24時を大幅に超えてMM:SSだと考えられる場合
 
+    assert t.parse("23：59：59").value == "T23-59-59"
+    assert t.parse("23：59").value == "T23-59-XX"
+
     # 正確には時間の範囲は[0,24]だが、深夜から翌日に掛けて25以上の値を取る場合がある
     # 日付表現を伴わない場合もあるので、＠valueでは日付の正規化は行わない
     assert t.parse("25時30分").value == "T25-30-XX"
