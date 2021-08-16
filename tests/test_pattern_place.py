@@ -20,7 +20,7 @@ def test_place_calendar_year(place):
     assert not place.is_valid("calendar_year", "10000")
 
 
-def test_palce_calendar_month(place):
+def test_place_calendar_month(place):
     assert place.is_valid("calendar_month", "1")
     assert place.is_valid("calendar_month", "01")
     assert place.is_valid("calendar_month", "12")
@@ -99,7 +99,7 @@ def test_place_year(place):
     assert not place.is_valid("year", "10000")
 
 
-def test_palce_month(place):
+def test_place_month(place):
     assert place.is_valid("month", "1")
     assert place.is_valid("month", "01")
     assert place.is_valid("month", "12")
