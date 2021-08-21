@@ -26,6 +26,14 @@ class NumexpFilter(BaseFilter):
             self.units = json.load(f)
 
     def filter(self, span: Tuple[int, int], text: str) -> bool:
+        start_i = span[0]
+        end_i = span[1]
+
+        target_text = text[start_i:end_i]
+        # 対象としている文字列が、数字と記号の表現ではなかった場合
+        if not re.fullmatch(r"[0-9\.\-\.,/・]+", target_text):
+            return False
+
         end_i = span[1]
         for unit in self.units:
             if re.match(f"\\s?{unit}", text[end_i:]):
