@@ -21,14 +21,21 @@ def test_phrase_contains_temporal_expression(p):
     assert p.parse("準備が不十分だった") == []
 
 
-# 取得すべきではないが、ルールベースでは取得せざるを得ないケース
 def test_abstime_partial_pattern_of_number_expression(p):
-    # 部分的な表現はなるべく取得しない
+    # 部分的な表現は取得しない
+    assert len(p.parse("13/13は1です")) == 0
 
-    timexes = p.parse("13/13は1です")
-    assert len(timexes) == 1
-    # 3/13を取得しないが、13/1は取得されてしまう
-    # 「今月8日」といった直後に続く数字があるため
+    # 7.7を取得しない
+    assert len(p.parse("興行収入2億7.765万円を記録した")) == 0
+
+    # 1/5を取得しない
+    assert len(p.parse("1/50の縮小模型")) == 0
+
+    # 320/5を取得しない
+    assert len(p.parse("BCI-321+320/5MP")) == 0
+
+    # 37-3, 3.9を取得しない
+    assert len(p.parse("Core i7-3770（3.90GHz）")) == 0
 
 
 def test_ignore_kansuji():
