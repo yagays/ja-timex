@@ -9,6 +9,10 @@ def test_numexp_filter():
     assert f.filter((0, 4), "7.18cm")
     assert f.filter((0, 4), "7.18mm")
     assert f.filter((0, 4), "7.18%")
+    assert f.filter((0, 4), "7.18インチ")
+    assert f.filter((0, 4), "7.18GHz")
+    assert f.filter((0, 3), "2.4GHz")
+    assert f.filter((0, 4), "7.18円")
 
     assert not f.filter((0, 4), "7.18は晴れ")
     assert not f.filter((0, 4), "7.18に釣り上げられた10メートルの魚")
