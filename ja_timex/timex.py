@@ -4,6 +4,7 @@ from typing import DefaultDict, Dict, List, Optional
 
 import pendulum
 
+from ja_timex.filter import BaseFilter, NumexpFilter
 from ja_timex.number_normalizer import NumberNormalizer
 from ja_timex.tag import TIMEX
 from ja_timex.tagger import AbstimeTagger, DurationTagger, ReltimeTagger, SetTagger
@@ -19,6 +20,7 @@ class TimexParser:
         reltime_tagger=ReltimeTagger(),
         set_tagger=SetTagger(),
         custom_tagger=None,
+        pattern_filters: List[BaseFilter] = [NumexpFilter()],
         reference: Optional[pendulum.DateTime] = None,
         ignore_kansuji: bool = False,
     ) -> None:
@@ -29,6 +31,7 @@ class TimexParser:
         self.set_tagger = set_tagger
         self.custom_tagger = custom_tagger
         self.reference = reference
+        self.pattern_filters = pattern_filters
 
         self.number_normalizer.set_ignore_kansuji(ignore_kansuji)
 
@@ -46,7 +49,8 @@ class TimexParser:
 
         # 時間表現の抽出
         all_extracts = self._extract(processed_text)
-        type2extracts = self._drop_duplicates(processed_text, all_extracts)
+        filtered_extracts = self._filter(all_extracts, processed_text)
+        type2extracts = self._drop_duplicates(processed_text, filtered_extracts)
         # 規格化
         timex_tags = self._parse(type2extracts)
 
@@ -71,6 +75,18 @@ class TimexParser:
                         continue
                     all_extracts.append({"type_name": type_name, "re_match": re_match, "pattern": pattern})
         return all_extracts
+
+    def _filter(self, extracts: List[Dict], processed_text: str):
+        results = []
+        for extract in extracts:
+            allow_append = True
+            for pattern_filter in self.pattern_filters:
+                if pattern_filter.filter(extract["re_match"].span(), processed_text):
+                    allow_append = False
+            if allow_append:
+                results.append(extract)
+
+        return results
 
     def _drop_duplicates(self, processed_text: str, all_extracts: List[Dict]) -> DefaultDict[str, List[Dict]]:
         type2extracts = defaultdict(list)

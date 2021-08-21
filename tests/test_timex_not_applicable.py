@@ -38,6 +38,11 @@ def test_abstime_partial_pattern_of_number_expression(p):
     assert len(p.parse("Core i7-3770（3.90GHz）")) == 0
 
 
+def test_filter_numexp(p):
+    assert len(p.parse("高さは7.18メートルです")) == 0
+    assert len(p.parse("濃度は7.18%です")) == 0
+
+
 def test_ignore_kansuji():
     p = TimexParser(ignore_kansuji=True)
 
