@@ -67,7 +67,7 @@ class TimexParser:
                 # 文字列中からのパターン検知
                 re_iter = re.finditer(pattern.re_pattern, processed_text)
                 for re_match in re_iter:
-                    if is_parial_pattern_of_number_expression(re_match, processed_text):
+                    if is_parial_pattern_of_number_expression(re_match.span(), processed_text):
                         continue
                     all_extracts.append({"type_name": type_name, "re_match": re_match, "pattern": pattern})
         return all_extracts

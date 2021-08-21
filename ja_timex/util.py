@@ -1,11 +1,11 @@
 import re
-from typing import Union
+from typing import Tuple, Union
 
 import pendulum
 from pendulum.tz.timezone import Timezone
 
 
-def is_parial_pattern_of_number_expression(re_match: re.Match, processed_text: str) -> bool:
+def is_parial_pattern_of_number_expression(span: Tuple[int, int], processed_text: str) -> bool:
     """対象パターンが数字表現の一部かを判定する
 
     正規表現の記法によっては、数字表現の一部を取得してしまう例がある。
@@ -21,9 +21,17 @@ def is_parial_pattern_of_number_expression(re_match: re.Match, processed_text: s
     Returns:
         bool: 数字表現の一部かを表す真偽値
     """
-    start_i = re_match.span()[0]
+    start_i = span[0]
+    end_i = span[1]
 
-    if start_i != 0 and re.match("[0-9]", processed_text[start_i - 1]):
+    target_text = processed_text[start_i:end_i]
+    # 対象としている文字列が、数字と記号の表現ではなかった場合
+    if not re.fullmatch(r"[0-9\.\-\.,/・]+", target_text):
+        return False
+
+    if start_i != 0 and re.match(r"[0-9\+]", processed_text[start_i - 1]):
+        return True
+    elif end_i != len(processed_text) and re.match(r"[0-9\+]", processed_text[end_i]):
         return True
     else:
         return False
