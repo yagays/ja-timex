@@ -4,11 +4,10 @@ from typing import DefaultDict, Dict, List, Optional
 
 import pendulum
 
-from ja_timex.filter import BaseFilter, NumexpFilter
 from ja_timex.number_normalizer import NumberNormalizer
+from ja_timex.pattern_filter import BaseFilter, NumexpFilter, PartialNumFilter
 from ja_timex.tag import TIMEX
 from ja_timex.tagger import AbstimeTagger, DurationTagger, ReltimeTagger, SetTagger
-from ja_timex.util import is_parial_pattern_of_number_expression
 
 
 class TimexParser:
@@ -20,7 +19,7 @@ class TimexParser:
         reltime_tagger=ReltimeTagger(),
         set_tagger=SetTagger(),
         custom_tagger=None,
-        pattern_filters: List[BaseFilter] = [NumexpFilter()],
+        pattern_filters: List[BaseFilter] = [NumexpFilter(), PartialNumFilter()],
         reference: Optional[pendulum.DateTime] = None,
         ignore_kansuji: bool = False,
     ) -> None:
@@ -49,7 +48,7 @@ class TimexParser:
 
         # 時間表現の抽出
         all_extracts = self._extract(processed_text)
-        filtered_extracts = self._filter(all_extracts, processed_text)
+        filtered_extracts = self._pattern_filter(all_extracts, processed_text)
         type2extracts = self._drop_duplicates(processed_text, filtered_extracts)
         # 規格化
         timex_tags = self._parse(type2extracts)
@@ -71,12 +70,10 @@ class TimexParser:
                 # 文字列中からのパターン検知
                 re_iter = re.finditer(pattern.re_pattern, processed_text)
                 for re_match in re_iter:
-                    if is_parial_pattern_of_number_expression(re_match.span(), processed_text):
-                        continue
                     all_extracts.append({"type_name": type_name, "re_match": re_match, "pattern": pattern})
         return all_extracts
 
-    def _filter(self, extracts: List[Dict], processed_text: str):
+    def _pattern_filter(self, extracts: List[Dict], processed_text: str) -> List[Dict]:
         results = []
         for extract in extracts:
             allow_append = True

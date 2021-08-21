@@ -21,8 +21,12 @@ def test_phrase_contains_temporal_expression(p):
     assert p.parse("準備が不十分だった") == []
 
 
-def test_abstime_partial_pattern_of_number_expression(p):
-    # 部分的な表現は取得しない
+def test_pattern_filter_numexp(p):
+    assert len(p.parse("高さは7.18メートルです")) == 0
+    assert len(p.parse("濃度は7.18%です")) == 0
+
+
+def test_pattern_filter_partial_num(p):
     assert len(p.parse("13/13は1です")) == 0
 
     # 7.7を取得しない
@@ -36,11 +40,6 @@ def test_abstime_partial_pattern_of_number_expression(p):
 
     # 37-3, 3.9を取得しない
     assert len(p.parse("Core i7-3770（3.90GHz）")) == 0
-
-
-def test_filter_numexp(p):
-    assert len(p.parse("高さは7.18メートルです")) == 0
-    assert len(p.parse("濃度は7.18%です")) == 0
 
 
 def test_ignore_kansuji():
