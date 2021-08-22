@@ -19,6 +19,9 @@ class NumexpFilter(BaseFilter):
 
     数字表現の一部として時間情報表現が取得されてしまうケースがあるため、
     対象パターンの後続のテキストに数値表現の単位があるかを確認する
+
+    e.g. "7.18メートル" に対して "7.18" というパターンを取得している場合 -> True
+    e.g. "7.18に開催" に対して "7.18" というパターンを取得している場合 -> False
     """
 
     def __init__(self, unit_path: str = "dictionary/filter_unit.json") -> None:
@@ -63,9 +66,9 @@ class PartialNumFilter(BaseFilter):
         if not re.fullmatch(r"[0-9\.\-\.,/・]+", target_text):
             return False
 
-        if start_i != 0 and re.match(r"[0-9\+]", text[start_i - 1]):
+        if start_i != 0 and re.match(r"[0-9\+\.]", text[start_i - 1]):
             return True
-        elif end_i != len(text) and re.match(r"[0-9\+]", text[end_i]):
+        elif end_i != len(text) and re.match(r"[0-9\+\.]", text[end_i]):
             return True
         else:
             return False

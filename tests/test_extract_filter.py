@@ -20,7 +20,6 @@ def test_numexp_filter():
     # 3つ以上の数字に分けられる場合はフィルタの対象外
     assert not f.filter((0, 4), "2020.7.18")
     assert not f.filter((0, 4), "2020.7.18円相場は")  # 単位が付いていた場合も同様
-    assert not f.filter((0, 4), "128.0.0.1")
 
 
 def test_partial_num_filter():
@@ -45,3 +44,6 @@ def test_partial_num_filter():
 
     assert "は3/13"[1:5] == "3/13"
     assert not f.filter((1, 5), "は3/13")
+
+    # 末尾の0.1の前方に"."がある場合もTrueと判定する
+    assert f.filter((0, 4), "128.0.0.1")
