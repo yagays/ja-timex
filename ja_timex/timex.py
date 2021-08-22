@@ -1,7 +1,7 @@
 import re
 from collections import defaultdict
 from dataclasses import dataclass
-from typing import DefaultDict, Dict, List, Optional
+from typing import DefaultDict, List, Optional
 
 import pendulum
 
