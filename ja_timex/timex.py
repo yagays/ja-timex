@@ -1,22 +1,13 @@
 import re
 from collections import defaultdict
-from dataclasses import dataclass
 from typing import DefaultDict, List, Optional
 
 import pendulum
 
-from ja_timex.extract_filter import BaseFilter, NumexpFilter, PartialNumFilter
+from ja_timex.extract_filter import BaseFilter, DecimalFilter, NumexpFilter, PartialNumFilter
 from ja_timex.number_normalizer import NumberNormalizer
-from ja_timex.pattern.place import Pattern
-from ja_timex.tag import TIMEX
+from ja_timex.tag import TIMEX, Extract
 from ja_timex.tagger import AbstimeTagger, DurationTagger, ReltimeTagger, SetTagger
-
-
-@dataclass
-class Extract:
-    type_name: str
-    re_match: re.Match
-    pattern: Pattern
 
 
 class TimexParser:
@@ -28,7 +19,7 @@ class TimexParser:
         reltime_tagger=ReltimeTagger(),
         set_tagger=SetTagger(),
         custom_tagger=None,
-        pattern_filters: List[BaseFilter] = [NumexpFilter(), PartialNumFilter()],
+        pattern_filters: List[BaseFilter] = [NumexpFilter(), PartialNumFilter(), DecimalFilter()],
         reference: Optional[pendulum.DateTime] = None,
         ignore_kansuji: bool = False,
     ) -> None:
@@ -123,7 +114,7 @@ class TimexParser:
         for extract in extracts:
             allow_append = True
             for pattern_filter in self.pattern_filters:
-                if pattern_filter.filter(extract.re_match.span(), processed_text):
+                if pattern_filter.filter(extract, processed_text):
                     allow_append = False
             if allow_append:
                 results.append(extract)

@@ -21,14 +21,14 @@ def test_phrase_contains_temporal_expression(p):
     assert p.parse("準備が不十分だった") == []
 
 
-def test_pattern_filter_numexp(p):
+def test_extract_filter_numexp(p):
     assert len(p.parse("高さは7.18メートルです")) == 0
     assert len(p.parse("濃度は7.18%です")) == 0
     assert len(p.parse("15.4インチのディスプレイ")) == 0
     assert len(p.parse("サイズ16.1mm")) == 0
 
 
-def test_pattern_filter_partial_num(p):
+def test_extract_filter_partial_num(p):
     assert len(p.parse("13/13は1です")) == 0
 
     # 7.7を取得しない
@@ -42,6 +42,14 @@ def test_pattern_filter_partial_num(p):
 
     # 37-3, 3.9を取得しない
     assert len(p.parse("Core i7-3770（3.90GHz）")) == 0
+
+
+def test_extract_filter_decimal(p):
+    # 0.1や0/1といった0が先頭に付く表現は、0年であることはまずなく、小数点の表記として除外する
+    assert len(p.parse("視力が0.1しかない")) == 0
+    assert len(p.parse("0.1〜0.2％")) == 0
+    assert len(p.parse("0-3で敗れた")) == 0
+    assert len(p.parse("RAID 0/1")) == 0
 
 
 def test_ignore_kansuji():

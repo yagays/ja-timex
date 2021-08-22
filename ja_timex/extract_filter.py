@@ -2,7 +2,8 @@ import json
 import re
 from abc import ABCMeta, abstractmethod
 from pathlib import Path
-from typing import Tuple
+
+from ja_timex.tag import Extract
 
 
 class BaseFilter(metaclass=ABCMeta):
@@ -10,7 +11,7 @@ class BaseFilter(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def filter(self, span: Tuple[int, int], text: str) -> bool:
+    def filter(self, extract: Extract, text: str) -> bool:
         raise NotImplementedError()
 
 
@@ -28,16 +29,14 @@ class NumexpFilter(BaseFilter):
         with Path(__file__).parent.joinpath(unit_path).open(encoding="utf8") as f:
             self.units = json.load(f)
 
-    def filter(self, span: Tuple[int, int], text: str) -> bool:
-        start_i = span[0]
-        end_i = span[1]
+    def filter(self, extract: Extract, text: str) -> bool:
+        start_i, end_i = extract.re_match.span()
 
         target_text = text[start_i:end_i]
         # 対象としている文字列が、数字と記号の表現ではなかった場合
         if not re.fullmatch(r"[0-9]+[\.\-\.,][0-9]+", target_text):
             return False
 
-        end_i = span[1]
         for unit in self.units:
             if re.match(f"\\s?{unit}", text[end_i:]):
                 return True
@@ -57,9 +56,8 @@ class PartialNumFilter(BaseFilter):
     def __init__(self) -> None:
         pass
 
-    def filter(self, span: Tuple[int, int], text: str) -> bool:
-        start_i = span[0]
-        end_i = span[1]
+    def filter(self, extract: Extract, text: str) -> bool:
+        start_i, end_i = extract.re_match.span()
 
         target_text = text[start_i:end_i]
         # 対象としている文字列が、数字と記号の表現ではなかった場合
@@ -69,6 +67,30 @@ class PartialNumFilter(BaseFilter):
         if start_i != 0 and re.match(r"[0-9\+\.]", text[start_i - 1]):
             return True
         elif end_i != len(text) and re.match(r"[0-9\+\.]", text[end_i]):
+            return True
+        else:
+            return False
+
+
+class DecimalFilter(BaseFilter):
+    """対象パターンが少数かを判定する
+
+    0.1や0/1, 0-1といった表現において、0が0000年を表すことはない
+    そこで、日付表現において0および記号から始まる表現かをチェックする
+    """
+
+    def __init__(self) -> None:
+        pass
+
+    def filter(self, extract: Extract, text: str) -> bool:
+        start_i, end_i = extract.re_match.span()
+
+        target_text = text[start_i:end_i]
+        # 対象としている文字列が、数字と記号の表現でかつ日付表現ではなかった場合
+        if not re.fullmatch(r"[0-9\.\-,/・]+", target_text) or extract.type_name != "abstime":
+            return False
+
+        if re.match(r"0[\.\-/]", target_text):
             return True
         else:
             return False
