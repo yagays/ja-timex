@@ -46,4 +46,4 @@ def test_partial_num_filter():
     assert not f.filter((1, 5), "は3/13")
 
     # 末尾の0.1の前方に"."がある場合もTrueと判定する
-    assert f.filter((0, 4), "128.0.0.1")
+    assert f.filter((0, 4), "127.0.0.1")

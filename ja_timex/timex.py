@@ -52,26 +52,52 @@ class TimexParser:
             self.all_patterns["custom"] = self.custom_tagger.patterns
 
     def parse(self, raw_text: str) -> List[TIMEX]:
+        """入力文字列からTIMEXを抽出する
+
+        Args:
+            raw_text (str): 入力文字列
+
+        Returns:
+            List[TIMEX]: 抽出されたTIMEXのリスト
+        """
         # 数の認識/規格化
         processed_text = self._normalize_number(raw_text)
 
         # 時間表現の抽出
         all_extracts = self._extract(processed_text)
         filtered_extracts = self._extract_filter(all_extracts, processed_text)
-        type2extracts = self._drop_duplicates(processed_text, filtered_extracts)
-        
+        type2extracts = self._drop_duplicates(filtered_extracts, processed_text)
+
         # ExtractからTimexへの規格化
         timex_tags = self._parse(type2extracts)
 
         # 規格化後のタグの情報付与
-        timex_tags = self._modify_additional_information(timex_tags, processed_text)
+        timex_tags = self._modify_additional_information(timex_tags)
 
         return timex_tags
 
     def _normalize_number(self, raw_text: str) -> str:
+        """数字の表記ゆれを正規化するする
+
+        NumberNormalizerはコンストラクタ内でset_ignore_kansuji()メソッドにより、漢数字を変換するかどうかのフラグが付与される
+
+        Args:
+            raw_text (str): 入力文字列
+
+        Returns:
+            str: 正規化された入力文字列
+        """
         return self.number_normalizer.normalize(raw_text)
 
     def _extract(self, processed_text: str) -> List[Extract]:
+        """入力文字列から候補となるExtractをすべて抽出する
+
+        Args:
+            processed_text (str): 入力文字列
+
+        Returns:
+            List[Extract]: 抽出されたExtract
+        """
         all_extracts = []
 
         # すべてのtaggerのパターンの正規表現を順に適用していく
@@ -84,6 +110,15 @@ class TimexParser:
         return all_extracts
 
     def _extract_filter(self, extracts: List[Extract], processed_text: str) -> List[Extract]:
+        """候補Extractの中から必要なものだけをフィルタリングする
+
+        Args:
+            extracts (List[Extract]): 候補となるExtractのリスト
+            processed_text (str): 入力文字列
+
+        Returns:
+            List[Extract]: フィルタされたExtractのリスト
+        """
         results = []
         for extract in extracts:
             allow_append = True
@@ -95,7 +130,16 @@ class TimexParser:
 
         return results
 
-    def _drop_duplicates(self, processed_text: str, all_extracts: List[Extract]) -> DefaultDict[str, List[Extract]]:
+    def _drop_duplicates(self, all_extracts: List[Extract], processed_text: str) -> DefaultDict[str, List[Extract]]:
+        """候補Extractの中から、文字列上の同一箇所から重複して取得してしまった候補を除外する
+
+        Args:
+            all_extracts (List[Extract]): 候補となるExtractのリスト
+            processed_text (str): 入力文字列
+
+        Returns:
+            DefaultDict[str, List[Extract]]: 重複除去されたExtractのリスト
+        """
         type2extracts = defaultdict(list)
         text_coverage_flag = [False] * len(processed_text)
 
@@ -114,6 +158,14 @@ class TimexParser:
         return type2extracts
 
     def _parse(self, type2extracts: DefaultDict[str, List[Extract]]) -> List[TIMEX]:
+        """抽出されたExtractをパースしてTIMEXに変換する
+
+        Args:
+            type2extracts (DefaultDict[str, List[Extract]]): タイプごとのExtractのリスト
+
+        Returns:
+            List[TIMEX]: パースされたTIMEXのリスト
+        """
         results = []
         for type_name, extracts in type2extracts.items():
             for extract in extracts:
@@ -130,7 +182,19 @@ class TimexParser:
 
         return results
 
-    def _modify_additional_information(self, timex_tags: List[TIMEX], processed_text: str) -> List[TIMEX]:
+    def _modify_additional_information(self, timex_tags: List[TIMEX]) -> List[TIMEX]:
+        """TIMEXタグに追加の情報を付与する
+
+        付与される情報
+        - @tid: ドキュメントに対して抽出されたTIMEXの通し番号
+        - reference: 基準日時 (TimexParser.referenceに指定されていた場合)
+
+        Args:
+            timex_tags (List[TIMEX]): TIMEXのリスト
+
+        Returns:
+            List[TIMEX]: 情報が付与されたTIMEXのリスト
+        """
         # update @tid and reference
         modified_tags = []
         sorted_timex_tags = sorted(timex_tags, key=lambda x: x.span[0] if x.span else 0)
