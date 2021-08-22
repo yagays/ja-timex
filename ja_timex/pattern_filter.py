@@ -31,7 +31,7 @@ class NumexpFilter(BaseFilter):
 
         target_text = text[start_i:end_i]
         # 対象としている文字列が、数字と記号の表現ではなかった場合
-        if not re.fullmatch(r"[0-9\.\-\.,/・]+", target_text):
+        if not re.fullmatch(r"[0-9]+[\.\-\.,][0-9]+", target_text):
             return False
 
         end_i = span[1]
