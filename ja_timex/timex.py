@@ -1,13 +1,22 @@
 import re
 from collections import defaultdict
+from dataclasses import dataclass
 from typing import DefaultDict, Dict, List, Optional
 
 import pendulum
 
+from ja_timex.extract_filter import BaseFilter, NumexpFilter, PartialNumFilter
 from ja_timex.number_normalizer import NumberNormalizer
-from ja_timex.pattern_filter import BaseFilter, NumexpFilter, PartialNumFilter
+from ja_timex.pattern.place import Pattern
 from ja_timex.tag import TIMEX
 from ja_timex.tagger import AbstimeTagger, DurationTagger, ReltimeTagger, SetTagger
+
+
+@dataclass
+class Extract:
+    type_name: str
+    re_match: re.Match
+    pattern: Pattern
 
 
 class TimexParser:
@@ -48,9 +57,10 @@ class TimexParser:
 
         # 時間表現の抽出
         all_extracts = self._extract(processed_text)
-        filtered_extracts = self._pattern_filter(all_extracts, processed_text)
+        filtered_extracts = self._extract_filter(all_extracts, processed_text)
         type2extracts = self._drop_duplicates(processed_text, filtered_extracts)
-        # 規格化
+        
+        # ExtractからTimexへの規格化
         timex_tags = self._parse(type2extracts)
 
         # 規格化後のタグの情報付与
@@ -61,7 +71,7 @@ class TimexParser:
     def _normalize_number(self, raw_text: str) -> str:
         return self.number_normalizer.normalize(raw_text)
 
-    def _extract(self, processed_text: str) -> List[Dict]:
+    def _extract(self, processed_text: str) -> List[Extract]:
         all_extracts = []
 
         # すべてのtaggerのパターンの正規表現を順に適用していく
@@ -70,53 +80,53 @@ class TimexParser:
                 # 文字列中からのパターン検知
                 re_iter = re.finditer(pattern.re_pattern, processed_text)
                 for re_match in re_iter:
-                    all_extracts.append({"type_name": type_name, "re_match": re_match, "pattern": pattern})
+                    all_extracts.append(Extract(type_name=type_name, re_match=re_match, pattern=pattern))
         return all_extracts
 
-    def _pattern_filter(self, extracts: List[Dict], processed_text: str) -> List[Dict]:
+    def _extract_filter(self, extracts: List[Extract], processed_text: str) -> List[Extract]:
         results = []
         for extract in extracts:
             allow_append = True
             for pattern_filter in self.pattern_filters:
-                if pattern_filter.filter(extract["re_match"].span(), processed_text):
+                if pattern_filter.filter(extract.re_match.span(), processed_text):
                     allow_append = False
             if allow_append:
                 results.append(extract)
 
         return results
 
-    def _drop_duplicates(self, processed_text: str, all_extracts: List[Dict]) -> DefaultDict[str, List[Dict]]:
+    def _drop_duplicates(self, processed_text: str, all_extracts: List[Extract]) -> DefaultDict[str, List[Extract]]:
         type2extracts = defaultdict(list)
         text_coverage_flag = [False] * len(processed_text)
 
         # 開始位置の小さい順 → 文字列の長い順 → type_nameの降順(abstime→duration→reltime→set)
         ordered_extracts = sorted(
-            all_extracts, key=lambda x: (x["re_match"].span()[0], -len(x["re_match"].group()), x["type_name"])
+            all_extracts, key=lambda x: (x.re_match.span()[0], -len(x.re_match.group()), x.type_name)
         )
         for target_extract in ordered_extracts:
-            start_i, end_i = target_extract["re_match"].span()
+            start_i, end_i = target_extract.re_match.span()
 
             # すべてがまだ未使用のcharだった場合に候補に加える
             if any(text_coverage_flag[start_i:end_i]) is False:
                 text_coverage_flag[start_i:end_i] = [True] * (end_i - start_i)
-                type2extracts[target_extract["type_name"]].append(target_extract)
+                type2extracts[target_extract.type_name].append(target_extract)
 
         return type2extracts
 
-    def _parse(self, type2extracts: DefaultDict[str, List[Dict]]) -> List[TIMEX]:
+    def _parse(self, type2extracts: DefaultDict[str, List[Extract]]) -> List[TIMEX]:
         results = []
         for type_name, extracts in type2extracts.items():
             for extract in extracts:
                 if type_name == "abstime":
-                    results.append(self.abstime_tagger.parse_with_pattern(extract["re_match"], extract["pattern"]))
+                    results.append(self.abstime_tagger.parse_with_pattern(extract.re_match, extract.pattern))
                 elif type_name == "duration":
-                    results.append(self.duration_tagger.parse_with_pattern(extract["re_match"], extract["pattern"]))
+                    results.append(self.duration_tagger.parse_with_pattern(extract.re_match, extract.pattern))
                 elif type_name == "reltime":
-                    results.append(self.reltime_tagger.parse_with_pattern(extract["re_match"], extract["pattern"]))
+                    results.append(self.reltime_tagger.parse_with_pattern(extract.re_match, extract.pattern))
                 elif type_name == "set":
-                    results.append(self.set_tagger.parse_with_pattern(extract["re_match"], extract["pattern"]))
+                    results.append(self.set_tagger.parse_with_pattern(extract.re_match, extract.pattern))
                 elif type_name == "custom":
-                    results.append(self.custom_tagger.parse_with_pattern(extract["re_match"], extract["pattern"]))
+                    results.append(self.custom_tagger.parse_with_pattern(extract.re_match, extract.pattern))
 
         return results
 

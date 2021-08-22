@@ -1,4 +1,4 @@
-from ja_timex.pattern_filter import NumexpFilter, PartialNumFilter
+from ja_timex.extract_filter import NumexpFilter, PartialNumFilter
 
 
 def test_numexp_filter():
