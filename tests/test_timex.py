@@ -137,3 +137,14 @@ def test_ambiguous_phrase(p):
     assert timexes[0].value == "XXXX-XX-28"
     assert timexes[0].type == "DATE"
     assert timexes[0].text == "28日"
+
+
+def test_decimal_duration(p):
+    # DURATIONはDecimalFilterの対象外
+    timexes = p.parse("0.5日間")
+    assert timexes[0].value == "P0.5D"
+    assert timexes[0].text == "0.5日間"
+    assert timexes[0].type == "DURATION"
+
+    # 0.5だけだと0年5月とDATE判定(abstime)されるため、DecimalFilterで除外
+    assert len(p.parse("0.5")) == 0

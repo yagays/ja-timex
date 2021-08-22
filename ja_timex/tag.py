@@ -1,3 +1,4 @@
+import re
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import Dict, Optional, Tuple, Union
@@ -186,3 +187,10 @@ class AnnotatedTIMEX(TIMEX):
     temporalFunction: Optional[str] = None
     rangeStart: Optional[str] = None
     rangeEnd: Optional[str] = None
+
+
+@dataclass
+class Extract:
+    type_name: str
+    re_match: re.Match
+    pattern: Pattern
