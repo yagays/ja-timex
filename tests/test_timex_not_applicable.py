@@ -24,6 +24,8 @@ def test_phrase_contains_temporal_expression(p):
 def test_pattern_filter_numexp(p):
     assert len(p.parse("高さは7.18メートルです")) == 0
     assert len(p.parse("濃度は7.18%です")) == 0
+    assert len(p.parse("15.4インチのディスプレイ")) == 0
+    assert len(p.parse("サイズ16.1mm")) == 0
 
 
 def test_pattern_filter_partial_num(p):
