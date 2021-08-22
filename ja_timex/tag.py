@@ -135,10 +135,9 @@ class TIMEX:
 
     def to_duration(self) -> timedelta:
 
-        # pendulum: Float year and months are not supported
         unit_args = {
-            "years": int(self.parsed.get("year", 0)),
-            "months": int(self.parsed.get("month", 0)),
+            "years": float(self.parsed.get("year", 0)),
+            "months": float(self.parsed.get("month", 0)),
             "weeks": float(self.parsed.get("week", 0)),
             "days": float(self.parsed.get("day", 0)),
             "hours": float(self.parsed.get("hour", 0)),
@@ -147,6 +146,21 @@ class TIMEX:
             "microseconds": float(self.parsed.get("micorsecond", 0)),
         }
 
+        # pendulumはyearsとmonthsはintでなければならないため、
+        # 小数点表記を分解して解釈する必要がある
+        month_i, month_d = divmod(unit_args["months"], 1)
+        unit_args["months"] = int(month_i)
+        if month_d != 0.0:
+            # 小数点分を日に追加
+            unit_args["days"] += 30 * month_d
+
+        year_i, year_d = divmod(unit_args["years"], 1)
+        unit_args["years"] = int(year_i)
+        if year_d != 0.0:
+            # 小数点分を月に追加
+            unit_args["months"] += int(12 * year_d)
+
+        # "半"という表記がある場合
         if self.parsed.get("half_suffix"):
             for unit in ["week", "day", "hour", "minute", "sescond"]:
                 if self.parsed.get(unit):

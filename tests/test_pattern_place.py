@@ -95,8 +95,8 @@ def test_place_year(place):
     # same as test_abstime_pattern.py
     assert place.is_valid("year", "2021")
     assert place.is_valid("year", "1")
-
-    assert not place.is_valid("year", "10000")
+    assert place.is_valid("year", "10000")
+    assert place.is_valid("year", "0.1")
 
 
 def test_place_month(place):
@@ -105,6 +105,7 @@ def test_place_month(place):
     assert place.is_valid("month", "12")
     assert place.is_valid("month", "13")
     assert place.is_valid("month", "100")
+    assert place.is_valid("month", "0.1")
 
     assert not place.is_valid("month", "-1")
 
@@ -115,6 +116,7 @@ def test_place_day(place):
     assert place.is_valid("day", "01")
     assert place.is_valid("day", "31")
     assert place.is_valid("day", "100")
+    assert place.is_valid("day", "0.1")
 
 
 def test_place_century(place):

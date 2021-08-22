@@ -35,6 +35,17 @@ def test_to_duration(p):
     assert p.parse("1年前は平和だった")[0].to_duration() == pendulum.duration(years=1)
 
 
+def test_to_duration_decimal_years_and_months(p):
+    # pendulumではyearsとmonthsはintでなければならないため、小数点を換算して変換する
+    assert p.parse("0.5年間")[0].to_duration() == pendulum.duration(months=6)
+    assert p.parse("1.5年間")[0].to_duration() == pendulum.duration(years=1, months=6)
+    assert p.parse("0.1年間")[0].to_duration() == pendulum.duration(months=1)  # monthsはintのみ受け付けるため、intでcastしている
+
+    assert p.parse("0.5ヶ月間")[0].to_duration() == pendulum.duration(days=15)
+    assert p.parse("1.5ヶ月間")[0].to_duration() == pendulum.duration(months=1, days=15)  # 1ヶ月は30日換算で小数点を計算
+    assert p.parse("1.2ヶ月間")[0].to_duration() == pendulum.duration(months=1, days=6)
+
+
 def test_to_duration_word(p):
     assert p.parse("昨日何食べた？")[0].to_duration() == pendulum.duration(days=1)
     assert p.parse("明々後日に決行する")[0].to_duration() == pendulum.duration(days=3)

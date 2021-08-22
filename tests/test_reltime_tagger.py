@@ -29,6 +29,16 @@ def test_year(t):
     assert t.parse("100年前").value == "P100Y"
 
 
+def test_decimal(t):
+    assert t.parse("0.1年前").value == "P0.1Y"
+    assert t.parse("0.1ヶ月前").value == "P0.1M"
+    assert t.parse("0.1週前").value == "P0.1W"
+    assert t.parse("0.1日前").value == "P0.1D"
+    assert t.parse("0.1時間前").value == "PT0.1H"
+    assert t.parse("0.1分前").value == "PT0.1M"
+    assert t.parse("0.1秒前").value == "PT0.1S"
+
+
 def test_year_mod_about_prefix_and_suffix(t):
     assert t.parse("1年前").mod == "BEFORE"
     assert t.parse("1年後").mod == "AFTER"
