@@ -11,6 +11,7 @@ def t():
 def test_year(t):
     assert t.parse("1年間").value == "P1Y"
     assert t.parse("100年間").value == "P100Y"
+    assert t.parse("0.1年間").value == "P0.1Y"
 
     # abstimeともdurationとも取れる表現
     assert t.parse("1年").value == "P1Y"
@@ -20,6 +21,7 @@ def test_year(t):
 def test_month(t):
     assert t.parse("1ヶ月間").value == "P1M"
     assert t.parse("100ヶ月間").value == "P100M"
+    assert t.parse("0.1ヶ月間").value == "P0.1M"
     assert t.parse("1ヶ月").value == "P1M"
 
     # abstimeともdurationとも取れる表現
@@ -29,12 +31,14 @@ def test_month(t):
 def test_day(t):
     assert t.parse("1日間").value == "P1D"
     assert t.parse("100日間").value == "P100D"
+    assert t.parse("0.1日間").value == "P0.1D"
     assert t.parse("1日").value == "P1D"
 
 
 def test_hour(t):
     assert t.parse("1時間").value == "PT1H"
     assert t.parse("100時間").value == "PT100H"
+    assert t.parse("0.1時間").value == "PT0.1H"
 
     # 1時間のことを1時とは呼ばない
     assert t.parse("1時") is None
@@ -43,12 +47,14 @@ def test_hour(t):
 def test_minute(t):
     assert t.parse("1分間").value == "PT1M"
     assert t.parse("100分間").value == "PT100M"
+    assert t.parse("0.1分間").value == "PT0.1M"
     assert t.parse("1分").value == "PT1M"
 
 
 def test_second(t):
     assert t.parse("1秒間").value == "PT1S"
     assert t.parse("100秒間").value == "PT100S"
+    assert t.parse("0.1秒間").value == "PT0.1S"
     assert t.parse("1秒").value == "PT1S"
 
 
