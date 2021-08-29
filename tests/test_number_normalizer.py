@@ -215,3 +215,15 @@ def test_normalize_ignore_kansuji(nn):
 
     # コンマの削除は行う
     assert nn.normalize("3,000時間") == "3000時間"
+
+
+def test_normalize_multiple_expression(nn):
+    # 複数の漢数字が存在し、normalizeで文字数が変わる場合
+    # 青空文庫「若返り薬」 海若藍平 夢野久作
+    assert nn._normalize_kansuji("四粒飲むと千年、五粒飲むと一万年生き延びるのです。") == "4粒飲むと1000年、5粒飲むと10000年生き延びるのです。"
+
+    # 青空文庫「最終戦争論」 石原莞爾
+    assert nn._normalize_kansuji("千年、三百年、百二十五年から推して") == "1000年、300年、125年から推して"
+
+    # 「創聖のアクエリオン」 AKINO
+    assert nn._normalize_kansuji("一万年と二千年前から愛してる八千年過ぎた頃からもっと恋しくなった") == "10000年と2000年前から愛してる8000年過ぎた頃からもっと恋しくなった"
