@@ -134,7 +134,8 @@ class NumberNormalizer:
         Returns:
             [str]: アラビア数字に正規化した文字列
         """
-        for re_iter in re.finditer("[〇一二三四五六七八九十百千万億兆京垓]+", text):
+        re_matches = list(re.finditer("[〇一二三四五六七八九十百千万億兆京垓]+", text))
+        for re_iter in reversed(re_matches):
             start_i, end_i = re_iter.span()
             replace_text = kansuji2number(re_iter.group())
 
