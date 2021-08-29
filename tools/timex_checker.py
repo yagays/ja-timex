@@ -46,7 +46,7 @@ if text:
     if timexes is None:
         st.write("No Result")
     else:
-        st.code(export_as_tagged_text(timexes, text), language="xml")
+        st.code(export_as_tagged_text(timexes, timex_parser.processed_text), language="xml")
 
         for timex in timexes:
             timex_df = pd.DataFrame(

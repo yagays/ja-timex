@@ -52,12 +52,12 @@ class TimexParser:
             List[TIMEX]: 抽出されたTIMEXのリスト
         """
         # 数の認識/規格化
-        processed_text = self._normalize_number(raw_text)
+        self.processed_text = self._normalize_number(raw_text)
 
         # 時間表現の抽出
-        all_extracts = self._extract(processed_text)
-        filtered_extracts = self._extract_filter(all_extracts, processed_text)
-        type2extracts = self._drop_duplicates(filtered_extracts, processed_text)
+        all_extracts = self._extract(self.processed_text)
+        filtered_extracts = self._extract_filter(all_extracts, self.processed_text)
+        type2extracts = self._drop_duplicates(filtered_extracts, self.processed_text)
 
         # ExtractからTimexへの規格化
         timex_tags = self._parse(type2extracts)
