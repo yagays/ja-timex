@@ -44,6 +44,7 @@ nav:
       - quick_start.md
       - examples.md
       - to_datetime.md
+      - custom_tagger.md
     - "Documentation":
       - timex3.md
       - FAQ.md
