@@ -35,12 +35,12 @@ class TimexParser:
         self.number_normalizer.set_ignore_kansuji(ignore_kansuji)
 
         self.all_patterns = {}
+        if self.custom_tagger:
+            self.all_patterns["custom"] = self.custom_tagger.patterns
         self.all_patterns["abstime"] = self.abstime_tagger.patterns
         self.all_patterns["duration"] = self.duration_tagger.patterns
         self.all_patterns["reltime"] = self.reltime_tagger.patterns
         self.all_patterns["set"] = self.set_tagger.patterns
-        if self.custom_tagger:
-            self.all_patterns["custom"] = self.custom_tagger.patterns
 
     def parse(self, raw_text: str) -> List[TIMEX]:
         """入力文字列からTIMEXを抽出する
