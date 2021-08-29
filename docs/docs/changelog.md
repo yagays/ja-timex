@@ -1,5 +1,24 @@
 # 更新履歴
 
+## v0.1.9(2021-08-29)
+
+### 🚀 Features
+
+* 数字正規化済みのテキストを利用できるように変更 (#52) @yagays
+
+### 🐛 Bug Fixes
+
+* 複数の漢数字を処理できない問題を修正 (#53) @yagays
+
+### 📖 Documentation and examples
+
+* ユーザが独自にルールを指定できるCustomTaggerのテストとドキュメントを追加 (#54) @yagays
+
+### 🚧 Maintenance
+
+* ユーザが独自にルールを指定できるCustomTaggerのテストとドキュメントを追加 (#54) @yagays
+
+
 ## v0.1.8(2021-08-22)
 
 ### 🚀 Features
