@@ -53,6 +53,14 @@ def test_normal_date_wareki(t):
     assert t.parse("令和3年").value == "2021-XX-XX"
     assert t.parse("令和03年").value == "2021-XX-XX"
     assert t.parse("令和3年7月18日").value == "2021-07-18"
+    assert t.parse("令和3/7/18").value == "2021-07-18"
+    assert t.parse("令和3-7-18").value == "2021-07-18"
+    assert t.parse("令和3・7・18").value == "2021-07-18"
+    assert t.parse("令和3.7.18").value == "2021-07-18"
+    assert t.parse("令和3,7,18").value == "2021-07-18"
+
+    assert t.parse("令和3.7").value == "2021-07-XX"
+    assert t.parse("令和3,7").value == "2021-07-XX"
 
     # 平成33年は存在しないが、元号が変わる前の未来の日付の表記などに存在する
     assert t.parse("平成33年").value == "2021-XX-XX"
@@ -85,6 +93,12 @@ def test_normal_date_wareki(t):
 def test_normal_date_invalid(t):
     # 2013年13月とも13月13日とも言えない場合
     assert t.parse("13/13") is None
+
+
+def test_normal_date_invalid_with_dot_and_comma(t):
+    # 数字が2つの表現は小数点や列挙と混同するため、取得対象とはしない
+    assert t.parse("1.2") is None
+    assert t.parse("1,2") is None
 
 
 def test_weekday(t):

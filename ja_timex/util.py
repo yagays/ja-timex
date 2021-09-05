@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import List, Optional, Union
 
 import pendulum
 from pendulum.tz.timezone import Timezone
@@ -26,8 +26,9 @@ def set_timezone(tz: Union[str, Timezone]) -> Timezone:
     return default_timezone
 
 
-def detect_range_expression_before_timex(span_start_i: int, text: str) -> Optional[str]:
-    range_expressions = ["〜", "~", "-", "から"]
+def detect_range_expression_before_timex(
+    span_start_i: int, text: str, range_expressions: List[str] = ["〜", "~", "-", "から"]
+) -> Optional[str]:
     maxlen_range_expression = max([len(r) for r in range_expressions])
     for range_expression in range_expressions:
         if text[span_start_i - maxlen_range_expression : span_start_i].endswith(range_expression):

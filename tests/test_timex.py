@@ -207,3 +207,97 @@ def test_range_expression_invalid(p):
 
     assert p.parse("今週から3日間も雨が降り続いている")[0].range_start is None
     assert p.parse("今週から3日間も雨が降り続いている")[1].range_end is None
+
+
+def test_extract_abbrev_patten(p):
+    # 範囲と似た表現ではあるが、範囲を表すわけではないので@rangeStartや@rangeEndは付与しない
+
+    # DURATION
+    for text in ["1~2日間", "1〜2日間", "1、2日間", "1,2日間", "1から2日間"]:
+        timexes = p.parse(text)
+        assert timexes[0].range_start is None
+        assert timexes[0].range_end is None
+        assert timexes[1].range_start is None
+        assert timexes[1].range_end is None
+
+        assert timexes[0].type == "DURATION"  # typeを補完する
+        assert timexes[1].type == "DURATION"
+
+        assert timexes[0].text == "1"  # textで省略されている"間"は補完しない
+        assert timexes[1].text == "2日間"
+
+    # DATE
+    for text in ["1~2日", "1〜2日", "1、2日", "1,2日", "1から2日"]:
+        timexes = p.parse(text)
+        assert timexes[0].range_start is None
+        assert timexes[0].range_end is None
+        assert timexes[1].range_start is None
+        assert timexes[1].range_end is None
+
+        assert timexes[0].type == "DATE"  # typeを補完する
+        assert timexes[1].type == "DATE"
+
+        assert timexes[0].text == "1"
+        assert timexes[1].text == "2日"
+
+    # TIME
+    for text in ["1~2分", "1〜2分", "1、2分", "1,2分", "1から2分"]:
+        timexes = p.parse(text)
+        assert timexes[0].range_start is None
+        assert timexes[0].range_end is None
+        assert timexes[1].range_start is None
+        assert timexes[1].range_end is None
+
+        assert timexes[0].type == "TIME"  # typeを補完する
+        assert timexes[1].type == "TIME"
+
+        assert timexes[0].text == "1"
+        assert timexes[1].text == "2分"
+
+
+def test_range_expression_mod(p):
+    # @modがある場合
+    timexes = p.parse("1から2日前")
+    assert timexes[0].range_start is None
+    assert timexes[0].range_end is None
+    assert timexes[1].range_start is None
+    assert timexes[1].range_end is None
+
+    assert timexes[0].type == "DURATION"  # typeを補完する
+    assert timexes[1].type == "DURATION"
+
+    assert timexes[0].mod == "BEFORE"  # modを補完する
+    assert timexes[1].mod == "BEFORE"
+
+    assert timexes[0].text == "1"
+    assert timexes[1].text == "2日前"
+
+
+def test_range_expression_qunat(p):
+    # @quantがある場合
+    timexes = p.parse("1から2日おきに")
+    assert timexes[0].range_start is None
+    assert timexes[0].range_end is None
+    assert timexes[1].range_start is None
+    assert timexes[1].range_end is None
+
+    assert timexes[0].type == "SET"  # typeを補完する
+    assert timexes[1].type == "SET"
+
+    assert timexes[0].quant == "EVERY"  # quantを補完する
+    assert timexes[1].quant == "EVERY"
+
+    assert timexes[0].text == "1"
+    assert timexes[1].text == "2日おき"
+
+
+def test_range_expression_digit(p):
+    for text in ["1.5~2.5日間", "1.5〜2.5日", "1.5,2.5分"]:
+        timexes = p.parse(text)
+        assert timexes[0].range_start is None
+        assert timexes[0].range_end is None
+        assert timexes[1].range_start is None
+        assert timexes[1].range_end is None
+
+        assert timexes[0].text == "1.5"
+        assert timexes[1].text.startswith("2.5")
