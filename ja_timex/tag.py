@@ -202,8 +202,6 @@ class AnnotatedTIMEX(TIMEX):
 
     valueFromSurface: Optional[str] = None
     temporalFunction: Optional[str] = None
-    rangeStart: Optional[str] = None
-    rangeEnd: Optional[str] = None
 
 
 @dataclass
