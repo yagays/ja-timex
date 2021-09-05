@@ -65,9 +65,7 @@ class TimexParser:
 
         # 規格化後のタグの情報付与
         timex_tags = self._modify_renge_start_and_end(timex_tags, self.processed_text)
-
         timex_tags = self._extract_abbrev_patten(timex_tags, self.processed_text)
-
         timex_tags = self._modify_additional_information(timex_tags)
 
         return timex_tags
@@ -217,7 +215,8 @@ class TimexParser:
     def _extract_abbrev_patten(self, timex_tags: List[TIMEX], processed_text: str) -> List[TIMEX]:
         """日付や時間の単位が省略されているものを取得する
 
-        self._modify_renge_start_and_end()より後に実行する
+        `1,2ヶ月`, `1~2分`, `2から3日`などの表現に対応するため
+        - 注意：self._modify_renge_start_and_end()より後に実行する
 
         Args:
             timex_tags (List[TIMEX]): TIMEXのリスト
