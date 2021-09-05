@@ -1,5 +1,17 @@
 # 更新履歴
 
+## v.0.2.0(2021-09-05)
+
+### 🚀 Features
+
+* TIMEXタグの\_\_repr\_\_にrangeStart, rangeEndを追加 (#57) @yagays
+* "1,2ヶ月"や"1~2分"といった複数の日付表現が列挙された場合に対応 (#56) @yagays
+* TIMEXタグのrangeStartとrangeEndを追加し、抽出ルールを実装 (#55) @yagays
+
+### 📖 Documentation and examples
+
+* rangeStartとrangeEndに対応 (#58) @yagays
+
 ## v0.1.9(2021-08-29)
 
 ### 🚀 Features
