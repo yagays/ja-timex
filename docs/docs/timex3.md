@@ -103,7 +103,7 @@ _各表現の概念図_
 ### `@rangeStart`と`@rangeEnd`
 `@rangeStart`, `@rangeEnd`は範囲表現の起点を表すタグであり、通常は`None`の値を取り、範囲表現と認められる`TIMEX`の対においてのみbool型の`True`の値を取ります。`@rangeStart`と`@rangeEnd`は必ず対になり、どちらかだけが存在する場合はありません。
 
-ja-timexの`TIMEX`タグでは[PEP8](https://www.python.org/dev/peps/pep-0008/)の命名規則に則り、`TIMEX.range_start`および`TIMEX.range_end`というインスタンス変数名に対応します。
+ja-timexの`TIMEX`タグでは[PEP8](https://www.python.org/dev/peps/pep-0008/)の命名規則に則り、`TIMEX.range_start`および`TIMEX.range_end`というクラス変数名に対応します。
 
 ## 小西らおよび成澤の定義との差異
 
