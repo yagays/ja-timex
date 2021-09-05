@@ -3,10 +3,10 @@ from typing import List
 
 import pytest
 
-from ja_timex.tag import TIMEX
-from ja_timex.timex import TimexParser
-from ja_timex.tagger import BaseTagger
 from ja_timex.pattern.place import Pattern
+from ja_timex.tag import TIMEX
+from ja_timex.tagger import BaseTagger
+from ja_timex.timex import TimexParser
 
 
 @pytest.fixture(scope="module")

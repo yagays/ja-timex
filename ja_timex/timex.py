@@ -8,6 +8,7 @@ from ja_timex.extract_filter import BaseFilter, DecimalFilter, NumexpFilter, Par
 from ja_timex.number_normalizer import NumberNormalizer
 from ja_timex.tag import TIMEX, Extract
 from ja_timex.tagger import AbstimeTagger, DurationTagger, ReltimeTagger, SetTagger
+from ja_timex.util import detect_range_expression_before_timex
 
 
 class TimexParser:
@@ -61,6 +62,7 @@ class TimexParser:
 
         # ExtractからTimexへの規格化
         timex_tags = self._parse(type2extracts)
+        timex_tags = self._extract_abbreviated_expression(timex_tags, self.processed_text)
 
         # 規格化後のタグの情報付与
         timex_tags = self._modify_additional_information(timex_tags)
@@ -172,6 +174,48 @@ class TimexParser:
                     results.append(self.custom_tagger.parse_with_pattern(extract.re_match, extract.pattern))
 
         return results
+
+    def _extract_abbreviated_expression(self, timex_tags: List[TIMEX], processed_text: str) -> List[TIMEX]:
+        index2timex_i = {}
+        for timex_i, timex in enumerate(timex_tags):
+            if not timex.span:
+                continue
+            for index in range(timex.span[0], timex.span[1]):
+                index2timex_i[index] = timex_i
+
+        additional_timexes = []
+        for timex in timex_tags:
+            if not timex.span:
+                continue
+
+            range_expression = detect_range_expression_before_timex(timex.span[0], processed_text)
+
+            if not range_expression:
+                continue
+
+            possible_timex_end_i = timex.span[0] - len(range_expression) - 1
+            possible_timex_i = index2timex_i.get(timex.span[0] - len(range_expression) - 1)
+            if possible_timex_i is not None:
+                start_timex = timex_tags[possible_timex_i]
+
+                if start_timex.type == timex.type:
+                    start_timex.range_start = True
+                    timex.range_end = True
+
+            re_match_num = re.search("[0-9]+$", processed_text[: possible_timex_end_i + 1])
+            if re_match_num:
+                start_timex = TIMEX(
+                    type=timex.type,
+                    value=re.sub("[0-9]+", re_match_num.group(0), timex.value),
+                    text=re_match_num.group(0),
+                    range_start=True,
+                    span=re_match_num.span(),
+                )
+
+                timex.range_end = True
+                additional_timexes.append(start_timex)
+
+        return timex_tags + additional_timexes
 
     def _modify_additional_information(self, timex_tags: List[TIMEX]) -> List[TIMEX]:
         """TIMEXタグに追加の情報を付与する
