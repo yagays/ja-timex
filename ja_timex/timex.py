@@ -62,9 +62,9 @@ class TimexParser:
 
         # ExtractからTimexへの規格化
         timex_tags = self._parse(type2extracts)
-        timex_tags = self._extract_abbreviated_expression(timex_tags, self.processed_text)
 
         # 規格化後のタグの情報付与
+        timex_tags = self._modify_renge_start_and_end(timex_tags, self.processed_text)
         timex_tags = self._modify_additional_information(timex_tags)
 
         return timex_tags
@@ -175,7 +175,16 @@ class TimexParser:
 
         return results
 
-    def _extract_abbreviated_expression(self, timex_tags: List[TIMEX], processed_text: str) -> List[TIMEX]:
+    def _modify_renge_start_and_end(self, timex_tags: List[TIMEX], processed_text: str) -> List[TIMEX]:
+        """TIMEXタグに@rangeStartと@rangeEndを付与する
+
+        Args:
+            timex_tags (List[TIMEX]): TIMEXのリスト
+            processed_text (str): 入力文字列
+
+        Returns:
+            List[TIMEX]: 情報が付与されたTIMEXのリスト
+        """
         index2timex_i = {}
         for timex_i, timex in enumerate(timex_tags):
             if not timex.span:
@@ -183,18 +192,16 @@ class TimexParser:
             for index in range(timex.span[0], timex.span[1]):
                 index2timex_i[index] = timex_i
 
-        additional_timexes = []
         for timex in timex_tags:
-            if not timex.span:
+            if not timex.span or timex.type == "DURATION":
                 continue
 
             range_expression = detect_range_expression_before_timex(timex.span[0], processed_text)
-
             if not range_expression:
                 continue
 
             possible_timex_end_i = timex.span[0] - len(range_expression) - 1
-            possible_timex_i = index2timex_i.get(timex.span[0] - len(range_expression) - 1)
+            possible_timex_i = index2timex_i.get(possible_timex_end_i)
             if possible_timex_i is not None:
                 start_timex = timex_tags[possible_timex_i]
 
@@ -202,20 +209,7 @@ class TimexParser:
                     start_timex.range_start = True
                     timex.range_end = True
 
-            re_match_num = re.search("[0-9]+$", processed_text[: possible_timex_end_i + 1])
-            if re_match_num:
-                start_timex = TIMEX(
-                    type=timex.type,
-                    value=re.sub("[0-9]+", re_match_num.group(0), timex.value),
-                    text=re_match_num.group(0),
-                    range_start=True,
-                    span=re_match_num.span(),
-                )
-
-                timex.range_end = True
-                additional_timexes.append(start_timex)
-
-        return timex_tags + additional_timexes
+        return timex_tags
 
     def _modify_additional_information(self, timex_tags: List[TIMEX]) -> List[TIMEX]:
         """TIMEXタグに追加の情報を付与する
