@@ -16,13 +16,16 @@ class TIMEX:
     value: str
     text: str
 
+    span: Tuple[int, int]
+    parsed: Dict[str, str] = field(default_factory=dict)
+
     tid: Optional[str] = None
     freq: Optional[str] = None
     quant: Optional[str] = None
     mod: Optional[str] = None
+    range_start: Optional[bool] = None
+    range_end: Optional[bool] = None
 
-    parsed: Dict[str, str] = field(default_factory=dict)
-    span: Optional[Tuple[int, int]] = None  # 入力文字列中での正規表現が取得したspan
     pattern: Optional[Pattern] = None
     reference: Optional[pendulum.DateTime] = None
 
