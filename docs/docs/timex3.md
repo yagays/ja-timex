@@ -13,6 +13,9 @@ TIMEX3タグは、下記の属性を持ちます。
 | @freq  | 頻度集合表現における頻度が起こる回数              | `2X`         | 頻度集合表現のみ |
 | @quant | 頻度集合表現における頻度の性質                    | `EACH`       | 頻度集合表現のみ |
 | @mod   | 時間情報表現の補足情報としてのモダリティ          | `APPROX`     | 任意             |
+| @rangeStart   | 範囲表現の起点を表すタグ          | `True`     | 任意             |
+| @rangeEnd   | 範囲表現の終点を表すタグ          | `True`    | 任意             |
+
 
 ### `@tid`
 `@tid`は、入力テキストの中で各TIMEX3タグに対して一意に付与される識別子です。`t0`から始まり、1ずつ値が増えていきます。
@@ -97,6 +100,10 @@ _各表現の概念図_
 | AFTER  | ある時点を基準としたときの後 | 1年後  |
 | NOW    | ある時点を基準としたときの前後  | 今年 |
 
+### `@rangeStart`と`@rangeEnd`
+`@rangeStart`, `@rangeEnd`は範囲表現の起点を表すタグであり、通常は`None`の値を取り、範囲表現と認められる`TIMEX`の対においてのみbool型の`True`の値を取ります。`@rangeStart`と`@rangeEnd`は必ず対になり、どちらかだけが存在する場合はありません。
+
+ja-timexの`TIMEX`タグでは[PEP8](https://www.python.org/dev/peps/pep-0008/)の命名規則に則り、`TIMEX.range_start`および`TIMEX.range_end`というインスタンス変数名に対応します。
 
 ## 小西らおよび成澤の定義との差異
 
@@ -105,8 +112,6 @@ ja-timexでは人間によるアノテーションの情報を表現する必要
 
 - `@valueFromSurface`: 文脈情報を考慮した正規化をしない`@value`
 - `@temporalFunction`: 文脈情報より曖昧性解消可能かどうかを表す真偽値
-- `@rangeStart`: 範囲表現の起点を表す真偽値
-- `@rangeEnd`: 範囲表現の終点を表す真偽値
 
 そのかわり、`TIMEX`クラスを継承した`AnnotatedTIMEX`クラスにて、上記の4つの属性を付与できるようにしています。
 
