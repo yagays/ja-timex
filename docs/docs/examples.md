@@ -57,6 +57,17 @@
 !!! Tips
     `11月中旬`のように日付に付加情報が付いている場合は、`@value=XXXX-11-XX`のように月の値だけが入り、付加情報は`@mod=MID`のように表現されます。
 
+!!! Tips
+    `XからY`といった範囲表現では、`@rangeStart`および`@rangeEnd`に`True`の値を取ります。
+
+    ```python
+    In []: timexes[1].range_start  # "11月中旬"
+    Out[]: True
+
+    In []: timexes[2].range_end  # "2月初め"
+    Out[]: True
+    ```
+
 ---
 
 ## 日付表現 4
