@@ -190,6 +190,10 @@ class TIMEX:
             attributes.append(f'quant="{self.quant}"')
         if self.mod:
             attributes.append(f'mod="{self.mod}"')
+        if self.range_start:
+            attributes.append('range_start="True"')
+        if self.range_end:
+            attributes.append('range_end="True"')
         attributes.append(f'text="{self.text}"')
 
         attributes_text = " ".join(attributes)
