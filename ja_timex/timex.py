@@ -65,6 +65,9 @@ class TimexParser:
 
         # 規格化後のタグの情報付与
         timex_tags = self._modify_renge_start_and_end(timex_tags, self.processed_text)
+
+        timex_tags = self._extract_abbrev_patten(timex_tags, self.processed_text)
+
         timex_tags = self._modify_additional_information(timex_tags)
 
         return timex_tags
@@ -210,6 +213,50 @@ class TimexParser:
                     timex.range_end = True
 
         return timex_tags
+
+    def _extract_abbrev_patten(self, timex_tags: List[TIMEX], processed_text: str) -> List[TIMEX]:
+        """日付や時間の単位が省略されているものを取得する
+
+        self._modify_renge_start_and_end()より後に実行する
+
+        Args:
+            timex_tags (List[TIMEX]): TIMEXのリスト
+            processed_text (str): 入力文字列
+
+        Returns:
+            List[TIMEX]: 省略されたTIMEXを加えたリスト(ソートされていない)
+        """
+        additional_timexes = []
+        for timex in timex_tags:
+            if not timex.span:
+                continue
+
+            range_expression = detect_range_expression_before_timex(
+                timex.span[0], processed_text, range_expressions=["〜", "~", "-", "から", ",", "、"]
+            )
+            if not range_expression:
+                continue
+
+            possible_timex_end_i = timex.span[0] - len(range_expression) - 1
+            re_match_num = re.search(r"[0-9\.]+$", processed_text[: possible_timex_end_i + 1])
+            if re_match_num:
+                re_abbrev_suffix = re.search(r"([0-9\.]+)(.+)", timex.text)
+                if not re_abbrev_suffix or not timex.pattern:
+                    continue
+                abbrev_suffix = re_abbrev_suffix.group(2)
+                abbrev_text_origin = re_match_num.group(0)
+
+                abbrev_full_text = abbrev_text_origin + abbrev_suffix
+                re_match = re.fullmatch(timex.pattern.re_pattern, abbrev_full_text)
+                if re_match:
+                    abbrev_timex = timex.pattern.parse_func(re_match, timex.pattern)
+                    # 元のテキストや対応するTIMEXに合わせて変更する
+                    # modとquantは、すでにtimex.patternの中に含まれているので明示的に変更する必要がない
+                    abbrev_timex.text = abbrev_text_origin
+                    abbrev_timex.span = re_match_num.span()
+                    additional_timexes.append(abbrev_timex)
+
+        return timex_tags + additional_timexes
 
     def _modify_additional_information(self, timex_tags: List[TIMEX]) -> List[TIMEX]:
         """TIMEXタグに追加の情報を付与する
