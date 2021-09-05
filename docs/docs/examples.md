@@ -46,8 +46,8 @@
 
 ```xml
 <TIMEX3 tid="t0" type="SET" value="P1Y" quant="EACH" text="毎年">
-<TIMEX3 tid="t1" type="DATE" value="XXXX-11-XX" mod="MID" text="11月中旬">
-<TIMEX3 tid="t2" type="DATE" value="XXXX-02-XX" mod="START" text="2月初め">
+<TIMEX3 tid="t1" type="DATE" value="XXXX-11-XX" mod="MID" range_start="True" text="11月中旬">
+<TIMEX3 tid="t2" type="DATE" value="XXXX-02-XX" mod="START" range_end="True" text="2月初め">
 <TIMEX3 tid="t3" type="DURATION" value="P83D" text="83日間">
 ```
 
@@ -58,7 +58,7 @@
     `11月中旬`のように日付に付加情報が付いている場合は、`@value=XXXX-11-XX`のように月の値だけが入り、付加情報は`@mod=MID`のように表現されます。
 
 !!! Tips
-    `XからY`といった範囲表現では、`@rangeStart`および`@rangeEnd`に`True`の値を取ります。
+    `XからY`といった範囲表現では、`@rangeStart`および`@rangeEnd`にbool型`True`の値を取ります。
 
     ```python
     In []: timexes[1].range_start  # "11月中旬"
@@ -77,8 +77,8 @@
 ```
 
 ```xml
-<TIMEX3 tid="t0" type="DATE" value="06XX" mod="END" text="7世紀末">
-<TIMEX3 tid="t1" type="DATE" value="07XX" mod="START" text="8世紀はじめ">
+<TIMEX3 tid="t0" type="DATE" value="06XX" mod="END" range_start="True" text="7世紀末">
+<TIMEX3 tid="t1" type="DATE" value="07XX" mod="START" range_end="True" text="8世紀はじめ">
 ```
 
 [高松塚古墳のカビ拡大、「飛鳥美人」にも被害 \- ウィキニュース](https://ja.wikinews.org/wiki/%E9%AB%98%E6%9D%BE%E5%A1%9A%E5%8F%A4%E5%A2%B3%E3%81%AE%E3%82%AB%E3%83%93%E6%8B%A1%E5%A4%A7%E3%80%81%E3%80%8C%E9%A3%9B%E9%B3%A5%E7%BE%8E%E4%BA%BA%E3%80%8D%E3%81%AB%E3%82%82%E8%A2%AB%E5%AE%B3)
