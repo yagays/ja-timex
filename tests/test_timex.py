@@ -148,3 +148,62 @@ def test_decimal_duration(p):
 
     # 0.5だけだと0年5月とDATE判定(abstime)されるため、DecimalFilterで除外
     assert len(p.parse("0.5")) == 0
+
+
+def test_range_expression_pattern(p):
+    timexes = p.parse("1901年〜2000年")
+    assert timexes[0].range_start
+    assert timexes[0].range_end is None
+    assert timexes[1].range_start is None
+    assert timexes[1].range_end
+    assert timexes[0].type == "DATE"
+    assert timexes[1].type == "DATE"
+    assert timexes[0].text == "1901年"
+    assert timexes[1].text == "2000年"
+
+    timexes = p.parse("4月から5月にかけて")
+    assert timexes[0].range_start
+    assert timexes[0].range_end is None
+    assert timexes[1].range_start is None
+    assert timexes[1].range_end
+    assert timexes[0].type == "DATE"
+    assert timexes[1].type == "DATE"
+    assert timexes[0].text == "4月"
+    assert timexes[1].text == "5月"
+
+    timexes = p.parse("1時~2時の間")
+    assert timexes[0].range_start
+    assert timexes[0].range_end is None
+    assert timexes[1].range_start is None
+    assert timexes[1].range_end
+    assert timexes[0].type == "TIME"
+    assert timexes[1].type == "TIME"
+    assert timexes[0].text == "1時"
+    assert timexes[1].text == "2時"
+
+    timexes = p.parse("10日-20日")
+    assert timexes[0].range_start
+    assert timexes[0].range_end is None
+    assert timexes[1].range_start is None
+    assert timexes[1].range_end
+    assert timexes[0].type == "DATE"
+    assert timexes[1].type == "DATE"
+    assert timexes[0].text == "10日"
+    assert timexes[1].text == "20日"
+
+
+def test_range_expression_invalid(p):
+    # 範囲表現が入っているものの、範囲の開始と終了を表すわけではない場合
+
+    # 「2008年4月」と「週に3回」は、「から」に挟まれているが範囲指定ではない
+    assert p.parse("彼は2008年4月から週に3回ジョギングを1時間行ってきた")[0].range_start is None
+    assert p.parse("彼は2008年4月から週に3回ジョギングを1時間行ってきた")[1].range_end is None
+
+    assert p.parse("この4月から3ヶ月間の研修が始まる")[0].range_start is None
+    assert p.parse("この4月から3ヶ月間の研修が始まる")[1].range_end is None
+
+    assert p.parse("今月から1日も休みがない")[0].range_start is None
+    assert p.parse("今月から1日も休みがない")[1].range_end is None
+
+    assert p.parse("今週から3日間も雨が降り続いている")[0].range_start is None
+    assert p.parse("今週から3日間も雨が降り続いている")[1].range_end is None
