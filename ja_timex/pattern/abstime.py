@@ -214,10 +214,19 @@ date_templates = [
     f"{p.wareki_prefix}{p.calendar_year_wareki}年{p.calendar_month}月",
     f"{p.wareki_prefix}{p.calendar_year_wareki}年",
 ]
-for delimiter in ["/", "\\-", "\\.", "・", ","]:
+for delimiter in ["/", "\\-", "・"]:
     date_templates.append(f"(西暦)?{p.calendar_year}年?{delimiter}{p.calendar_month}月?{delimiter}{p.calendar_day}日?")
     date_templates.append(f"{p.calendar_month}月?{delimiter}{p.calendar_day}日?")
     date_templates.append(f"(西暦)?{p.calendar_year}年?{delimiter}{p.calendar_month}月?")
+    # 和暦
+    date_templates.append(
+        f"{p.wareki_prefix}{p.calendar_year_wareki}年?{delimiter}{p.calendar_month}月?{delimiter}{p.calendar_day}日?"
+    )
+    date_templates.append(f"{p.wareki_prefix}{p.calendar_year_wareki}年?{delimiter}{p.calendar_month}月?")
+
+for delimiter in ["\\.", ","]:
+    # 数字が2つの表現は小数点や列挙と混同するため、取得対象とはしない
+    date_templates.append(f"(西暦)?{p.calendar_year}年?{delimiter}{p.calendar_month}月?{delimiter}{p.calendar_day}日?")
     # 和暦
     date_templates.append(
         f"{p.wareki_prefix}{p.calendar_year_wareki}年?{delimiter}{p.calendar_month}月?{delimiter}{p.calendar_day}日?"
