@@ -115,8 +115,8 @@
 
 ```xml
 <TIMEX3 tid="t0" type="DATE" value="XXXX-XX-25" text="25日">
-<TIMEX3 tid="t1" type="TIME" value="T13-30-XX" text="午後1時半">
-<TIMEX3 tid="t2" type="TIME" value="T03-30-XX" text="3時半">
+<TIMEX3 tid="t1" type="TIME" value="T13-30-XX" range_start="True" text="午後1時半">
+<TIMEX3 tid="t2" type="TIME" value="T03-30-XX" range_end="True" text="3時半">
 <TIMEX3 tid="t3" type="TIME" value="T13-37-XX" text="午後1時37分">
 ```
 

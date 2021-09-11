@@ -27,7 +27,16 @@ def set_timezone(tz: Union[str, Timezone]) -> Timezone:
 
 
 def detect_range_expression_before_timex(
-    span_start_i: int, text: str, range_expressions: List[str] = ["〜", "~", "-", "から"]
+    span_start_i: int,
+    text: str,
+    range_expressions: List[str] = [
+        "〜",
+        "~",
+        "-",
+        "から",
+        "から翌",
+        "から同",
+    ],
 ) -> Optional[str]:
     maxlen_range_expression = max([len(r) for r in range_expressions])
     for range_expression in range_expressions:
