@@ -139,6 +139,42 @@ def test_ambiguous_phrase(p):
     assert timexes[0].text == "28日"
 
 
+def test_ambiguous_phrase_year(p):
+    # 「2000年」「10年」といった表記はDATEともDURATIONとも取れる
+    # 数字が100より小さい場合はDURATIONを優先する
+    timexes = p.parse("あれから1年になる")
+    assert len(timexes) == 1
+    assert timexes[0].value == "P1Y"
+    assert timexes[0].type == "DURATION"
+    assert timexes[0].text == "1年"
+
+    timexes = p.parse("50年来の付き合い")
+    assert len(timexes) == 1
+    assert timexes[0].value == "P50Y"
+    assert timexes[0].type == "DURATION"
+    assert timexes[0].text == "50年"
+
+    timexes = p.parse("収束するのに100年はかかる")
+    assert len(timexes) == 1
+    assert timexes[0].value == "P100Y"
+    assert timexes[0].type == "DURATION"
+    assert timexes[0].text == "100年"
+
+    # ここからは、動作としては正しいが結果は正しくないパターン
+    # 文脈からはDURATIONとわかるが、数字が100より大きいものはDURATIONよりDATEを優先する
+    timexes = p.parse("終わるのに500年はかかる")
+    assert len(timexes) == 1
+    assert timexes[0].value == "0500-XX-XX"
+    assert timexes[0].type == "DATE"
+    assert timexes[0].text == "500年"
+
+    timexes = p.parse("500年は古墳時代だ")
+    assert len(timexes) == 1
+    assert timexes[0].value == "0500-XX-XX"
+    assert timexes[0].type == "DATE"
+    assert timexes[0].text == "500年"
+
+
 def test_decimal_duration(p):
     # DURATIONはDecimalFilterの対象外
     timexes = p.parse("0.5日間")
