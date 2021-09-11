@@ -137,9 +137,22 @@ class TimexParser:
         type2extracts = defaultdict(list)
         text_coverage_flag = [False] * len(processed_text)
 
+        # 「2000年」「10年」といった年表記に関して、可能性の低いDATEよりDURATIONを優先する
+        filtered_extracts = []
+        for extract in all_extracts:
+            if extract.type_name == "abstime" and extract.re_match.group()[-1] == "年":
+                re_num = re.match("[0-9]+", extract.re_match.group())
+                # 100年以下の場合は暦の日付表現より持続時間表現を表すと決め、abstimeは利用しない
+                # NOTE: 100年という値は決め打ち
+                # NOTE: 年の場合はabstimeとdurationどちらでも取得されるという前提のもと、もう片方のdurationがあるかは確認しない
+                if re_num and int(re_num.group()) <= 100:
+                    continue
+            filtered_extracts.append(extract)
+
+        # 下記の順序を元に重複を削除していく
         # 開始位置の小さい順 → 文字列の長い順 → type_nameの降順(abstime→duration→reltime→set)
         ordered_extracts = sorted(
-            all_extracts, key=lambda x: (x.re_match.span()[0], -len(x.re_match.group()), x.type_name)
+            filtered_extracts, key=lambda x: (x.re_match.span()[0], -len(x.re_match.group()), x.type_name)
         )
         for target_extract in ordered_extracts:
             start_i, end_i = target_extract.re_match.span()
