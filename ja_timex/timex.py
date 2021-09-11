@@ -237,7 +237,7 @@ class TimexParser:
                 continue
 
             possible_timex_end_i = timex.span[0] - len(range_expression) - 1
-            re_match_num = re.search(r"[0-9\.]+$", processed_text[: possible_timex_end_i + 1])
+            re_match_num = re.search(r"[0-9\.:：/]+$", processed_text[: possible_timex_end_i + 1])
             if re_match_num:
                 re_abbrev_suffix = re.search(r"([0-9\.]+)(.+)", timex.text)
                 if not re_abbrev_suffix or not timex.pattern:
