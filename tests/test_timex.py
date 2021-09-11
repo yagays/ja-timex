@@ -301,3 +301,21 @@ def test_range_expression_digit(p):
 
         assert timexes[0].text == "1.5"
         assert timexes[1].text.startswith("2.5")
+
+
+def test_range_expression_time(p):
+    # 範囲表現のうち、数字表現に:や/を含むもの
+    timexes = p.parse("12:00〜17:30")
+    assert len(timexes) == 2
+    assert timexes[0].text == "12:00"
+    assert timexes[1].text == "17:30"
+
+    timexes = p.parse("12：00〜17：30")
+    assert len(timexes) == 2
+    assert timexes[0].text == "12：00"
+    assert timexes[1].text == "17：30"
+
+    timexes = p.parse("2/1〜2/14発売")
+    assert len(timexes) == 2
+    assert timexes[0].text == "2/1"
+    assert timexes[1].text == "2/14"
