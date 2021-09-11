@@ -319,3 +319,29 @@ def test_range_expression_time(p):
     assert len(timexes) == 2
     assert timexes[0].text == "2/1"
     assert timexes[1].text == "2/14"
+
+
+def test_range_expression_variation(p):
+    # 範囲表現のうち、"Aから翌B", "Aから同B"という表現
+    timexes = p.parse("2005年11月から翌2006年7月")
+    assert len(timexes) == 2
+    assert timexes[0].text == "2005年11月"
+    assert timexes[0].range_start
+    assert timexes[1].text == "2006年7月"
+    assert timexes[1].range_end
+
+    timexes = p.parse("午後1時半から同3時半")
+    assert len(timexes) == 2
+    assert timexes[0].text == "午後1時半"
+    assert timexes[0].range_start
+    assert timexes[1].text == "3時半"
+    assert timexes[1].range_end
+
+    # 範囲ではない場合（DURATIONは範囲表現を取らない）
+    timexes = p.parse("1日から翌日のことが気になって仕方がない")
+    assert timexes[0].text == "1日"
+    assert timexes[0].type == "DATE"
+    assert timexes[0].range_start is None
+    assert timexes[1].text == "翌日"
+    assert timexes[1].type == "DURATION"
+    assert timexes[1].range_end is None
