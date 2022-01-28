@@ -110,7 +110,7 @@ def test_to_datetime():
         span=(0, 5),
         parsed={"calendar_month": "07", "calendar_day": "18"},
     ).to_datetime()
-    assert dt.year == 2021  # 補完された
+    assert dt.year == pendulum.now().year  # 補完された年
     assert dt.month == 7
     assert dt.day == 18
     assert dt.hour == 0
