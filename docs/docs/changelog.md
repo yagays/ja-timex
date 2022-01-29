@@ -1,5 +1,20 @@
 # 更新履歴
 
+## v.0.2.2(2022-01-29)
+
+### 🐛 Bug Fixes
+
+* 漢数字やコンマなどの正規化前の時刻表現の文字列とスパンをTIMEXタグに含める (#70) @yagays
+
+### 📖 Documentation and examples
+
+* ドキュメントに時刻表現の数値の正規化の追加 (#71) @yagays
+
+### 🚧 Maintenance
+
+* dev-dependenciesのバージョンを一括で上げる (#69) @yagays
+* 現在の年を補完するテストを修正 (#68) @yagays
+
 ## v.0.2.1(2021-10-17)
 
 ### 🚀 Features
