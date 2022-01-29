@@ -47,6 +47,7 @@ nav:
       - custom_tagger.md
     - "Documentation":
       - timex3.md
+      - number_normalize.md
       - FAQ.md
       - definition_glossary.md
       - policy.md
