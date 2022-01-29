@@ -1,6 +1,6 @@
 import re
 from dataclasses import dataclass
-from typing import Tuple
+from typing import List, Tuple
 
 import mojimoji
 
@@ -21,6 +21,23 @@ class IgnorePhrase:
 
     pattern: str
     relative_position_to_ref: Tuple[int, int]
+
+
+@dataclass
+class DiffIndex:
+    """漢数字やコンマなどを対象にした文字列の正規化によって生まれたインデックスの差
+
+    aabbbbcc (before)
+    ↓
+    aabbbcc  (after)
+      ↑ here
+
+    index: 正規化によって差が生まれた置換文字列の開始位置
+    diff: インデックスの差異
+    """
+
+    index: int
+    diff: int
 
 
 def kansuji2number(text: str) -> str:
@@ -86,6 +103,7 @@ class NumberNormalizer:
             ],
         }
         self.ignore_kansuji = False
+        self.diff_index_list: List[DiffIndex] = []
 
     def set_ignore_kansuji(self, ignore_kansuji: bool) -> None:
         """漢数字を変換しないかのパラメータをセットする
@@ -96,6 +114,8 @@ class NumberNormalizer:
         self.ignore_kansuji = ignore_kansuji
 
     def normalize(self, text: str) -> str:
+        self.diff_index_list = []
+
         text = self._normalize_zen_to_han(text)
         if not self.ignore_kansuji:
             text = self._normalize_kansuji(text)
@@ -137,7 +157,7 @@ class NumberNormalizer:
         re_matches = list(re.finditer("[〇一二三四五六七八九十百千万億兆京垓]+", text))
         for re_iter in reversed(re_matches):
             start_i, end_i = re_iter.span()
-            replace_text = kansuji2number(re_iter.group())
+            replaced_text = kansuji2number(re_iter.group())
 
             # 慣用句などの無視すべき表現をチェックする
             should_ignore = False
@@ -153,7 +173,8 @@ class NumberNormalizer:
                 should_ignore = True
 
             if not should_ignore:
-                text = text[:start_i] + replace_text + text[end_i:]
+                text = text[:start_i] + replaced_text + text[end_i:]
+                self._set_diff_index(start_i, end_i, len(replaced_text))
         return text
 
     def _remove_comma_inside_digits(self, text: str) -> str:
@@ -167,8 +188,14 @@ class NumberNormalizer:
         """
         re_matches = list(re.finditer("(([0-9]{1,3}(,[0-9]{3})*)(?![0-9]))", text))
         for re_match in reversed(re_matches):
-            number_start_i, number_end_i = re_match.span()
+            start_i, end_i = re_match.span()
             replaced_text = re_match.group().replace(",", "")
-            text = text[:number_start_i] + replaced_text + text[number_end_i:]
+            text = text[:start_i] + replaced_text + text[end_i:]
+            self._set_diff_index(start_i, end_i, len(replaced_text))
         else:
             return text
+
+    def _set_diff_index(self, start_i: int, end_i: int, len_replace_text: int) -> None:
+        diff_index = end_i - start_i - len_replace_text
+        if diff_index > 0:
+            self.diff_index_list.append(DiffIndex(start_i, diff_index))

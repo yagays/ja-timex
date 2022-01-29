@@ -381,3 +381,69 @@ def test_range_expression_variation(p):
     assert timexes[1].text == "翌日"
     assert timexes[1].type == "DURATION"
     assert timexes[1].range_end is None
+
+
+def test_adjust_normalize_index_diff(p):
+    # issues/67
+    text = "平成三十一年に起きた出来事はなんですか？"
+    timex = p.parse(text)
+    assert timex[0].raw_span == (0, 6)
+
+    timex = p.parse("明治二十六年")[0]
+    assert timex.text == "明治26年"
+    assert timex.span == (0, 5)
+    assert p.processed_text[timex.span[0] : timex.span[1]] == "明治26年"
+    assert timex.raw_text == "明治二十六年"
+    assert timex.raw_span == (0, 6)
+    assert p.raw_text[timex.raw_span[0] : timex.raw_span[1]] == "明治二十六年"
+
+
+def test_adjust_normalize_index_diff_multiple(p):
+    # 複数ある場合
+    timexes = p.parse("明治二十六年から明治四十二年まで")
+    t0 = timexes[0]
+    assert t0.text == "明治26年"
+    assert p.processed_text[t0.span[0] : t0.span[1]] == "明治26年"
+    assert t0.raw_text == "明治二十六年"
+    assert p.raw_text[t0.raw_span[0] : t0.raw_span[1]] == "明治二十六年"
+    t1 = timexes[1]
+    assert t1.text == "明治42年"
+    assert p.processed_text[t1.span[0] : t1.span[1]] == "明治42年"
+    assert t1.raw_text == "明治四十二年"
+    assert p.raw_text[t1.raw_span[0] : t1.raw_span[1]] == "明治四十二年"
+
+    # 複数あって後半はnumber_normalizeしない場合
+    timexes = p.parse("明治二十六年から明治42年まで")
+    t0 = timexes[0]
+    assert t0.text == "明治26年"
+    assert p.processed_text[t0.span[0] : t0.span[1]] == "明治26年"
+    assert t0.raw_text == "明治二十六年"
+    assert p.raw_text[t0.raw_span[0] : t0.raw_span[1]] == "明治二十六年"
+    t1 = timexes[1]
+    assert t1.text == "明治42年"
+    assert p.processed_text[t1.span[0] : t1.span[1]] == "明治42年"
+    assert t1.raw_text == "明治42年"
+    assert p.raw_text[t1.raw_span[0] : t1.raw_span[1]] == "明治42年"
+
+    # number_normalizeでカンマを削除する場合
+    timexes = p.parse("今から30,000年〜50,000年前")
+    t0 = timexes[0]
+    assert t0.text == "30000年"
+    assert p.processed_text[t0.span[0] : t0.span[1]] == "30000年"
+    assert t0.raw_text == "30,000年"
+    assert p.raw_text[t0.raw_span[0] : t0.raw_span[1]] == "30,000年"
+    t1 = timexes[1]
+    assert t1.text == "50000年前"
+    assert p.processed_text[t1.span[0] : t1.span[1]] == "50000年前"
+    assert t1.raw_text == "50,000年前"
+    assert p.raw_text[t1.raw_span[0] : t1.raw_span[1]] == "50,000年前"
+
+
+def test_raw_span_and_text_none(p):
+    timex = p.parse("明治26年")[0]
+    assert timex.text == "明治26年"
+    assert timex.span == (0, 5)
+    assert p.processed_text[timex.span[0] : timex.span[1]] == "明治26年"
+    assert timex.raw_text == "明治26年"
+    assert timex.raw_span == (0, 5)
+    assert p.raw_text[timex.raw_span[0] : timex.raw_span[1]] == "明治26年"

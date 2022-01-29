@@ -5,7 +5,7 @@ from typing import DefaultDict, List, Optional
 import pendulum
 
 from ja_timex.extract_filter import BaseFilter, DecimalFilter, NumexpFilter, PartialNumFilter
-from ja_timex.number_normalizer import NumberNormalizer
+from ja_timex.number_normalizer import DiffIndex, NumberNormalizer
 from ja_timex.tag import TIMEX, Extract
 from ja_timex.tagger import AbstimeTagger, DurationTagger, ReltimeTagger, SetTagger
 from ja_timex.util import detect_range_expression_before_timex
@@ -52,6 +52,7 @@ class TimexParser:
         Returns:
             List[TIMEX]: 抽出されたTIMEXのリスト
         """
+        self.raw_text = raw_text
         # 数の認識/規格化
         self.processed_text = self._normalize_number(raw_text)
 
@@ -67,6 +68,7 @@ class TimexParser:
         timex_tags = self._modify_renge_start_and_end(timex_tags, self.processed_text)
         timex_tags = self._extract_abbrev_patten(timex_tags, self.processed_text)
         timex_tags = self._modify_additional_information(timex_tags)
+        timex_tags = self._adjust_normalize_index_diff(timex_tags, self.number_normalizer.diff_index_list)
 
         return timex_tags
 
@@ -293,3 +295,26 @@ class TimexParser:
             modified_tags.append(timex)
 
         return modified_tags
+
+    def _adjust_normalize_index_diff(self, timex_tags: List[TIMEX], diff_index_list: List[DiffIndex]) -> List[TIMEX]:
+        adjusted_tags = []
+        if diff_index_list:
+            for timex_tag in timex_tags:
+                start_i, end_i = timex_tag.span
+                for diff_index in diff_index_list:
+                    if diff_index.index < start_i:
+                        start_i += diff_index.diff
+                    if diff_index.index < end_i:
+                        end_i += diff_index.diff
+                timex_tag.raw_span = (start_i, end_i)
+                timex_tag.raw_text = self.raw_text[start_i:end_i]
+
+                adjusted_tags.append(timex_tag)
+        else:
+            # インデックスの変換が無い場合でもraw_text, raw_spanに追加する
+            for timex_tag in timex_tags:
+                start_i, end_i = timex_tag.span
+                timex_tag.raw_span = (start_i, end_i)
+                timex_tag.raw_text = self.raw_text[start_i:end_i]
+                adjusted_tags.append(timex_tag)
+        return adjusted_tags

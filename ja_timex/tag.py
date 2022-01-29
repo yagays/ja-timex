@@ -15,8 +15,12 @@ class TIMEX:
     type: str
     value: str
     text: str
-
     span: Tuple[int, int]
+
+    # 正規化前の抽出テキストと開始終了位置
+    raw_text: Optional[str] = None
+    raw_span: Optional[Tuple[int, int]] = None
+
     parsed: Dict[str, str] = field(default_factory=dict)
 
     tid: Optional[str] = None
