@@ -209,7 +209,7 @@ class TimexParser:
                 index2timex_i[index] = timex_i
 
         for timex in timex_tags:
-            if not timex.span or timex.type == "DURATION":
+            if not timex.span:
                 continue
 
             range_expression = detect_range_expression_before_timex(timex.span[0], processed_text)
@@ -221,7 +221,7 @@ class TimexParser:
             if possible_timex_i is not None:
                 start_timex = timex_tags[possible_timex_i]
 
-                if start_timex.type == timex.type:
+                if self._is_valid_range_pair(start_timex, timex):
                     start_timex.range_start = True
                     timex.range_end = True
 
@@ -318,3 +318,26 @@ class TimexParser:
                 timex_tag.raw_text = self.raw_text[start_i:end_i]
                 adjusted_tags.append(timex_tag)
         return adjusted_tags
+
+    def _is_valid_range_pair(self, left_timex: TIMEX, right_timex: TIMEX) -> bool:
+        """2つのTIMEXが範囲表現を構成しうるかを判定
+
+        Args:
+            left_timex (TIMEX): 開始のTIMEXタグ
+            right_timex (TIMEX): 終了のTIMEXタグ
+
+        Returns:
+            bool: 2つのTIMEXタグが範囲表現を構成しうるかの真偽値
+        """
+        if left_timex.type == "DATE" and right_timex.type == "DATE":
+            return True
+
+        if left_timex.type == "TIME" and right_timex.type == "TIME":
+            return True
+
+        if left_timex.type == "DURATION" and right_timex.type == "DURATION":
+            # "今日"や"半年前"など、モダリティをどちらも有する場合のみ範囲表現を取る
+            if left_timex.mod and right_timex.mod:
+                return True
+
+        return False

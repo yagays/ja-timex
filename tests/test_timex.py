@@ -373,13 +373,48 @@ def test_range_expression_variation(p):
     assert timexes[1].text == "3時半"
     assert timexes[1].range_end
 
-    # 範囲ではない場合（DURATIONは範囲表現を取らない）
+
+def test_range_expression_duration(p):
+    # durationでも範囲表現を伴う場合がある
+    timexes = p.parse("昨日から今日にかけて")
+    assert len(timexes) == 2
+    assert timexes[0].text == "昨日"
+    assert timexes[0].range_start
+    assert timexes[1].text == "今日"
+    assert timexes[1].range_end
+
+    timexes = p.parse("半年前から来年にかけて")
+    assert len(timexes) == 2
+    assert timexes[0].text == "半年前"
+    assert timexes[0].range_start
+    assert timexes[1].text == "来年"
+    assert timexes[1].range_end
+
+    # duration同士でも範囲表現ではない場合
+    timexes = p.parse("一昨日から2日間に渡って")
+    assert len(timexes) == 2
+    assert timexes[0].text == "一昨日"
+    assert timexes[0].range_start is None
+    assert timexes[1].text == "2日間"
+    assert timexes[1].range_end is None
+
+    # 片方がdurationではない場合
     timexes = p.parse("1日から翌日のことが気になって仕方がない")
     assert timexes[0].text == "1日"
     assert timexes[0].type == "DATE"
     assert timexes[0].range_start is None
     assert timexes[1].text == "翌日"
     assert timexes[1].type == "DURATION"
+    assert timexes[1].range_end is None
+
+
+def test_range_expression_set(p):
+    # setの場合は範囲表現ではないため、rangeを付与しない
+    timexes = p.parse("3日に1回から5日に1回に変更")
+    assert len(timexes) == 2
+    assert timexes[0].text == "3日に1回"
+    assert timexes[0].range_start is None
+    assert timexes[1].text == "5日に1回"
     assert timexes[1].range_end is None
 
 
