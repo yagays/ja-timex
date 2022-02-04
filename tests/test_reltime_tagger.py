@@ -163,6 +163,10 @@ def test_word_now(t):
     assert t.parse("今年").value == "P0Y"
     assert t.parse("今年").mod == "NOW"
 
+    # 今年と今世紀は同じvalueとなってしまうが、Y以上の時間単位が存在しないため許容する
+    assert t.parse("今世紀").value == "P0Y"
+    assert t.parse("今世紀").mod == "NOW"
+
 
 def test_half_suffix_reltime(t):
     assert t.parse("1時間半後").value == "PT1.5H"

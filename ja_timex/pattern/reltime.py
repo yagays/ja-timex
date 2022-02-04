@@ -502,6 +502,11 @@ patterns += [
         parse_func=parse_word,
         option={"value": "P0Y", "mod": "NOW", "year": "0"},
     ),
+    Pattern(
+        re_pattern="今世紀",
+        parse_func=parse_word,
+        option={"value": "P0Y", "mod": "NOW", "year": "0"},
+    ),
 ]
 
 # 半年や半世紀
