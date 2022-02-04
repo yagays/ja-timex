@@ -387,7 +387,7 @@ def test_range_expression_duration(p):
     assert len(timexes) == 2
     assert timexes[0].text == "半年前"
     assert timexes[0].range_start
-    assert timexes[1].text == "今日"
+    assert timexes[1].text == "来年"
     assert timexes[1].range_end
 
     # duration同士でも範囲表現ではない場合
@@ -398,13 +398,23 @@ def test_range_expression_duration(p):
     assert timexes[1].text == "2日間"
     assert timexes[1].range_end is None
 
-    # 範囲ではない場合
+    # 片方がdurationではない場合
     timexes = p.parse("1日から翌日のことが気になって仕方がない")
     assert timexes[0].text == "1日"
     assert timexes[0].type == "DATE"
     assert timexes[0].range_start is None
     assert timexes[1].text == "翌日"
     assert timexes[1].type == "DURATION"
+    assert timexes[1].range_end is None
+
+
+def test_range_expression_set(p):
+    # setの場合は範囲表現ではないため、rangeを付与しない
+    timexes = p.parse("3日に1回から5日に1回に変更")
+    assert len(timexes) == 2
+    assert timexes[0].text == "3日に1回"
+    assert timexes[0].range_start is None
+    assert timexes[1].text == "5日に1回"
     assert timexes[1].range_end is None
 
 
