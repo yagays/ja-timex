@@ -64,6 +64,43 @@ def test_reference_datetime_default_year(p):
     assert timexes[0].to_datetime() == pendulum.datetime(2010, 7, 18, 12, 59, tz="Asia/Tokyo")
 
 
+def test_reference_datetime_exclude(p_ref):
+    # 世紀や曜日はdatetimeでは変換できない
+
+    # reference無し
+    timexes = TimexParser().parse("20世紀")
+    assert timexes[0].to_datetime() is None
+
+    timexes = TimexParser().parse("紀元前3世紀")
+    assert timexes[0].to_datetime() is None
+
+    timexes = TimexParser().parse("木曜日")
+    assert timexes[0].to_datetime() is None
+
+    # reference有り
+    timexes = p_ref.parse("20世紀")
+    assert timexes[0].to_datetime() is None
+
+    timexes = p_ref.parse("紀元前3世紀")
+    assert timexes[0].to_datetime() is None
+
+    timexes = p_ref.parse("木曜日")
+    assert timexes[0].to_datetime() is None
+
+    # 日付と{曜日,世紀}は別のTIMEXで抽出されるので、影響しない
+    timexes = p_ref.parse("2021年12月30日木曜日")
+    assert timexes[0].to_datetime() == pendulum.datetime(2021, 12, 30, tz="Asia/Tokyo")
+    assert timexes[1].to_datetime() is None
+
+    timexes = p_ref.parse("30日木曜日")
+    assert timexes[0].to_datetime() == pendulum.datetime(2021, 7, 30, tz="Asia/Tokyo")
+    assert timexes[1].to_datetime() is None
+
+    timexes = p_ref.parse("20世紀12月30日")
+    assert timexes[0].to_datetime() is None
+    assert timexes[1].to_datetime() == pendulum.datetime(2021, 12, 30, tz="Asia/Tokyo")
+
+
 def test_reference_datetime_time(p_ref):
     timexes = p_ref.parse("12時59分1秒")
     assert timexes[0].to_datetime() == pendulum.datetime(2021, 7, 18, 12, 59, 1, tz="Asia/Tokyo")

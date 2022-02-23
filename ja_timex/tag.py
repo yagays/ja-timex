@@ -88,15 +88,20 @@ class TIMEX:
         default_timezone = set_timezone(tz)
 
         if self.type == "DATE":
+            # 世紀や曜日はdatetimeでの表現が不可能なため変換しない
+            for exclude_pattern in ["ac_century", "bc_century", "weekday"]:
+                if exclude_pattern in self.parsed:
+                    return None
+
             year = self.fill_target_value(target="calendar_year", fill_str="XXXX", default_value=pendulum.now().year)
             month = self.fill_target_value(target="calendar_month", fill_str="XX", default_value=1)
             day = self.fill_target_value(target="calendar_day", fill_str="XX", default_value=1)
 
             if self.reference:
                 # 詳細な挙動は test_reference_datetime_default_year を参照
-                if self.parsed["calendar_year"] == "XXXX":
+                if self.parsed.get("calendar_year") == "XXXX":
                     year = self.reference.year
-                    if self.parsed["calendar_month"] == "XX":
+                    if self.parsed.get("calendar_month") == "XX":
                         month = self.reference.month
 
             return pendulum.datetime(year=year, month=month, day=day, tz=default_timezone)
