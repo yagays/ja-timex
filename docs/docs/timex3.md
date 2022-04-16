@@ -46,7 +46,7 @@ _各表現の概念図_
 | 曜日   | XXXX-WXX-X           | 水曜日                      | XXXX-WXX-3          |
 | 季節   | XXXX-{SP,SU, FA, WI} | 冬                          | XXXX-WI             |
 | 四半期 | XXXX-QX              | 第1四半期                   | XXXX-Q1             |
-| 年度   | FYXXXX               | 1998年度                    | FYXXXX              |
+| 年度   | FYXXXX               | 1998年度                    | FY1998              |
 | 世紀   | XXXX                 | 11世紀                      | 10XX                |
 | 紀元前 | BCXXXX               | 紀元前202年                 | BC0202              |
 | 時刻   | XXXX-XX-XXTXX:XX:XX  | 2006年8月8日午前8時45分30秒 | 2006-08-08T08:45:30 |
