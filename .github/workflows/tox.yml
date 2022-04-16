@@ -6,6 +6,7 @@ on:
 jobs:
   build:
     runs-on: ${{matrix.platform}}
+    if: startsWith(github.head_ref, 'feature') || startsWith(github.head_ref, 'fix')
     strategy:
       matrix:
         platform: [ubuntu-latest, macos-latest, windows-latest]
