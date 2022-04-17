@@ -196,6 +196,13 @@ class NumberNormalizer:
             return text
 
     def _set_diff_index(self, start_i: int, end_i: int, len_replace_text: int) -> None:
+        """正規化により文字列の長さに差が出た箇所を記録
+
+        Args:
+            start_i (int): 正規化文字列の開始位置
+            end_i (int): 正規化文字列の終了位置
+            len_replace_text (int): 正規化文字列長
+        """
         diff_index = end_i - start_i - len_replace_text
-        if diff_index > 0:
+        if diff_index != 0:
             self.diff_index_list.append(DiffIndex(start_i, diff_index))
