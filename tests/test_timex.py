@@ -418,7 +418,8 @@ def test_range_expression_set(p):
     assert timexes[1].range_end is None
 
 
-def test_adjust_normalize_index_diff(p):
+def test_adjust_normalize_index_diff_decrease(p):
+    # 文字列正規化により文字列が減る場合
     # issues/67
     text = "平成三十一年に起きた出来事はなんですか？"
     timex = p.parse(text)
@@ -431,6 +432,33 @@ def test_adjust_normalize_index_diff(p):
     assert timex.raw_text == "明治二十六年"
     assert timex.raw_span == (0, 6)
     assert p.raw_text[timex.raw_span[0] : timex.raw_span[1]] == "明治二十六年"
+
+
+def test_adjust_normalize_index_diff_increase(p):
+    # 文字列正規化により文字列が増える場合
+    timex = p.parse("十分な食料")[0]
+    assert timex.text == "10分"
+    assert timex.span == (0, 3)
+    assert p.processed_text[timex.span[0] : timex.span[1]] == "10分"
+    assert timex.raw_text == "十分"
+    assert timex.raw_span == (0, 2)
+    assert p.raw_text[timex.raw_span[0] : timex.raw_span[1]] == "十分"
+
+    timexes = p.parse("10分維持するのに十分な食料")
+    t0 = timexes[0]
+    assert t0.text == "10分"
+    assert t0.span == (0, 3)
+    assert p.processed_text[t0.span[0] : t0.span[1]] == "10分"
+    assert t0.raw_text == "10分"
+    assert t0.raw_span == (0, 3)
+    assert p.raw_text[t0.raw_span[0] : t0.raw_span[1]] == "10分"
+    t1 = timexes[1]
+    assert t1.text == "10分"
+    assert t1.span == (9, 12)
+    assert p.processed_text[t1.span[0] : t1.span[1]] == "10分"
+    assert t1.raw_text == "十分"
+    assert t1.raw_span == (9, 11)
+    assert p.raw_text[t1.raw_span[0] : t1.raw_span[1]] == "十分"
 
 
 def test_adjust_normalize_index_diff_multiple(p):

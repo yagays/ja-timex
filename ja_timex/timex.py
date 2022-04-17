@@ -297,6 +297,15 @@ class TimexParser:
         return modified_tags
 
     def _adjust_normalize_index_diff(self, timex_tags: List[TIMEX], diff_index_list: List[DiffIndex]) -> List[TIMEX]:
+        """文字列の正規化により生じたspanの差を修正する
+
+        Args:
+            timex_tags (List[TIMEX]): TIMEXのリスト
+            diff_index_list (List[DiffIndex]): number_normalizerに記録されたインデックスの差分リスト
+
+        Returns:
+            List[TIMEX]: spanが修正されたTIMEXのリスト
+        """
         adjusted_tags = []
         if diff_index_list:
             for timex_tag in timex_tags:
