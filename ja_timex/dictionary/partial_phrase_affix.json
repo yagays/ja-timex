@@ -1,0 +1,17 @@
+[
+    {
+        "timex_text": "毎日",
+        "target_affix": "新聞",
+        "type": "suffix"
+    },
+    {
+        "timex_text": "3年",
+        "target_affix": "石の上にも",
+        "type": "prefix"
+    },
+    {
+        "timex_text": "三年",
+        "target_affix": "石の上にも",
+        "type": "prefix"
+    }
+]
