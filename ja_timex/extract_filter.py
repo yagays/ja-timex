@@ -99,7 +99,7 @@ class DecimalFilter(BaseFilter):
 
 @dataclass
 class PartialPhraseAffix:
-    timex_text: str  # 数が正規化されているかは知ることができない
+    timex_text: str  # 数が正規化されているかは特定できないため、数値が入る場合は漢数字/アラビア数字どちらも設定する
     target_affix: str
     type: str
 
@@ -118,11 +118,11 @@ class PartialPhraseFilter(BaseFilter):
     """
 
     def __init__(self) -> None:
-        self.partial_word_list = [
-            PartialPhraseAffix(timex_text="毎日", target_affix="新聞", type="suffix"),
-            PartialPhraseAffix(timex_text="3年", target_affix="石の上にも", type="prefix"),
-            PartialPhraseAffix(timex_text="三年", target_affix="石の上にも", type="prefix"),
-        ]
+        with Path(__file__).parent.joinpath("dictionary/partial_phrase_affix.json").open(encoding="utf8") as f:
+            self.partial_word_list = [
+                PartialPhraseAffix(timex_text=p["timex_text"], target_affix=p["target_affix"], type=p["type"])
+                for p in json.load(f)
+            ]
 
     def filter(self, extract: Extract, text: str) -> bool:
         start_i, end_i = extract.re_match.span()
