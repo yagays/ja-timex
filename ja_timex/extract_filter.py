@@ -1,7 +1,9 @@
 import json
 import re
 from abc import ABCMeta, abstractmethod
+from dataclasses import dataclass
 from pathlib import Path
+from typing import Optional
 
 from ja_timex.tag import Extract
 
@@ -94,3 +96,48 @@ class DecimalFilter(BaseFilter):
             return True
         else:
             return False
+
+
+@dataclass
+class PartialPhraseAffix:
+    timex_text: str  # 数が正規化されているかは知ることができない
+    target_affix: str
+    type: str
+
+    @property
+    def target_len(self) -> int:
+        return len(self.target_affix)
+
+
+class PartialPhraseFilter(BaseFilter):
+    """対象パターンが特定の表現の一部かを判定する
+
+    特定の固有名詞や慣用表現の中には、時間情報表現を含むものがある。
+    与えられたパターンが固有名詞や慣用表現の一部を取得していないかをチェックする
+
+    e.g. "毎日新聞によると" に対して "毎日" というパターンを取得している場合 -> True
+    """
+
+    def __init__(self) -> None:
+        self.partial_word_list = [
+            PartialPhraseAffix(timex_text="毎日", target_affix="新聞", type="suffix"),
+            PartialPhraseAffix(timex_text="3年", target_affix="石の上にも", type="prefix"),
+            PartialPhraseAffix(timex_text="三年", target_affix="石の上にも", type="prefix"),
+        ]
+
+    def filter(self, extract: Extract, text: str) -> bool:
+        start_i, end_i = extract.re_match.span()
+        target_text = text[start_i:end_i]
+
+        for partial_word in self.partial_word_list:
+            if partial_word.timex_text != target_text:
+                continue
+
+            if partial_word.type == "prefix":
+                if text[start_i - partial_word.target_len : start_i] == partial_word.target_affix:
+                    return True
+            if partial_word.type == "suffix":
+                if text[end_i : end_i + partial_word.target_len] == partial_word.target_affix:
+                    return True
+
+        return False

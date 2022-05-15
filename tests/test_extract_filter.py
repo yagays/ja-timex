@@ -1,6 +1,6 @@
 import re
 
-from ja_timex.extract_filter import DecimalFilter, NumexpFilter, PartialNumFilter
+from ja_timex.extract_filter import DecimalFilter, NumexpFilter, PartialNumFilter, PartialPhraseFilter
 from ja_timex.pattern.place import Pattern
 from ja_timex.tag import Extract
 
@@ -65,3 +65,19 @@ def test_decimal_filter():
 
     # DURATIONの場合た対象外（0.1ヶ月という表記はあり得るため）
     assert not f.filter(make_extract("0.18", "0.18", "duration"), "0.18")
+
+
+def test_partial_phrase_filter():
+    f = PartialPhraseFilter()
+
+    # suffix
+    assert f.filter(make_extract("毎日", "毎日新聞によると"), "毎日新聞によると")  # suffixかつそれが"新聞"の場合
+    assert not f.filter(make_extract("毎日", "毎日読んでる新聞によると"), "毎日読んでる新聞によると")  # 離れている場合
+    assert not f.filter(make_extract("毎日", "新聞毎日読んでる"), "新聞毎日読んでる")  # prefixの場合
+
+    # prefix
+    assert f.filter(make_extract("3年", "石の上にも3年と言いますが"), "石の上にも3年と言いますが")
+    assert f.filter(make_extract("三年", "石の上にも三年と言いますが"), "石の上にも三年と言いますが")
+
+    assert not f.filter(make_extract("3年", "石の上に3年と言いますが"), "石の上に3年と言いますが")  # 一部文字が変わっている場合
+    assert not f.filter(make_extract("三年", "石の上に三年と言いますが"), "石の上に三年と言いますが")  # 一部文字が変わっている場合

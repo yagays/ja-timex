@@ -4,7 +4,7 @@ from typing import DefaultDict, List, Optional
 
 import pendulum
 
-from ja_timex.extract_filter import BaseFilter, DecimalFilter, NumexpFilter, PartialNumFilter
+from ja_timex.extract_filter import BaseFilter, DecimalFilter, NumexpFilter, PartialNumFilter, PartialPhraseFilter
 from ja_timex.number_normalizer import DiffIndex, NumberNormalizer
 from ja_timex.tag import TIMEX, Extract
 from ja_timex.tagger import AbstimeTagger, DurationTagger, ReltimeTagger, SetTagger
@@ -20,7 +20,12 @@ class TimexParser:
         reltime_tagger=ReltimeTagger(),
         set_tagger=SetTagger(),
         custom_tagger=None,
-        pattern_filters: List[BaseFilter] = [NumexpFilter(), PartialNumFilter(), DecimalFilter()],
+        pattern_filters: List[BaseFilter] = [
+            NumexpFilter(),
+            PartialNumFilter(),
+            DecimalFilter(),
+            PartialPhraseFilter(),
+        ],
         reference: Optional[pendulum.DateTime] = None,
         ignore_kansuji: bool = False,
     ) -> None:

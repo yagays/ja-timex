@@ -62,3 +62,22 @@ def test_ignore_kansuji():
     assert p.parse("十分のインターバル") == []
     assert p.parse("ここから三時間はかかる") == []
     assert p.parse("週三回の運動") == []
+
+
+def test_extract_filter_partial_phrase(p):
+    # PartialPhraseFilterに該当する固有名詞や慣用表現は抽出しない
+
+    assert p.parse("毎日新聞によると") == []
+    assert len(p.parse("毎日の新聞")) == 1
+
+    assert p.parse("ことわざで石の上にも三年と言うように") == []
+    assert p.parse("ことわざで石の上にも3年と言うように") == []
+
+    p_i = TimexParser(ignore_kansuji=True)
+    assert (
+        p_i.parse(
+            "ことわざで石の上にも三年と言うように",
+        )
+        == []
+    )
+    assert p_i.parse("ことわざで石の上にも3年と言うように") == []
