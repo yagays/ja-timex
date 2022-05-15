@@ -3,7 +3,6 @@ import re
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 
 from ja_timex.tag import Extract
 
