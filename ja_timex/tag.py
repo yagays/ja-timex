@@ -117,6 +117,10 @@ class TIMEX:
             else:
                 day_add = 0
 
+            # "半"という表記がある場合
+            if self.parsed.get("half_suffix"):
+                minute = 30
+
             return pendulum.datetime(
                 year=self.reference.year,
                 month=self.reference.month,
