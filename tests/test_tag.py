@@ -118,6 +118,20 @@ def test_to_datetime():
     assert dt.second == 0
 
 
+def test_to_datetime_half():
+    dt = TIMEX(
+        type="TIME",
+        value="T20-30-XX",
+        text="20時半",
+        span=(0, 4),
+        parsed={"clock_hour": "20", "half_suffix": "半", "clock_minute": "XX", "clock_second": "XX"},
+        reference=pendulum.now(),
+    ).to_datetime()
+    assert dt.hour == 20
+    assert dt.minute == 30
+    assert dt.second == 0
+
+
 def test_is_valid_duration(t_date, t_time, t_duration, t_set):
     assert t_duration.is_valid_duration
 
