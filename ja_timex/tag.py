@@ -150,7 +150,6 @@ class TIMEX:
             return False
 
     def to_duration(self) -> timedelta:
-
         unit_args = {
             "years": float(self.parsed.get("year", 0)),
             "months": float(self.parsed.get("month", 0)),
