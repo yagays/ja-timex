@@ -2,13 +2,13 @@ import re
 from dataclasses import dataclass
 from typing import List, Tuple
 
-import mojimoji
-
 zero = {"零": 0}
+zen2han = {"０": 0, "１": 1, "２": 2, "３": 3, "４": 4, "５": 5, "６": 6, "７": 7, "８": 8, "９": 9}
 char2int = {"〇": 0, "一": 1, "二": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8, "九": 9}
 char2power_allow_head = {"十": 1, "百": 2, "千": 3}
 char2power = {"万": 4, "億": 8, "兆": 12, "京": 16, "垓": 20}
 char_int_table = str.maketrans({k: str(v) for k, v in char2int.items()})
+zen_han_table = str.maketrans({k: str(v) for k, v in zen2han.items()})
 
 
 @dataclass
@@ -134,7 +134,7 @@ class NumberNormalizer:
         Returns:
             str: 半角に正規化した文字列
         """
-        text = mojimoji.zen_to_han(text, kana=False, ascii=False)
+        text = text.translate(zen_han_table)
 
         # 数字の間にはいる,や.の全角文字を半角にする
         re_match = re.search("[0-9][，．][0-9]", text)
