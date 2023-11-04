@@ -22,7 +22,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
-pendulum = "^2.1.2"
+pendulum = {version = "3.0.0b1", allow-prereleases = true}
 
 [tool.poetry.group.dev.dependencies]
 ipython = "8.13.0"
