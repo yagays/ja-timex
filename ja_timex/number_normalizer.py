@@ -41,7 +41,6 @@ class DiffIndex:
 
 
 def kansuji2number(text: str) -> str:
-
     if text == "零":
         return "0"
 

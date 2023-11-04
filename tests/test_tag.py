@@ -67,7 +67,6 @@ def test_tid():
 
 
 def test_is_valid_datetime(t_date, t_time, t_duration, t_set):
-
     assert t_date.is_valid_datetime
     assert t_time.is_valid_datetime
     assert t_duration.is_valid_datetime
