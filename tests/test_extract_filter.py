@@ -27,11 +27,15 @@ def test_numexp_filter():
     assert f.filter(make_extract("2.4", "2.4GHz"), "2.4GHz")
 
     assert not f.filter(make_extract("7.18", "7.18は晴れ"), "7.18は晴れ")
-    assert not f.filter(make_extract("7.18", "7.18に釣り上げられた10メートルの魚"), "7.18に釣り上げられた10メートルの魚")
+    assert not f.filter(
+        make_extract("7.18", "7.18に釣り上げられた10メートルの魚"), "7.18に釣り上げられた10メートルの魚"
+    )
 
     # 3つ以上の数字に分けられる場合はフィルタの対象外
     assert not f.filter(make_extract("2020.7.18", "2020.7.18"), "2020.7.18")
-    assert not f.filter(make_extract("2020.7.18", "2020.7.18円相場は"), "2020.7.18円相場は")  # 単位が付いていた場合も同様
+    assert not f.filter(
+        make_extract("2020.7.18", "2020.7.18円相場は"), "2020.7.18円相場は"
+    )  # 単位が付いていた場合も同様
 
 
 def test_partial_num_filter():
@@ -79,5 +83,9 @@ def test_partial_phrase_filter():
     assert f.filter(make_extract("3年", "石の上にも3年と言いますが"), "石の上にも3年と言いますが")
     assert f.filter(make_extract("三年", "石の上にも三年と言いますが"), "石の上にも三年と言いますが")
 
-    assert not f.filter(make_extract("3年", "石の上に3年と言いますが"), "石の上に3年と言いますが")  # 一部文字が変わっている場合
-    assert not f.filter(make_extract("三年", "石の上に三年と言いますが"), "石の上に三年と言いますが")  # 一部文字が変わっている場合
+    assert not f.filter(
+        make_extract("3年", "石の上に3年と言いますが"), "石の上に3年と言いますが"
+    )  # 一部文字が変わっている場合
+    assert not f.filter(
+        make_extract("三年", "石の上に三年と言いますが"), "石の上に三年と言いますが"
+    )  # 一部文字が変わっている場合

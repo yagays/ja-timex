@@ -280,7 +280,12 @@ def test_reltime_to_duration_half_expression_without_number():
     assert it.months == 6
 
     it = TIMEX(
-        type="DURATION", value="P0.5M", text="半月後", mod="AFTER", span=(0, 3), parsed={"after_suffix": "後", "day": "15"}
+        type="DURATION",
+        value="P0.5M",
+        text="半月後",
+        mod="AFTER",
+        span=(0, 3),
+        parsed={"after_suffix": "後", "day": "15"},
     ).to_duration()
     assert it.days == 15
 

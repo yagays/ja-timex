@@ -19,7 +19,9 @@ def test_normalize_zen_to_han(nn):
     assert nn._normalize_zen_to_han("１，０００年") == "1,000年"
     assert nn._normalize_zen_to_han("１．０時間") == "1.0時間"
 
-    assert nn._normalize_zen_to_han("通常の句点．または句読点，は変換しない") == "通常の句点．または句読点，は変換しない"
+    assert (
+        nn._normalize_zen_to_han("通常の句点．または句読点，は変換しない") == "通常の句点．または句読点，は変換しない"
+    )
 
 
 def test_remove_comma_inside_digits(nn):
@@ -157,7 +159,10 @@ def test_normalize_kansuji(nn):
     assert nn._normalize_kansuji("明治二十六年") == "明治26年"
 
     # 青空文庫「パソコン創世記」富田倫生
-    assert nn._normalize_kansuji("一九六〇年代に出合った歌と一九七〇年代に生まれた") == "1960年代に出合った歌と1970年代に生まれた"
+    assert (
+        nn._normalize_kansuji("一九六〇年代に出合った歌と一九七〇年代に生まれた")
+        == "1960年代に出合った歌と1970年代に生まれた"
+    )
 
 
 def test_normalize_kansuji_should_not_normalize(nn):
@@ -191,13 +196,19 @@ def test_normalize_phrase_contains_number(nn):
 
     nn.set_ignore_kansuji(ignore_kansuji=False)
     # 青空文庫「魔都」 久生十蘭
-    assert nn.normalize("噴水が歌を唄うということですが一体それは真実でしょうか") == "噴水が歌を唄うということですが1体それは真実でしょうか"
+    assert (
+        nn.normalize("噴水が歌を唄うということですが一体それは真実でしょうか")
+        == "噴水が歌を唄うということですが1体それは真実でしょうか"
+    )
     # 「三国志 05 臣道の巻」 吉川英治
     assert nn.normalize("三人の血はひとつだ。三人は一心同体だと") == "3人の血はひとつだ。3人は1心同体だと"
 
     # 上記の、漢数字を無視するパターン
     nn.set_ignore_kansuji(ignore_kansuji=True)
-    assert nn.normalize("噴水が歌を唄うということですが一体それは真実でしょうか") == "噴水が歌を唄うということですが一体それは真実でしょうか"
+    assert (
+        nn.normalize("噴水が歌を唄うということですが一体それは真実でしょうか")
+        == "噴水が歌を唄うということですが一体それは真実でしょうか"
+    )
     assert nn.normalize("三人の血はひとつだ。三人は一心同体だと") == "三人の血はひとつだ。三人は一心同体だと"
 
 
@@ -220,10 +231,16 @@ def test_normalize_ignore_kansuji(nn):
 def test_normalize_multiple_expression(nn):
     # 複数の漢数字が存在し、normalizeで文字数が変わる場合
     # 青空文庫「若返り薬」 海若藍平 夢野久作
-    assert nn._normalize_kansuji("四粒飲むと千年、五粒飲むと一万年生き延びるのです。") == "4粒飲むと1000年、5粒飲むと10000年生き延びるのです。"
+    assert (
+        nn._normalize_kansuji("四粒飲むと千年、五粒飲むと一万年生き延びるのです。")
+        == "4粒飲むと1000年、5粒飲むと10000年生き延びるのです。"
+    )
 
     # 青空文庫「最終戦争論」 石原莞爾
     assert nn._normalize_kansuji("千年、三百年、百二十五年から推して") == "1000年、300年、125年から推して"
 
     # 「創聖のアクエリオン」 AKINO
-    assert nn._normalize_kansuji("一万年と二千年前から愛してる八千年過ぎた頃からもっと恋しくなった") == "10000年と2000年前から愛してる8000年過ぎた頃からもっと恋しくなった"
+    assert (
+        nn._normalize_kansuji("一万年と二千年前から愛してる八千年過ぎた頃からもっと恋しくなった")
+        == "10000年と2000年前から愛してる8000年過ぎた頃からもっと恋しくなった"
+    )
