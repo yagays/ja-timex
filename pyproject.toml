@@ -74,6 +74,9 @@ src_paths = ["ja_timex", "tests", "tools"]
 enable = true
 style = "pep440"
 
+[tool.ruff]
+line-length = 120
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
