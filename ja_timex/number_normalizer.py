@@ -99,6 +99,7 @@ class NumberNormalizer:
                 IgnorePhrase(pattern="千夏", relative_position_to_ref=(0, 2)),
                 IgnorePhrase(pattern="千秋", relative_position_to_ref=(0, 2)),
                 IgnorePhrase(pattern="千冬", relative_position_to_ref=(0, 2)),
+                IgnorePhrase(pattern="千歳", relative_position_to_ref=(0, 2)),  # 地名
             ],
         }
         self.ignore_kansuji = False

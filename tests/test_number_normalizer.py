@@ -177,6 +177,7 @@ def test_normalize_kansuji_should_not_normalize(nn):
     assert nn.normalize("千秋") == "千秋"
     assert nn.normalize("松野千冬") == "松野千冬"
     assert nn.normalize("三春町") == "三春町"
+    assert nn.normalize("千歳市") == "千歳市"
 
     # 文脈の意味を考慮しないと判定できない例は、今のところ対象としない
     # assert nn._normalize_kansuji("一時をお知らせします")
